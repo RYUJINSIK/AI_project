@@ -67,3 +67,20 @@
     - 선택된 Reviewer는 작업 내용을 확인 후 Approve를 눌러주고 Merge 한다.
 
     ![](img/2022-02-04-00-12-00.png)
+
+## 4. git commit template 추가
+
+1. 현재 파일 위치 확인.
+
+![](img/2022-02-08-14-40-53.png)
+
+2. 파일 위치에 맞게 commit template 설정
+
+```bash
+$git config commit.template <pwd>\docs\.gitmessage # 형식
+$git config commit.template D:\doc\project-template\docs\.gitmessage # 예시
+```
+
+3. 설정시 commit 화면
+
+![](img/2022-02-08-14-43-20.png)
