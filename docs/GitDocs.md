@@ -23,7 +23,10 @@
     - Issues에서 New Issue를 클릭한다.
     - Assignee에서 본인을 선택한다. 
     - Label에서 본인의 직군과 수행하고자 하는 일에 맞는 라벨을 선택한다.
-    - IssueTemplate을 복사해서 구현하고자 하는 일을 세분화 해서 기입한다.
+    - IssueTemplate을 선택해서 구현하고자 하는 일을 세분화 해서 기입한다.
+        - 기능 추가의 경우 feature_request 템플릿 사용.
+        - 개발 이슈사항은 issue_dev_templates 템플릿 사용. 
+        - 기획 이슈사항은 issue_plan_template 템플릿 사용.
 
     - 작업 예시
 
@@ -55,7 +58,8 @@
 
           ![](img/2022-02-04-00-04-57.png)
 
-        - 기입 부분에서 MergeTemplate사용
+        - MergeTemplate 선택 후 내용 기입
+            - MR_template
         - Assignee은 본인 선택
         - Reviewer는 본인 제외한 직군의 다른 사람 선택.
         - Label은 본인이 이슈에서 선택했던 내용 그대로 선택.
