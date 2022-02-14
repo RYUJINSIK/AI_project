@@ -103,3 +103,11 @@
 - 수정 단계: 코치님 피드백 반영하여 프론트 유지 보수
 
 
+## 6. GitLab 규칙
+
+- master : 최종본
+- sprint : 테스트 브랜치
+- feature : 기능 브랜치
+- fix : 수정 브랜치
+
+- [GitLab사용법](docs/GitDocs.md)
