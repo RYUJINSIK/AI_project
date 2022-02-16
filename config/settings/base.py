@@ -47,6 +47,8 @@ DJANGO_APPS = [
     "drf_yasg",
     # rest
     "rest_framework",
+    # https protocol
+    "sslserver",
 ]
 
 INSTALLED_APPS = DJANGO_APPS

@@ -13,6 +13,7 @@ djangorestframework = "^3.13.1"
 drf-yasg = "^1.20.0"
 dj-rest-auth = "^2.2.3"
 PyMySQL = "^1.0.2"
+django-sslserver = "^0.22"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"
