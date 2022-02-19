@@ -16,13 +16,13 @@
       // 지도
       var mapContainer = document.getElementById("map"); // 지도를 표시할 div
       var mapOption = {
-        center: new kakao.maps.LatLng(37.569169767, 126.977772837), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(37.4682363, 126.7143506), // 지도의 중심좌표
         level: 3, // 지도의 레벨*확대, 축소 정도)
       };
       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
 
       // 마커
-      var MarkerPos = new kakao.maps.LatLng(37.569169767, 126.977772837); // 마커가 표시될 좌표
+      var MarkerPos = new kakao.maps.LatLng(37.4682363, 126.7143506); // 마커가 표시될 좌표
       var marker = new kakao.maps.Marker({
         // 마커 생성
         position: MarkerPos,
@@ -34,7 +34,7 @@
         '<div class="">' +
         '    <span class="title" style="font-weight:bold">청계천</span>' + // html 커스텀오버레이 가능
         "</div>";
-      var position = new kakao.maps.LatLng(37.569169767, 126.977772837); // 커스텀 오버레이가 표시될 좌표
+      var position = new kakao.maps.LatLng(37.4682363, 126.7143506); // 커스텀 오버레이가 표시될 좌표
       var customOverlay = new kakao.maps.CustomOverlay({
         // 커스텀 오버레이 설정 및 생성
         map: map,

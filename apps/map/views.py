@@ -26,4 +26,4 @@ class MapView(APIView):
     center_list = Center.objects.order_by('id')[:2]
     test_context = {'center_list': center_list}
     print(test_context)
-    return render(request, 'map/test2.html', test_context)
+    return render(request, 'map/test.html', test_context)
