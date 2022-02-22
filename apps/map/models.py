@@ -9,6 +9,6 @@ class Center(models.Model):
     video_call = models.CharField(max_length=15, null=True, blank=True)
     lat = models.FloatField(default=0.0)
     lng = models.FloatField(default=0.0)
-    
+
     def __str__(self):
-      return self.name
+        return self.name
