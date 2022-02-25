@@ -27,13 +27,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib",
-<<<<<<< HEAD
     "apps.map",
     "apps.video",
-=======
-    "apps.video",
     "apps.user",
->>>>>>> ff81d3f7ceb1135becb55af6279acb12d4b128b7
     # swagger
     "drf_yasg",
     # rest
@@ -136,14 +132,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
-<<<<<<< HEAD
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-=======
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
->>>>>>> ff81d3f7ceb1135becb55af6279acb12d4b128b7
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

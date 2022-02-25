@@ -1,31 +1,8 @@
-<<<<<<< HEAD
-# import os
-# import sys
+from datetime import datetime
 
-# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from django import urls
 from django.db import models
-# from user.models import User
-
-
-def upload_to(instance, filename):
-    return 'posts/{filename}'.format(filename=filename)
-
-class Video(models.Model):
-    url = models.FileField(upload_to='video/%y%m%d', default='posts/default')
-    # url = models.FileField(upload_to=upload_to, default='posts/default.avi)
-    # url = models.ForeignKey(User, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.url
-=======
-from django.db import models
-import sys
-import os
-print(sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 
 from apps.user.models import User
-from datetime import datetime
 
 # def upload_to(instance, filename):
 #     return 'posts/{filename}'.format(filename=filename)
@@ -53,4 +30,3 @@ class Video(models.Model):
     #     super().save(*args, **kwargs)
 
 
->>>>>>> ff81d3f7ceb1135becb55af6279acb12d4b128b7
