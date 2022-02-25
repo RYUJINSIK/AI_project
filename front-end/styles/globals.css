@@ -6,15 +6,22 @@
 	font-weight: normal;
 	font-style: normal;
 }
+@font-face {
+	font-family: 'GangwonEduHyeonokT_OTFMediumA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduHyeonokT_OTFMediumA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
 
 html,
 body,
 * {
 	padding: 0;
 	margin: 0;
-	font-family: 'KyoboHand' !important;
+	font-family: 'GangwonEduHyeonokT_OTFMediumA' !important;
 	line-height: 1.6;
-	font-size: 20px;
+	font-size: 30px;
 }
 
 body {

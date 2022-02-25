@@ -14,6 +14,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const pages = ['메뉴1', '메뉴2', '메뉴3'];
 
@@ -65,7 +67,7 @@ const HeaderForm = () => {
 							sx={{ my: 2, color: 'white', display: 'block' }}
 							style={{ margin: '0px', color: 'black' }}
 						>
-							로그인/로그아웃
+							로그인 / 로그아웃
 						</Button>
 					</Box>
 				</Toolbar>
