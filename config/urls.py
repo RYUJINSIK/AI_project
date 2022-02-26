@@ -8,11 +8,11 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Portfolio API",
+        title="Team9 OPEN API",
         default_version="v1",
-        description="Test description",
+        description="Elice Team9의 OPEN API 문서 페이지 입니다.",
         terms_of_service="https://www.orapp.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
+        contact=openapi.Contact(email="ingi9786@naver.com"),
         license=openapi.License(name="Test License"),
     ),
     public=True,

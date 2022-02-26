@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from .models import Center
+from .models import SignCenter
 
 
 class CenterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Center
+        model = SignCenter
         fields = '__all__'
