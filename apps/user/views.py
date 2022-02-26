@@ -6,5 +6,5 @@ from rest_framework.views import APIView
 
 class UserView(APIView):
     def get(self, request):
-        data = 'test data'
+        data = "test data"
         return Response(data, status=status.HTTP_200_OK)

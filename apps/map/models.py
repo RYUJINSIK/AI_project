@@ -12,6 +12,6 @@ class SignCenter(models.Model):
 
     def __str__(self):
         return self.center_name
-    
+
     class Meta:
         db_table = "sign_center"

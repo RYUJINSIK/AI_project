@@ -31,8 +31,8 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path('map/', include('apps.map.urls'), name='map'),
-    path('video/', include('apps.video.urls'), name='video'),
+    path("map/", include("apps.map.urls"), name="map"),
+    path("video/", include("apps.video.urls"), name="video"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
