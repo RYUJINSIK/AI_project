@@ -27,9 +27,11 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib",
+    "apps.ai",
+    "apps.core",
     "apps.map",
-    "apps.video",
     "apps.user",
+    "apps.video",
     # swagger
     "drf_yasg",
     # rest

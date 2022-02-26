@@ -1,32 +1,20 @@
-from datetime import datetime
-
 from django.db import models
 
-from apps.user.models import User
 
-# def upload_to(instance, filename):
-#     return 'posts/{filename}'.format(filename=filename)
+def upload_to(instance, filename):
+    return 'learning/{filename}'.format(filename=filename)
 
-# def upload_to2(instance, filename):
-#     return 'user_{}/{}'.format(instance.id, filename)
 
-def upload_to3(instance, filename):
-    cur_time = str(datetime.today().strftime('%Y-%m-%d_%H-%M-%S'))
-    return '{}/{}/{}'.format(instance.user_id, cur_time, filename)
-
-class Video(models.Model):
-    video_url = models.FileField(upload_to=upload_to3, default='posts/default')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, db_column='user_id', null=True)
+class LearningVideo(models.Model):
+    CATEGORY = [('B', '신체'), ('S', '질환')]  # 실제 필드명, human-readable name 순.
+    DIFFICULTY = [('L', '하'), ('M', '중'), ('H', '상')]
+    video_name = models.CharField(max_length=50)
+    video_url = models.FileField(upload_to=upload_to, default='learning/default')
+    category = models.CharField(max_length=1, choices=CATEGORY)
+    difficulty = models.CharField(max_length=1, choices=DIFFICULTY)
     
     def __str__(self):
-        return self.url
+        return self.video_name
     
-    # def save(self, *args, **kwargs):
-    #     if self.id is None:
-    #         temp_video = self.url
-    #         self.url = None
-    #         super().save(*args, **kwargs)
-    #         self.url = temp_video
-    #     super().save(*args, **kwargs)
-
-
+    class Meta:
+        db_table = "learning_video"
