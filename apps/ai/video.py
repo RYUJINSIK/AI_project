@@ -31,3 +31,15 @@ def video_resolution(video_name):
     cv2.destroyAllWindows()
 
     return output
+
+
+def upload_to(instance, filename):
+    """
+    return 이후에 백엔드에 파일이 생성된다.
+    instance는 User Object 객체이다.
+    instance.user_id => 조회한 user_id의 user_name 반환.
+    """
+    filename = f"{filename}.mp4"
+    cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
+    video_name = "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
+    return video_name

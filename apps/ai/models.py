@@ -5,10 +5,7 @@ from django.db import models
 from apps.core.models import TimeStampModel
 from apps.user.models import User
 
-
-def upload_to(instance, filename):
-    cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
-    return "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
+from .video import upload_to
 
 
 class RecordVideo(TimeStampModel):
