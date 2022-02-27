@@ -33,6 +33,7 @@ urlpatterns = [
     ),
     path("map/", include("apps.map.urls"), name="map"),
     path("video/", include("apps.video.urls"), name="video"),
+    path("ai/", include("apps.ai.urls"), name="ai"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
