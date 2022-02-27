@@ -5,7 +5,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<Head>
-				<title>TITLE</title>
+				<title>마음의소리</title>
 			</Head>
 			<Component {...pageProps} />
 		</>
