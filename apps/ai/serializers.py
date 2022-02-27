@@ -2,13 +2,28 @@ from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 
 from .models import RecordVideo
-from .video import upload_to, video_resolution
+from .video import video_resolution
 
 
 class VideoSerializer(serializers.ModelSerializer):
+    """
+    비디오 등록.
+    """
+
     class Meta:
         model = RecordVideo
-        fields = "__all__"
+        fields = ["user_id", "video_url"]
+
+    def validate(self, attrs):
+        """
+        user_id가 존재하는가 검증.
+        """
+        try:
+            self.user_id = attrs["user_id"]
+        except Exception:
+            raise NotFound("Not Found", 404)
+
+        return attrs
 
 
 class VideoUpdateSerializer(serializers.ModelSerializer):
