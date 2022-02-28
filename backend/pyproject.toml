@@ -17,6 +17,8 @@ django-sslserver = "^0.22"
 cryptography = "^36.0.1"
 opencv-python = "^4.5.5"
 django-cors-headers = "^3.11.0"
+django-rest-authtoken = "^2.1.4"
+djangorestframework-simplejwt = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"

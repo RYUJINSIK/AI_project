@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -35,6 +36,8 @@ DJANGO_APPS = [
     "sslserver",
     # CORS
     "corsheaders",
+    # authtoken
+    "rest_framework.authtoken",
 ]
 
 USER_APPS = [
@@ -43,15 +46,37 @@ USER_APPS = [
     "apps.signcenter",
     "apps.user",
     "apps.video",
+
 ]
 
 INSTALLED_APPS = DJANGO_APPS + USER_APPS
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        # 'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+        # 'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
+        "rest_framework.permissions.AllowAny",  # 누구나 접근 가능
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
 }
+
+# JWT
+# 추가적인 JWT_AUTH 설젇
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_ALGORITHM': 'HS256',  # 암호화 알고리즘
+    'JWT_ALLOW_REFRESH': True,  # refresh 사용 여부
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),  # 유효기간 설정
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),  # JWT 토큰 갱신 유효기간
+    # import datetime 상단에 import 하기
+}
+
 # -------------------------------------------
 
 MIDDLEWARE = [
@@ -152,4 +177,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# AUTH_USER_MODEL = "user.Trx"
+AUTH_USER_MODEL = "user.User"

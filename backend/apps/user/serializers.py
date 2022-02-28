@@ -1,17 +1,31 @@
 from rest_framework import serializers
+
 from .models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+class UserCreateSerializer(serializers.ModelSerializer):
 
-class RegisterSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        user = User.objects.create_user(  # User 생성
+            email=validated_data['email'],
+            name=validated_data['name'],
+            password=validated_data['password']
+        )
+        # user.set_password(validated_data['password'])
+
+        # user.save()
+        return user
+
     class Meta:
         model = User
-        fields = '__all__'
-    
+        fields = ['email', 'name', 'password']
+
+
+class IdCheckSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email']
+
     def validate(self, attrs):
         if User.objects.filter(email=attrs['email']).exists():
             raise serializers.ValidationError(

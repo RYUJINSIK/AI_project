@@ -1,24 +1,28 @@
-from rest_framework import status
+from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework import generics 
-from .models import User
-from .serializers import RegisterSerializer, UserSerializer
+
+from .serializers import IdCheckSerializer, UserCreateSerializer
 
 
-# from rest_framework.authentication import BaseAuthentication
-# from rest_framework.permissions import IsAuthenticated
+class IdcheckView(generics.GenericAPIView):
+    serializer_class = IdCheckSerializer
+
+    def post(self, request):
+        print(request.data)
+        serializer = IdCheckSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=201)
+        else:
+            return Response(serializer.errors, status=400)
+
 
 class RegisterView(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-    
-    def post(self, request):
-        # serializer = self.get_serializer(data=request.data)
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            return Response({
-                'user': serializer.data,
-                'status': status.HTTP_201_CREATED
-            })
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer_class = UserCreateSerializer
 
+    def post(self, request):
+        print(request.data)
+        serializer = UserCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # DB 저장
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
