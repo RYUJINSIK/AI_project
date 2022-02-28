@@ -5,7 +5,7 @@ import cv2
 
 
 def video_resolution(video_name):
-    video_url = os.path.join("media/", video_name)
+    video_url = os.path.join("backend/media/", video_name)
     cap = cv2.VideoCapture(video_url)
 
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -13,7 +13,7 @@ def video_resolution(video_name):
     output_name = video_name.split(".")[0]
     output = f"{output_name}.avi"
 
-    out = cv2.VideoWriter(os.path.join("media/", output), fourcc, 30, (1280, 720))
+    out = cv2.VideoWriter(os.path.join("backend/media/", output), fourcc, 30, (1280, 720))
 
     while True:
         ret, frame = cap.read()
