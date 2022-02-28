@@ -28,7 +28,10 @@ class VideoView(GenericAPIView):
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(
+            {"success"},
+            status=status.HTTP_201_CREATED
+        )
 
 
 class VideoPatchView(GenericAPIView):
@@ -52,3 +55,4 @@ class VideoPatchView(GenericAPIView):
             },
             status=status.HTTP_200_OK,
         )
+    
