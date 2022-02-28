@@ -1,12 +1,5 @@
 /* Global Font */
 @font-face {
-	font-family: 'KyoboHand';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
 	font-family: 'GangwonEduHyeonokT_OTFMediumA';
 	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduHyeonokT_OTFMediumA.woff')
 		format('woff');
@@ -29,4 +22,32 @@ body {
 	background-image: url('/images/bgimg.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+}
+
+.recordStandby {
+	padding: 10px 10px 10px 10px;
+	background: linear-gradient(
+		to right,
+		rgba(110, 255, 130, 0.7) 0%,
+		rgba(2, 128, 75, 0.7) 100%
+	);
+	border-radius: 15px;
+}
+.recording {
+	padding: 10px 10px 10px 10px;
+	background: linear-gradient(
+		to right,
+		rgba(255, 0, 0, 0.7) 0%,
+		rgba(255, 166, 0, 0.7) 100%
+	);
+	border-radius: 15px;
+}
+.recordFinish {
+	padding: 10px 10px 10px 10px;
+	background: linear-gradient(
+		to right,
+		rgba(125, 97, 250, 0.7) 0%,
+		rgba(4, 0, 253, 0.7) 100%
+	);
+	border-radius: 15px;
 }

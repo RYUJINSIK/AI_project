@@ -24,7 +24,11 @@ const HeaderForm = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static" style={{ backgroundColor: '#00ff0000' }}>
+			<AppBar
+				position="static"
+				style={{ backgroundColor: '#00ff0000' }}
+				elevation={0}
+			>
 				<Toolbar variant="dense">
 					<Typography
 						variant="h5"

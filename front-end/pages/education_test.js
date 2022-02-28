@@ -7,82 +7,176 @@ import axios from 'axios';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
+import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ReplayIcon from '@mui/icons-material/Replay';
+import SendIcon from '@mui/icons-material/Send';
 
 const EducataionTest = () => {
 	const [showData, setShowData] = useState(false);
-	const webcamRef = React.useRef(null);
+	const webcamRef = useRef(null);
 	const [videoBlob, setVideoBlob] = useState(null);
+	const [camStatus, setCamStatus] = useState('');
+	const [infoMessage, setInfoMessage] = useState('');
 
 	useEffect(() => {
-		console.log(videoBlob);
-	}, [videoBlob]);
+		if (camStatus === 'idle') {
+			setInfoMessage('녹화 준비완료');
+		}
+		if (camStatus === 'recording') {
+			setInfoMessage('녹화중');
+		}
+		if (camStatus === 'stopped') {
+			setInfoMessage('녹화 완료');
+		}
+	}, [camStatus]);
 
 	const handleSubmit = () => {
 		const formData = new FormData();
-		formData.append('video', videoBlob);
-		console.log(formData);
+		formData.append('video_url', videoBlob);
+		formData.append('user_id', 1);
+
 		axios({
 			method: 'post',
-			url: `${process.env.NEXT_PUBLIC_URL}/api/apidetail`,
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/upload/`,
 			data: formData,
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
-		});
+		})
+			.then(function (response) {
+				console.log('post : ', response);
+				updatePost();
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+
 		setVideoBlob(null);
+	};
+
+	const updatePost = () => {
+		const data = { user_id: '1' };
+
+		axios({
+			method: 'patch',
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/update/`,
+			data: data,
+		})
+			.then(function (response) {
+				console.log('patch : ', response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 	};
 
 	return (
 		<>
 			<HeaderNav />
 			<br />
-			<Grid container spacing={2}>
+			<Grid container spacing={0}>
 				<Grid item xs={6}>
-					<div style={{ paddingLeft: '50px' }}>xs=6</div>
+					<div>
+						<div style={MainDiv}></div>
+					</div>
 				</Grid>
-				<Grid item xs={6}>
-					<div style={{ borderLeft: '1px solid black', paddingLeft: '50px' }}>
-						<ReactMediaRecorder
-							video
-							onStop={(blobUrl, blob) => {
-								setVideoBlob(blob);
-							}}
-							render={({
-								status,
-								startRecording,
-								stopRecording,
-								mediaBlobUrl,
-							}) => (
-								<div>
-									<p>{status}</p>
-									{showData ? null : <Webcam audio={false} ref={webcamRef} />}
-									{/* thakbe na button click a */}
-									{showData ? <video src={mediaBlobUrl} controls /> : null}
-									{/* thakbe  */}
+				<Grid item xs={6} style={{ borderLeft: '5px solid #C9C9C9' }}>
+					<div>
+						<div style={MainDiv}>
+							<ReactMediaRecorder
+								video
+								onStop={(blobUrl, blob) => {
+									setVideoBlob(blob);
+								}}
+								render={({
+									status,
+									startRecording,
+									stopRecording,
+									mediaBlobUrl,
+								}) => (
 									<div>
-										<button onClick={startRecording}>Record</button>
-										<button
-											onClick={() => {
-												setShowData(true);
-												stopRecording();
-											}}
-										>
-											{' '}
-											🛑 Stop
-										</button>
-										<button
-											onClick={() => {
-												handleSubmit();
-											}}
-										>
-											{' '}
-											Submit
-										</button>
+										{setCamStatus(status)}
+										<p style={Status}>{infoMessage}</p>
+										<div style={{ marginTop: '10px' }}>
+											{showData ? (
+												<>
+													<div className="recordFinish">
+														<video
+															src={mediaBlobUrl}
+															style={CamStyle}
+															controls
+														/>
+													</div>
+													<Button
+														style={DivideButton}
+														onClick={() => {
+															setShowData(false);
+															startRecording();
+														}}
+													>
+														<ReplayIcon style={{ marginRight: '10px' }} />
+														다시 녹화하기
+													</Button>
+													<Button
+														style={DivideButton}
+														onClick={() => {
+															handleSubmit();
+														}}
+													>
+														<SendIcon style={{ marginRight: '10px' }} />
+														제출하기
+													</Button>
+												</>
+											) : (
+												<>
+													<div
+														className={
+															infoMessage === '녹화 준비완료'
+																? 'recordStandby'
+																: 'recording'
+														}
+													>
+														<Webcam
+															audio={false}
+															ref={webcamRef}
+															style={CamStyle}
+														/>
+													</div>
+													{infoMessage === '녹화 준비완료' ? (
+														<Button
+															style={FullButton}
+															onClick={() => {
+																setShowData(false);
+																startRecording();
+															}}
+														>
+															<VideoCameraFrontIcon
+																style={{ marginRight: '10px' }}
+															/>
+															녹화시작
+														</Button>
+													) : (
+														<Button
+															style={FullButton}
+															onClick={() => {
+																setShowData(true);
+																stopRecording();
+															}}
+														>
+															<CheckCircleOutlineIcon
+																style={{ marginRight: '10px' }}
+															/>
+															녹화종료
+														</Button>
+													)}
+												</>
+											)}
+										</div>
 									</div>
-								</div>
-							)}
-						/>
+								)}
+							/>
+						</div>
 					</div>
 				</Grid>
 			</Grid>
@@ -91,3 +185,37 @@ const EducataionTest = () => {
 };
 
 export default EducataionTest;
+
+const Status = {
+	fontSize: '30pt',
+	fontWeight: 'bold',
+};
+
+const MainDiv = {
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	minHeight: '80vh',
+};
+
+const CamStyle = {
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	width: '80vh',
+};
+
+const DivideButton = {
+	marginTop: '10px',
+	marginRight: '10px',
+	backgroundColor: '#B7EAFF',
+	color: 'black',
+	width: '48%',
+};
+
+const FullButton = {
+	marginTop: '10px',
+	backgroundColor: '#B7EAFF',
+	color: 'black',
+	width: '100%',
+};
