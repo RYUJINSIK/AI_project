@@ -1,24 +1,54 @@
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from .models import RecordVideo
-from .serializers import VideoSerializer
+from apps.user.models import User
+
+from .serializers import VideoSerializer, VideoUpdateSerializer
 
 
-class VideoView(APIView):
+class VideoView(GenericAPIView):
     """
-        post request로 받은 사용자영상을 업로드하는 API
+    Frontend의 웹캠 비디오를 업로드 받는 API
+    1. Frontend 에서 Video file을 전달.
+    2. Backend 에서 저장.
     """
 
-    def get(self, request, format=None):
-        queryset = RecordVideo.objects.all()
-        serializer = VideoSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    serializer_class = VideoSerializer
 
-    def post(self, request, format=None):
-        serializer = VideoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    """
+        쿼리 조회에 필요한 queryset
+    """
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.kwargs["user_id"])
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class VideoPatchView(GenericAPIView):
+    """
+    받은 웹캠 비디오의 해상도를 변환해주는 View
+    PATCH : 사용자의 가장 최신 비디오를 변환 한다.
+    """
+
+    serializer_class = VideoUpdateSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.kwargs["user_id"])
+
+    def patch(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(
+            {
+                "success": True,
+                "message": "Patch success",
+            },
+            status=status.HTTP_200_OK,
+        )
