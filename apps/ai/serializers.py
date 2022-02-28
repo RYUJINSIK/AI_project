@@ -52,10 +52,3 @@ class VideoUpdateSerializer(serializers.ModelSerializer):
             raise NotFound("Not Found", 404)
 
         return super().validate(attrs)
-
-    def save(self, **kwargs):
-        try:
-            print(self.video_url)
-            # 토큰을 블랙리스트에 추가.
-        except Exception:
-            raise NotFound("Not Found", 404)

@@ -5,7 +5,6 @@ import cv2
 
 
 def video_resolution(video_name):
-    print(f"video_name : {video_name}")
     video_url = os.path.join("media/", video_name)
     cap = cv2.VideoCapture(video_url)
 
