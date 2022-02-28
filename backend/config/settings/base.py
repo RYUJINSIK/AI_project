@@ -38,9 +38,9 @@ DJANGO_APPS = [
 ]
 
 USER_APPS = [
-    "apps.ai",
+    "apps.predict",
     "apps.core",
-    "apps.map",
+    "apps.signcenter",
     "apps.user",
     "apps.video",
 ]

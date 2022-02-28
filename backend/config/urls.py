@@ -31,10 +31,10 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("map/", include("apps.map.urls"), name="map"),
+    path("signcenter/", include("apps.signcenter.urls"), name="signcenter"),
     path("video/", include("apps.video.urls"), name="video"),
-    path("ai/", include("apps.ai.urls"), name='ai'),
-    path("account/", include("apps.user.urls"), name='user'),
+    path("predict/", include("apps.predict.urls"), name='predict'),
+    path("user/", include("apps.user.urls"), name='user'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
