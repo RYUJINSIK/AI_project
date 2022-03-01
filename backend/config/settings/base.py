@@ -1,5 +1,6 @@
 import datetime
 import os
+# from datetime import timedelta
 from pathlib import Path
 
 import pymysql
@@ -36,8 +37,8 @@ DJANGO_APPS = [
     "sslserver",
     # CORS
     "corsheaders",
-    # authtoken
-    "rest_framework.authtoken",
+    # jwt
+    "rest_framework_jwt"
 ]
 
 USER_APPS = [
@@ -53,21 +54,20 @@ INSTALLED_APPS = DJANGO_APPS + USER_APPS
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        # 'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
         # 'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
-        "rest_framework.permissions.AllowAny",  # 누구나 접근 가능
+        # "rest_framework.permissions.AllowAny",  # 누구나 접근 가능
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
         # 'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
     ],
 }
 
 # JWT
-# 추가적인 JWT_AUTH 설젇
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_ALGORITHM': 'HS256',  # 암호화 알고리즘

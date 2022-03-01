@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
+from apps.core.models import TimeStampModel
+
 
 class UserManager(BaseUserManager):
     # 일반 user 생성
@@ -29,7 +31,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, TimeStampModel):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(default='', max_length=100,
                               null=False, blank=False, unique=True)
@@ -42,10 +44,13 @@ class User(AbstractBaseUser):
     # 헬퍼 클래스 사용
     objects = UserManager()
 
-    # 사용자의 username field는 email으로 설정
+    # 사용자의 username field는 name으로 설정
     USERNAME_FIELD = 'email'
     # 필수로 작성해야하는 field
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        db_table = "user"
