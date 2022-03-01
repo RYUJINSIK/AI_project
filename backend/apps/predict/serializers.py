@@ -52,3 +52,10 @@ class VideoUpdateSerializer(serializers.ModelSerializer):
             raise NotFound("Not Found", 404)
 
         return super().validate(attrs)
+
+class PredictScoreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RecordVideo
+        fields = ["user_id", "video_url"]
+

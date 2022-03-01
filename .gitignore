@@ -4,7 +4,10 @@
 __pycache__/
 .venv/
 media
+static
 poetry.lock
+*.h5
+.static_root
 # --------------------------------------------------
 
 # Frontend

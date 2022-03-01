@@ -3,8 +3,9 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from apps.user.models import User
-
-from .serializers import VideoSerializer, VideoUpdateSerializer
+from .models import RecordVideo
+from .video import predict_score
+from .serializers import VideoSerializer, VideoUpdateSerializer,PredictScoreSerializer
 
 
 class VideoView(GenericAPIView):
@@ -56,3 +57,28 @@ class VideoPatchView(GenericAPIView):
             status=status.HTTP_200_OK,
         )
     
+class PredictScoreView(GenericAPIView):
+    '''
+    영상에서 필요한 부분을 추출하여
+    모델을 채점할 수 있는 형태로 가공한다.
+    '''
+
+    serializer_class = PredictScoreSerializer
+
+    def get_object(self,user_id):
+        return RecordVideo.objects.filter(user_id=user_id).last()
+
+    def get(self, request, user_id):
+        score = self.get_object(user_id)
+        serializer = self.serializer_class(score)
+        video_url = serializer.data['video_url']
+        accuracy = predict_score(video_url, "null")
+        if accuracy:
+            print(f'predict_score : {accuracy}')
+        else:
+            return Response(
+                {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response(accuracy, status=status.HTTP_200_OK,)
+
+
