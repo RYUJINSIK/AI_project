@@ -37,7 +37,8 @@ class IdCheckSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=64)
     password = serializers.CharField(max_length=128, write_only=True)
-    tokens = serializers.CharField(max_length=300, read_only=True)
+    access_token = serializers.CharField(max_length=150, read_only=True)
+    refresh_token = serializers.CharField(max_length=150, read_only=True)
 
     class Meta:
         model = User
@@ -55,8 +56,10 @@ class UserLoginSerializer(serializers.Serializer):
 
         update_last_login(None, user)
 
+        tokens = user.tokens()
+
         return {
             'email': user.email,
-            'tokens': user.tokens()
-
+            'access_token': tokens['access'],
+            'refresh_token': tokens['refresh']
         }

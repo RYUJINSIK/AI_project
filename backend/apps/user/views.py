@@ -45,7 +45,7 @@ class UserloginView(generics.GenericAPIView):
         response = {
             'success': 'True',
             'email': serializer.data['email'],
-            'tokens': serializer.data['tokens']
+            'access_token': serializer.data['access_token']
 
         }
         return Response(response, status=200)
