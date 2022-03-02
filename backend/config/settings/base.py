@@ -143,7 +143,7 @@ USE_TZ = True
 
 # Static File Upload -------------
 STATIC_URL = "/static/"
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'media/static')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
