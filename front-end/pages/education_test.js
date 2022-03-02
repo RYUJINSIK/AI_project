@@ -5,12 +5,17 @@ import { ReactMediaRecorder } from 'react-media-recorder';
 import Webcam from 'react-webcam';
 import axios from 'axios';
 
+import { RoughNotation, RoughNotationGroup } from 'react-rough-notation';
+
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SendIcon from '@mui/icons-material/Send';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Backdrop from '@mui/material/Backdrop';
 
 const EducataionTest = () => {
 	const [showData, setShowData] = useState(false);
@@ -18,6 +23,8 @@ const EducataionTest = () => {
 	const [videoBlob, setVideoBlob] = useState(null);
 	const [camStatus, setCamStatus] = useState('');
 	const [infoMessage, setInfoMessage] = useState('');
+
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (camStatus === 'idle') {
@@ -29,9 +36,17 @@ const EducataionTest = () => {
 		if (camStatus === 'stopped') {
 			setInfoMessage('녹화 완료');
 		}
+		if (camStatus === 'acquiring_media') {
+			setInfoMessage('녹화준비중');
+		}
 	}, [camStatus]);
 
-	const handleSubmit = () => {
+	const onClickSubmit = () => {
+		setIsLoading(true);
+		// postVideo();
+	};
+
+	const postVideo = () => {
 		const formData = new FormData();
 		formData.append('video_url', videoBlob);
 		formData.append('user_id', 1);
@@ -78,7 +93,59 @@ const EducataionTest = () => {
 			<Grid container spacing={0}>
 				<Grid item xs={6}>
 					<div>
-						<div style={MainDiv}></div>
+						<div style={MainDiv}>
+							<ReactMediaRecorder
+								video
+								onStop={(blobUrl, blob) => {
+									setVideoBlob(blob);
+								}}
+								render={({
+									status,
+									startRecording,
+									stopRecording,
+									mediaBlobUrl,
+								}) => (
+									<div>
+										<div style={{ float: 'left' }}>
+											<Typography variant="h5" component="div" gutterBottom>
+												<Chip
+													label="Step 1"
+													style={{
+														padding: '25px 0px 25px 0px',
+														backgroundColor: '#CAFFE1',
+														marginRight: '10px',
+														boxShadow: '3px 3px 3px 0px gray',
+														fontSize: '20px',
+													}}
+												/>
+												영상을 보고 동작을 익히세요
+											</Typography>
+										</div>
+										<div style={{ float: 'right', display: 'inline-block' }}>
+											<Chip
+												label="[단어이름]"
+												style={{
+													padding: '25px 0px 25px 0px',
+													backgroundColor: '#B3E1FC',
+													marginRight: '10px',
+													boxShadow: '3px 3px 3px 0px gray',
+													fontSize: '20px',
+												}}
+											/>
+										</div>
+										<br />
+										<br />
+										<div style={{ marginTop: '10px' }}>
+											<div className="recordStandby">
+												<video style={CamStyle} controls>
+													<source src={mediaBlobUrl} />
+												</video>
+											</div>
+										</div>
+									</div>
+								)}
+							/>
+						</div>
 					</div>
 				</Grid>
 				<Grid item xs={6} style={{ borderLeft: '5px solid #C9C9C9' }}>
@@ -96,19 +163,47 @@ const EducataionTest = () => {
 									mediaBlobUrl,
 								}) => (
 									<div>
+										<div style={{ float: 'left' }}>
+											<Typography variant="h5" component="div" gutterBottom>
+												<Chip
+													label="Step 2"
+													style={{
+														padding: '25px 0px 25px 0px',
+														backgroundColor: '#CAFFE1',
+														marginRight: '10px',
+														boxShadow: '3px 3px 3px 0px gray',
+														fontSize: '20px',
+													}}
+												/>
+												동작을 따라하는 모습을 녹화해보세요
+											</Typography>
+										</div>
+										<div style={{ float: 'right', display: 'inline-block' }}>
+											<Chip
+												// className="recordStandby"
+												label={infoMessage}
+												style={{
+													padding: '25px 0px 25px 0px',
+													backgroundColor: '#FCCFDB',
+													marginRight: '10px',
+													boxShadow: '3px 3px 3px 0px gray',
+													fontSize: '20px',
+												}}
+											/>
+										</div>
+										<br />
+										<br />
 										{setCamStatus(status)}
-										<p style={Status}>{infoMessage}</p>
 										<div style={{ marginTop: '10px' }}>
 											{showData ? (
 												<>
 													<div className="recordFinish">
-														<video
-															src={mediaBlobUrl}
-															style={CamStyle}
-															controls
-														/>
+														<video style={CamStyle} controls>
+															<source src={mediaBlobUrl} />
+														</video>
 													</div>
 													<Button
+														variant="contained"
 														style={DivideButton}
 														onClick={() => {
 															setShowData(false);
@@ -119,9 +214,10 @@ const EducataionTest = () => {
 														다시 녹화하기
 													</Button>
 													<Button
+														variant="contained"
 														style={DivideButton}
 														onClick={() => {
-															handleSubmit();
+															onClickSubmit();
 														}}
 													>
 														<SendIcon style={{ marginRight: '10px' }} />
@@ -145,6 +241,7 @@ const EducataionTest = () => {
 													</div>
 													{infoMessage === '녹화 준비완료' ? (
 														<Button
+															variant="contained"
 															style={FullButton}
 															onClick={() => {
 																setShowData(false);
@@ -158,6 +255,7 @@ const EducataionTest = () => {
 														</Button>
 													) : (
 														<Button
+															variant="contained"
 															style={FullButton}
 															onClick={() => {
 																setShowData(true);
@@ -180,16 +278,32 @@ const EducataionTest = () => {
 					</div>
 				</Grid>
 			</Grid>
+
+			<Backdrop
+				sx={{
+					color: '#fff',
+					zIndex: (theme) => theme.zIndex.drawer + 1,
+					flexDirection: 'column',
+				}}
+				open={isLoading}
+			>
+				<img
+					src="/images/loading.gif"
+					style={{
+						width: '300px',
+						height: '300px',
+					}}
+				/>
+				<br />
+				<Typography variant="h5" component="div" gutterBottom>
+					채점중입니다 잠시만 기다려주세요
+				</Typography>
+			</Backdrop>
 		</>
 	);
 };
 
 export default EducataionTest;
-
-const Status = {
-	fontSize: '30pt',
-	fontWeight: 'bold',
-};
 
 const MainDiv = {
 	display: 'flex',

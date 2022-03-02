@@ -26,15 +26,18 @@ const HeaderForm = () => {
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar
 				position="static"
-				style={{ backgroundColor: '#00ff0000' }}
+				style={{ backgroundColor: '#00ff0000', paddingTop: '10px' }}
 				elevation={0}
 			>
 				<Toolbar variant="dense">
 					<Typography
-						variant="h5"
+						variant="h4"
 						color="black"
 						component="div"
-						style={{ marginRight: '25px' }}
+						style={{ marginRight: '25px', cursor: 'pointer' }}
+						onClick={() => {
+							alert('click!');
+						}}
 					>
 						<img
 							src="/images/logo.png"
@@ -52,7 +55,7 @@ const HeaderForm = () => {
 							<Button
 								key={page}
 								sx={{ my: 1, color: 'white', display: 'block' }}
-								style={{ margin: '0px', color: 'black' }}
+								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
 							>
 								{page}
 							</Button>
@@ -62,14 +65,14 @@ const HeaderForm = () => {
 						<Button
 							key="마이페이지"
 							sx={{ my: 2, color: 'white', display: 'block' }}
-							style={{ margin: '0px', color: 'black' }}
+							style={{ margin: '0px', color: 'black', fontSize: '20px' }}
 						>
 							마이페이지
 						</Button>
 						<Button
 							key="로그인/로그아웃"
 							sx={{ my: 2, color: 'white', display: 'block' }}
-							style={{ margin: '0px', color: 'black' }}
+							style={{ margin: '0px', color: 'black', fontSize: '20px' }}
 						>
 							로그인 / 로그아웃
 						</Button>

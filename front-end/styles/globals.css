@@ -6,15 +6,20 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+@font-face {
+	font-family: 'GangwonEdu_OTFBoldA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
 html,
 body,
 * {
 	padding: 0;
 	margin: 0;
-	font-family: 'GangwonEduHyeonokT_OTFMediumA' !important;
+	font-family: 'GangwonEdu_OTFBoldA' !important;
 	line-height: 1.6;
-	font-size: 30px;
 }
 
 body {
@@ -22,6 +27,8 @@ body {
 	background-image: url('/images/bgimg.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	-webkit-backdrop-filter: blur(30px);
+	backdrop-filter: blur(30px);
 }
 
 .recordStandby {

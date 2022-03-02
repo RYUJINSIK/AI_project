@@ -3,7 +3,7 @@
 	"proxy": "http://127.0.0.1:8000",
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "next build && next export",
 		"start": "next start"
 	},
 	"dependencies": {
