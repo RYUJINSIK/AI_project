@@ -4,4 +4,4 @@ def upload_to(instance, filename):
     instance는 Learning_Video객체이다.
     instance.video_name은 video를 식별할 수 있는 이름이다.
     """
-    return "static/education/{}/{}".format(instance.video_name,filename)
+    return "static/education/{}/{}".format(instance.video_name, filename)

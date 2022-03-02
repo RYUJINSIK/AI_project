@@ -8,7 +8,7 @@ import numpy as np
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.models import Sequential
 
-from .labelmodel import (  # actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
+from .predlabel import (  # actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
     actions, labels)
 
 
