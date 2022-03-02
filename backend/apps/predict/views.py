@@ -7,7 +7,7 @@ from apps.user.models import User
 from .models import RecordVideo
 from .serializers import (PredictScoreSerializer, VideoSerializer,
                           VideoUpdateSerializer)
-from .utils import predict_check, predict_score
+from .utils import keypoints_labeling, predict_check, predict_score
 
 
 class VideoView(GenericAPIView):
@@ -80,12 +80,13 @@ class PredictScoreView(GenericAPIView):
         user_sign = request.query_params.get("label")
         serializer = self.serializer_class(score)
         video_url = serializer.data["video_url"]
-        predict_data = predict_check(video_url)
-        if not predict_data:
+        keypoints_data = predict_check(video_url)
+        if not keypoints_data:
             return Response(
                 {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
                 status=status.HTTP_501_NOT_IMPLEMENTED,
             )
+        predict_data = keypoints_labeling(keypoints_data)
         accuracy = predict_score(predict_data, user_sign)
 
         return Response(

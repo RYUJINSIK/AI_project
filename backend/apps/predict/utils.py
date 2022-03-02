@@ -128,8 +128,14 @@ def make_model():
     return model
 
 
-def keypoints_labeling(video):
-
+def predict_check(video_url):
+    '''
+        사용자가 보낸 비디오에서
+        keypoints를 추출하고
+        추출 했을 때 추론에 충분한 길이가 
+        추출 되었는지 확인한다.
+    '''
+    video = "backend" + video_url
     cap = cv2.VideoCapture(video)
     # 프레임 추출
 
@@ -155,7 +161,15 @@ def keypoints_labeling(video):
 
     if len(keypoints_data) < 61:
         return False
+    else:
+        return keypoints_data
 
+
+def keypoints_labeling(keypoints_data):
+    '''
+        사용자가 보낸 영상의
+        keypoints를 labeling한다.
+    '''
     predict_data = []
     # 예측에 사용할 데이터
 
@@ -171,23 +185,6 @@ def keypoints_labeling(video):
         flag += 1
 
     return predict_data
-
-
-def predict_check(video_url):
-    video = "backend" + video_url
-
-    """
-        영상의 keypoints 추출
-        slide labeling을 이용하여
-        model에 들어갈 데이터의 input_shape를 맞춰 줌.
-        추론 영상의 길이가 61 frame 보다 작으면 모델이 예측이 불가능함. => False
-    """
-
-    predict_data = keypoints_labeling(video)
-    if predict_data:
-        return predict_data
-    else:
-        return False
 
 
 def predict_score(predict_data, user_sign):
