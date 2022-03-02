@@ -7,74 +7,9 @@ import mediapipe as mp
 import numpy as np
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.utils import to_categorical
 
-labels = {
-    "back": 0,
-    "belly": 1,
-    "bleeding": 2,
-    "burn": 3,
-    "chest": 4,
-    "choke": 5,
-    "colic": 6,
-    "cut": 7,
-    "dislocation": 8,
-    "ear": 9,
-    "faint": 10,
-    "fever": 11,
-    "fracture": 12,
-    "hand": 13,
-    "head": 14,
-    "heart_attack": 15,
-    "high_fever": 16,
-    "inside_of_thigh": 17,
-    "knee": 18,
-    "left_eye": 19,
-    "neck": 20,
-    "nose": 21,
-    "painkiller": 22,
-    "right_eye": 23,
-    "seizure": 24,
-    "shortness_of_breath": 25,
-    "shoulder": 26,
-    "waist": 27,
-    "whirl": 28,
-    "wrist": 29,
-}
-
-
-actions = [
-    "back",
-    "belly",
-    "bleeding",
-    "burn",
-    "chest",
-    "choke",
-    "colic",
-    "cut",
-    "dislocation",
-    "ear",
-    "faint",
-    "fever",
-    "fracture",
-    "hand",
-    "head",
-    "heart_attack",
-    "high_fever",
-    "inside_of_thigh",
-    "knee",
-    "left_eye",
-    "neck",
-    "nose",
-    "painkiller",
-    "right_eye",
-    "seizure",
-    "shortness_of_breath",
-    "shoulder",
-    "waist",
-    "whirl",
-    "wrist",
-]
+from .labelmodel import (  # actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
+    actions, labels)
 
 
 def video_resolution(video_name):
@@ -116,17 +51,16 @@ def upload_to(instance, filename):
     filename = filename.split(".")[0]
     filename = f"{filename}.mp4"
     cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
-    video_name = "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
-    return video_name
+    return "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
 
 
 # mediapipe 감지 함수
 def mediapipe_detection(image, model):
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # COLOR CONVERSION BGR 2 RGB
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # COLOR CONVERSION BGR 2RGB
     image.flags.writeable = False  # Image is no longer writeable
     results = model.process(image)  # Make prediction
     image.flags.writeable = True  # Image is now writeable
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)  # COLOR COVERSION RGB 2 BGR
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)  # COLOR COVERSION RGB 2BGR
     return image, results
 
 
@@ -153,7 +87,7 @@ def extract_keypoints(results):
 
     lh = (
         np.array(
-            [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
+            [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark] # noqa : E501
         ).flatten()
         if results.left_hand_landmarks
         else np.zeros(21 * 3)
@@ -161,7 +95,7 @@ def extract_keypoints(results):
 
     rh = (
         np.array(
-            [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
+            [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark] # noqa : E501
         ).flatten()
         if results.right_hand_landmarks
         else np.zeros(21 * 3)
@@ -175,7 +109,7 @@ def make_model():
 
     model = Sequential()
     model.add(
-        LSTM(64, return_sequences=True, activation="tanh", input_shape=(60, 1662))
+        LSTM(64, return_sequences=True, activation="tanh", input_shape=(60, 1662),) # noqa : E501
     )  # (frame , keypoints)
     model.add(LSTM(128, return_sequences=True, activation="tanh"))
     model.add(LSTM(64, return_sequences=False, activation="tanh"))
@@ -239,44 +173,56 @@ def keypoints_labeling(video):
     return predict_data
 
 
-def predict_score(video_url, user_sign):
+def predict_check(video_url):
     video = "backend" + video_url
 
     """
         영상의 keypoints 추출
         slide labeling을 이용하여
         model에 들어갈 데이터의 input_shape를 맞춰 줌.
+        추론 영상의 길이가 61 frame 보다 작으면 모델이 예측이 불가능함. => False
     """
+
     predict_data = keypoints_labeling(video)
-
     if predict_data:
-        predict_value = np.array(predict_data)
-
-        """
-            예측
-        """
-        model = make_model()
-
-        predict_result = model.predict(predict_value)
-
-        predict_list = []
-        threshold = 0.5
-
-        [
-            predict_list.append(int(np.argmax(predict)))
-            for predict in predict_result
-            if max(predict) > threshold
-        ]
-
-        user_sign = labels[user_sign]
-        user_pred = predict_list.count(user_sign)
-        if user_pred == 0:
-            return 0
-        else:
-            accuracy = user_pred / len(predict_list)
-            accuracy = round(accuracy, 2) * 100
-
-        return accuracy
-
+        return predict_data
     else:
         return False
+
+
+def predict_score(predict_data, user_sign):
+
+    predict_value = np.array(predict_data)
+
+    """
+        예측
+    """
+    model = make_model()
+
+    predict_result = model.predict(predict_value)
+
+    '''
+        threshold = 0.5
+        => 예측 정확도가 최소 50%를 넘지 않으면 정확도 계산에 사용하지 않음.
+        predict_list
+        => 영상에서 뽑아낸 60frame 단위 예측 모음
+        accuracy
+        => round((사용자가 예측한 단어를 모델이 예측한 개수 / 전체 예측 길이),2) * 100
+    '''
+    predict_list = []
+    threshold = 0.5
+
+    [
+        predict_list.append(int(np.argmax(predict)))
+        for predict in predict_result
+        if max(predict) > threshold
+    ]
+    user_sign = labels[user_sign]
+    user_pred = predict_list.count(user_sign)
+    if user_pred == 0:
+        return 0
+    else:
+        accuracy = user_pred / len(predict_list)
+        accuracy = round(accuracy, 2) * 100
+
+    return accuracy

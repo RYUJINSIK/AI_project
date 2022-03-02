@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import ValidationError
 
 from .models import RecordVideo
-from .video import video_resolution
+from .utils import video_resolution
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -13,17 +13,6 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecordVideo
         fields = ["user_id", "video_url"]
-
-    def validate(self, attrs):
-        """
-        user_id가 존재하는가 검증.
-        """
-        try:
-            self.user_id = attrs["user_id"]
-        except Exception:
-            raise NotFound("Not Found", 404)
-
-        return attrs
 
 
 class VideoUpdateSerializer(serializers.ModelSerializer):
@@ -44,18 +33,18 @@ class VideoUpdateSerializer(serializers.ModelSerializer):
         try:
             user_id = attrs.get("user_id")
             video_obj = RecordVideo.objects.filter(user_id=user_id).last()
-            video_name = video_obj.video_url
-            video_name = video_resolution(str(video_name))
-            video_obj.video_url = video_name
-            video_obj.save()
         except Exception:
-            raise NotFound("Not Found", 404)
+            raise ValidationError("Bad Request", 400)
+        video_name = video_obj.video_url
+        video_name = video_resolution(str(video_name))
+        video_obj.video_url = video_name
+        video_obj.save()
 
         return super().validate(attrs)
+
 
 class PredictScoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecordVideo
         fields = ["user_id", "video_url"]
-

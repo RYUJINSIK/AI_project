@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from apps.user.models import User
 
 from .models import RecordVideo
-from .serializers import PredictScoreSerializer, VideoSerializer, VideoUpdateSerializer
-from .video import predict_score
+from .serializers import (PredictScoreSerializer, VideoSerializer,
+                          VideoUpdateSerializer)
+from .utils import predict_check, predict_score
 
 
 class VideoView(GenericAPIView):
@@ -27,10 +28,17 @@ class VideoView(GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"success"}, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"success"},
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {"Bad Request"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class VideoPatchView(GenericAPIView):
@@ -72,13 +80,15 @@ class PredictScoreView(GenericAPIView):
         user_sign = request.query_params.get("label")
         serializer = self.serializer_class(score)
         video_url = serializer.data["video_url"]
-        accuracy = predict_score(video_url, user_sign)
-        if accuracy:
+        predict_data = predict_check(video_url)
+        if not predict_data:
             return Response(
-                accuracy,
-                status=status.HTTP_200_OK,
+                {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
+                status=status.HTTP_501_NOT_IMPLEMENTED,
             )
-        else:
-            return Response(
-                {"추론을 진행하기에 영상 길이가 너무 짧습니다"}, status=status.HTTP_501_NOT_IMPLEMENTED
-            )
+        accuracy = predict_score(predict_data, user_sign)
+
+        return Response(
+            accuracy,
+            status=status.HTTP_200_OK,
+        )
