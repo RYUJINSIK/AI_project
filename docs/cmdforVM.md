@@ -1,4 +1,4 @@
-## GitLab 규칙
+## VM 관련 명령어/경로
 
 ## 1. gunicorn/nginx config 설정 경로
 
