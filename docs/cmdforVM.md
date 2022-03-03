@@ -21,11 +21,11 @@
 ## 3. gunicorn/nginx 에러 로그
 
 1. gunicorn.sock파일 생성 확인: file /run/gunicorn.sock
-   - 정상연결:
+   - 정상연결:  
    ![](img/4-1.png)
 2. nginx 연결확인: sudo nginx -t
-   - 정상연결:
-    ![](img/4-2.png)
+   - 정상연결:  
+   ![](img/4-2.png)
 3. nginx 에러로그: tail -(출력원하는숫자)f /var/log/nginx/error.log
 4. 에러로그: sudo journalctl -u gunicorn.socket
 
