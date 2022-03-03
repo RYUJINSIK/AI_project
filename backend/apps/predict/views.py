@@ -4,7 +4,10 @@ from rest_framework.response import Response
 
 from apps.user.models import User
 
-from .serializers import VideoSerializer, VideoUpdateSerializer
+from .models import RecordVideo
+from .serializers import (PredictScoreSerializer, VideoSerializer,
+                          VideoUpdateSerializer)
+from .utils import keypoints_labeling, predict_check, predict_score
 
 
 class VideoView(GenericAPIView):
@@ -25,13 +28,17 @@ class VideoView(GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(
-            {"success"},
-            status=status.HTTP_201_CREATED
-        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"success"},
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {"Bad Request"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class VideoPatchView(GenericAPIView):
@@ -55,4 +62,34 @@ class VideoPatchView(GenericAPIView):
             },
             status=status.HTTP_200_OK,
         )
-    
+
+
+class PredictScoreView(GenericAPIView):
+    """
+    영상에서 필요한 부분을 추출하여
+    모델을 채점할 수 있는 형태로 가공한다.
+    """
+
+    serializer_class = PredictScoreSerializer
+
+    def get_object(self, user_id):
+        return RecordVideo.objects.filter(user_id=user_id).last()
+
+    def get(self, request, user_id):
+        score = self.get_object(user_id)
+        user_sign = request.query_params.get("label")
+        serializer = self.serializer_class(score)
+        video_url = serializer.data["video_url"]
+        keypoints_data = predict_check(video_url)
+        if not keypoints_data:
+            return Response(
+                {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
+                status=status.HTTP_501_NOT_IMPLEMENTED,
+            )
+        predict_data = keypoints_labeling(keypoints_data)
+        accuracy = predict_score(predict_data, user_sign)
+
+        return Response(
+            accuracy,
+            status=status.HTTP_200_OK,
+        )
