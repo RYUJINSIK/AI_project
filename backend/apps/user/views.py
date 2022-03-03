@@ -7,6 +7,10 @@ from .serializers import (IdCheckSerializer, UserCreateSerializer,
 
 
 class IdcheckView(generics.GenericAPIView):
+    """
+    아이디 중복 체크
+    """
+
     serializer_class = IdCheckSerializer
     permission_classes = (AllowAny,)
 
@@ -19,6 +23,10 @@ class IdcheckView(generics.GenericAPIView):
 
 
 class RegisterView(generics.GenericAPIView):
+    """
+    회원가입
+    """
+
     serializer_class = UserCreateSerializer
     permission_classes = (AllowAny,)
 
@@ -31,6 +39,10 @@ class RegisterView(generics.GenericAPIView):
 
 
 class UserloginView(generics.GenericAPIView):
+    """
+    로그인
+    """
+
     serializer_class = UserLoginSerializer
     permission_classes = (AllowAny,)
 
@@ -45,7 +57,8 @@ class UserloginView(generics.GenericAPIView):
         response = {
             'success': 'True',
             'email': serializer.data['email'],
-            'access_token': serializer.data['access_token']
+            'access_token': serializer.data['access_token'],
+            'refresh_token': serializer.data['refresh_token']
 
         }
         return Response(response, status=200)

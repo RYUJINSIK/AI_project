@@ -55,16 +55,10 @@ INSTALLED_APPS = DJANGO_APPS + USER_APPS
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
-        # 'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
-        # "rest_framework.permissions.AllowAny",  # 누구나 접근 가능
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework_simplejwt.authentication.JSONWebTokenAuthentication'
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
-        # 'rest_framework.authentication.TokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
@@ -95,10 +89,6 @@ SIMPLE_JWT = {
     'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
 
     'JTI_CLAIM': 'jti',
-
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
 # -------------------------------------------

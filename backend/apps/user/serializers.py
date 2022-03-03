@@ -7,6 +7,10 @@ from .models import User
 
 class UserCreateSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = User
+        fields = ['email', 'name', 'password']
+
     def create(self, validated_data):
         user = User.objects.create_user(  # User 생성
             email=validated_data['email'],
@@ -14,12 +18,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
 
-        # user.save()
+        user.save()
         return user
-
-    class Meta:
-        model = User
-        fields = ['email', 'name', 'password']
 
 
 class IdCheckSerializer(serializers.ModelSerializer):
