@@ -1,0 +1,25 @@
+/* Global Font */
+@font-face {
+	font-family: 'KyoboHand';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html,
+body,
+* {
+	padding: 0;
+	margin: 0;
+	font-family: 'KyoboHand' !important;
+	line-height: 1.6;
+	font-size: 20px;
+}
+
+body {
+	height: 100vh;
+	background-image: url('/images/bgimg.svg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
