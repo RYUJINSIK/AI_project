@@ -18,7 +18,7 @@ def video_resolution(video_name):
 
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
 
-    output_name = video_name.split(".")[0]
+    output_name = video_name.split(".mp4")[0]
     output = f"{output_name}.avi"
 
     out = cv2.VideoWriter(
@@ -132,10 +132,10 @@ def predict_check(video_url):
     '''
         사용자가 보낸 비디오에서
         keypoints를 추출하고
-        추출 했을 때 추론에 충분한 길이가 
+        추출 했을 때 추론에 충분한 길이가
         추출 되었는지 확인한다.
     '''
-    video = "backend" + video_url
+    video = "backend/media/" + video_url
     cap = cv2.VideoCapture(video)
     # 프레임 추출
 
