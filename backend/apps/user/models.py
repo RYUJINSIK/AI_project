@@ -1,8 +1,12 @@
+from tkinter import scrolledtext
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from numpy import savez_compressed
+from platformdirs import user_log_dir
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.core.models import TimeStampModel
+from apps.video.models import LearningVideo
 
 
 class UserManager(BaseUserManager):
@@ -62,3 +66,20 @@ class User(AbstractBaseUser, TimeStampModel):
 
     class Meta:
         db_table = "user"
+
+
+class LearningHistory(TimeStampModel):
+    user_id = models.ForeignKey(
+        User, on_delete=models.CSCADE,
+        db_column="user_id",
+        default=""
+    )
+    learning_video_id = models.ForeignKey(
+        LearningVideo, on_delete=models.CASCADE,
+        db_column="learning_video_id",
+        default=""
+    )  
+    score = models.IntegerField(blank=True)
+
+    class Meta:
+        db_table = "learning_history"
