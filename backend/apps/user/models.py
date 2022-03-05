@@ -1,8 +1,6 @@
-from tkinter import scrolledtext
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-from numpy import savez_compressed
-from platformdirs import user_log_dir
+
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.core.models import TimeStampModel
