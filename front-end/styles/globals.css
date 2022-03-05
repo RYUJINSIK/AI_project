@@ -58,3 +58,18 @@ body {
 	);
 	border-radius: 15px;
 }
+
+input {
+	font-size: 15px;
+	padding-left: 10px;
+	width: 100%;
+	border: 1px solid;
+	border-radius: 30px;
+	margin-top: 3px;
+	margin-bottom: 7px;
+}
+
+input:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px #8ab3ff;
+}
