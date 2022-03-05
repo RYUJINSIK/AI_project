@@ -40,10 +40,6 @@ class UserLoginSerializer(serializers.Serializer):
     access_token = serializers.CharField(max_length=150, read_only=True)
     refresh_token = serializers.CharField(max_length=150, read_only=True)
 
-    class Meta:
-        model = User
-        fields = ['email, password', 'tokens']
-
     def validate(self, attrs):
         email = attrs.get("email", None)
         password = attrs.get("password", None)
