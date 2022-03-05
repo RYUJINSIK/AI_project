@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.core.models import TimeStampModel
@@ -68,7 +67,7 @@ class User(AbstractBaseUser, TimeStampModel):
 
 class LearningHistory(TimeStampModel):
     user_id = models.ForeignKey(
-        User, on_delete=models.CSCADE,
+        User, on_delete=models.CASCADE,
         db_column="user_id",
         default=""
     )
@@ -76,7 +75,7 @@ class LearningHistory(TimeStampModel):
         LearningVideo, on_delete=models.CASCADE,
         db_column="learning_video_id",
         default=""
-    )  
+    )
     score = models.IntegerField(blank=True)
 
     class Meta:
