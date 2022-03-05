@@ -1,0 +1,30 @@
+,video_name,korean_name,video_url,category,difficulty
+0,right_eye,오른쪽 눈,statc/education/right_eye/0.mp4,B,L
+1,left_eye,왼쪽 눈,statc/education/left_eye/0.mp4,B,L
+2,nose,코,statc/education/nose/0.mp4,B,L
+3,waist,허리,statc/education/waist/0.mp4,B,L
+4,knee,무릎,statc/education/knee/0.mp4,B,L
+5,inside_of_thigh,허벅지,statc/education/inside_of_thigh/0.mp4,B,L
+6,chest,가슴,statc/education/chest/0.mp4,B,L
+7,ear,귀,statc/education/ear/0.mp4,B,L
+8,head,머리,statc/education/head/0.mp4,B,L
+9,neck,목,statc/education/neck/0.mp4,B,L
+10,belly,복부,statc/education/belly/0.mp4,B,L
+11,wrist,손목,statc/education/wrist/0.mp4,B,L
+12,shoulder,어깨,statc/education/shoulder/0.mp4,B,L
+13,choke,질식,statc/education/choke/0.mp4,S,M
+14,bleeding,출혈,statc/education/bleeding/0.mp4,S,M
+15,shortness of breath,호흡곤란,statc/education/shortness of breath/0.mp4,S,M
+16,high_fever,고열,statc/education/high_fever/0.mp4,S,M
+17,faint,기절,statc/education/faint/0.mp4,S,M
+18,back,등,statc/education/back/0.mp4,B,M
+19,colic,복통,statc/education/colic/0.mp4,B,M
+20,hand,손,statc/education/hand/0.mp4,S,M
+21,heart_attack,심장마비,statc/education/heart_attack/0.mp4,S,M
+22,whirl,어지러움,statc/education/whirl/0.mp4,S,M
+23,fever,열,statc/education/fever/0.mp4,S,M
+24,cut,자상,statc/education/cut/0.mp4,S,H
+25,painkiller,진통제,statc/education/painkiller/0.mp4,S,H
+26,fracture,탈골(골절),statc/education/fracture/0.mp4,S,H
+27,burn,화상,statc/education/burn/0.mp4,S,H
+28,seizure,발작,statc/education/seizure/0.mp4,S,H
