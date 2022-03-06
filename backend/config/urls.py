@@ -35,6 +35,7 @@ urlpatterns = [
     path("video/", include("apps.video.urls"), name="video"),
     path("predict/", include("apps.predict.urls"), name='predict'),
     path("user/", include("apps.user.urls"), name='user'),
+    path("quiz/", include("apps.quiz.urls"), name='quiz'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
