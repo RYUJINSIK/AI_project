@@ -4,6 +4,7 @@ import HeaderNav from '../components/HeaderNav';
 import { ReactMediaRecorder } from 'react-media-recorder';
 import Webcam from 'react-webcam';
 import axios from 'axios';
+import { getCookie } from '../utils/cookie';
 
 import { RoughNotation, RoughNotationGroup } from 'react-rough-notation';
 
@@ -57,6 +58,7 @@ const EducataionTest = () => {
 			data: formData,
 			headers: {
 				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${getCookie('access_token')}`,
 			},
 		})
 			.then(function (response) {

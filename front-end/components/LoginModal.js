@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,12 +8,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 
+import { setCookie } from '../utils/cookie';
+
 const LoginModal = (props) => {
+	const router = useRouter();
 	const { show, open, close } = props;
 
-	// const [message, setMessage] = useState('');
-	// 변수명을 지을땐 동사+명사로 지으면 제일 깔끔
-	// const [isError, setisError] = useState('none');
 	const [user, setUser] = useState({
 		id: '',
 		password: '',
@@ -21,8 +22,6 @@ const LoginModal = (props) => {
 		(e) => {
 			const { name, value } = e.target;
 			setUser({ ...user, [name]: value });
-
-			console.log(e.target.value);
 		},
 		[user, setUser],
 	);
@@ -33,38 +32,52 @@ const LoginModal = (props) => {
 			return false;
 		}
 
-		// setisError('none');
-		console.log(user);
-		// postLogin(user);
+		postLogin(user);
 	};
 
 	const postLogin = async (user) => {
 		axios
-			.post('http://127.0.0.1:8000/user/login/', {
+			.post(`${process.env.NEXT_PUBLIC_URL}/user/login/`, {
 				email: user.id,
 				password: user.password,
 			})
 			.then((response) => {
 				console.log(response);
-				console.log(response['status']);
-				// console.log(data.name);
+				// console.log(response['status']);
+				// console.log(data);
 				// console.log(data.token);
 				if (response['status'] === 200) {
 					// setisError('none');
 					// localStorage.setItem('userName', JSON.stringify(data.name));
 					console.log(response['data']['access_token']);
-					// localStorage.setItem('token', JSON.stringify(response['data']['access_token']));
+					localStorage.setItem(
+						'user',
+						JSON.stringify(response['data']['email']),
+					);
 
-					// const { accessToken } = response[data]['access_token'];
+					// const { accessToken } = response['data']['access_token'];
 
 					// // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-					// axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+					// axios.defaults.headers.common[
+					// 	'Authorization'
+					// ] = `Bearer ${accessToken}`;
 
 					// router.push('/');
 					alert(`${response['data']['email']}님 안녕하세요 😀`);
+					setCookie('access_token', response['data']['access_token'], {
+						path: '/',
+						secure: true,
+						sameSite: 'none',
+					});
+					setCookie('refresh_token', response['data']['refresh_token'], {
+						path: '/',
+						secure: true,
+						sameSite: 'none',
+					});
+
+					router.push('/education_test');
 				} else {
 					setMessage('아이디 또는 비밀번호가 잘못 입력 되었습니다.');
-					setisError('inline-block');
 				}
 			})
 			.catch((err) => {

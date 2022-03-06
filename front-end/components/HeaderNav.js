@@ -3,6 +3,7 @@ import { useRouter, Router } from 'next/router';
 import axios from 'axios';
 // hook
 import useModal from '../utils/useModal';
+import Cookie from '../utils/cookie';
 // components
 import LoginModal from '../components/LoginModal';
 
@@ -142,7 +143,7 @@ const HeaderForm = () => {
 		}
 
 		console.log(user);
-		// postSignin(user);
+		postSignin(user);
 	};
 
 	function regCheck(regex, val) {
@@ -153,7 +154,7 @@ const HeaderForm = () => {
 	// parameter를 명확하게, user 정보를 세분화해서 전달(데이터가 적다면) / 데이터가 많을땐 객체그대로 보내지만, 문서화 필수
 	const postSignin = async (user) => {
 		axios
-			.post('http://127.0.0.1:8000/user/register/', {
+			.post(`${process.env.NEXT_PUBLIC_URL}/user/register/`, {
 				name: user.name,
 				email: user.id,
 				password: user.password,
@@ -175,7 +176,7 @@ const HeaderForm = () => {
 	// output : return data, if error : return err
 	const idCheck = async (id) => {
 		return axios
-			.post('http://127.0.0.1:8000/user/idchk/', { email: user.id })
+			.post(`${process.env.NEXT_PUBLIC_URL}/user/idchk/`, { email: user.id })
 			.then((response) => {
 				console.log(response);
 				console.log(response['status']);
