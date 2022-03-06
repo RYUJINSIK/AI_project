@@ -7,3 +7,4 @@ class CenterSerializer(serializers.ModelSerializer):
     class Meta:
         model = SignCenter
         fields = "__all__"
+
