@@ -27,6 +27,28 @@ const EducataionTest = () => {
 
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [data, setData] = useState({});
+
+	useEffect(() => {
+		let videoTest = 'right_eye';
+		axios
+			.get(`${process.env.NEXT_PUBLIC_URL}/video/upload/${videoTest}`, {
+				headers: {
+					Authorization: `Bearer ${getCookie('access_token')}`,
+				},
+			})
+			.then((response) => {
+				console.log(response.data[0]['video_url']);
+				if (response['status'] === 200) {
+					// console.log(response['data'][0]['video_url']);
+					setData(response.data[0]['video_url']);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+
 	useEffect(() => {
 		if (camStatus === 'idle') {
 			setInfoMessage('녹화 준비완료');
@@ -43,15 +65,12 @@ const EducataionTest = () => {
 	}, [camStatus]);
 
 	const onClickSubmit = () => {
-		setIsLoading(true);
-		// postVideo();
+		postVideo();
 	};
 
 	const postVideo = () => {
 		const formData = new FormData();
 		formData.append('video_url', videoBlob);
-		formData.append('user_id', 1);
-
 		axios({
 			method: 'post',
 			url: `${process.env.NEXT_PUBLIC_URL}/predict/upload/`,
@@ -73,15 +92,34 @@ const EducataionTest = () => {
 	};
 
 	const updatePost = () => {
-		const data = { user_id: '1' };
-
 		axios({
 			method: 'patch',
-			url: `${process.env.NEXT_PUBLIC_URL}/predict/update/`,
-			data: data,
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/change/`,
+			headers: {
+				Authorization: `Bearer ${getCookie('access_token')}`,
+			},
 		})
 			.then(function (response) {
 				console.log('patch : ', response);
+				setIsLoading(true);
+				getScore();
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+
+	const getScore = () => {
+		axios({
+			method: 'get',
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/score/?label=right_eye`,
+			headers: {
+				Authorization: `Bearer ${getCookie('access_token')}`,
+			},
+		})
+			.then(function (response) {
+				setIsLoading(false);
+				console.log('get : ', response);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -140,7 +178,9 @@ const EducataionTest = () => {
 										<div style={{ marginTop: '10px' }}>
 											<div className="recordStandby">
 												<video style={CamStyle} controls>
-													<source src={mediaBlobUrl} />
+													<source
+														src={`${process.env.NEXT_PUBLIC_URL}${data}`}
+													/>
 												</video>
 											</div>
 										</div>

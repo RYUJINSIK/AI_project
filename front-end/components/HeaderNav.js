@@ -27,8 +27,6 @@ const HeaderForm = () => {
 	const [userName, setUserName] = useState(null);
 
 	useEffect(() => {
-		console.log('123');
-		console.log(localStorage);
 		setUserName(localStorage.getItem('user'));
 		console.log(userName);
 	}, []);
