@@ -18,7 +18,7 @@ def video_resolution(video_name):
 
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
 
-    output_name = video_name.split(".mp4")[0]
+    output_name = video_name.split(".webm")[0]
     output = f"{output_name}.avi"
 
     out = cv2.VideoWriter(
@@ -49,7 +49,7 @@ def upload_to(instance, filename):
     instance.user_id => 조회한 user_id의 user_name 반환.
     """
     filename = filename.split(".")[0]
-    filename = f"{filename}.mp4"
+    filename = f"{filename}.webm"
     cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
     return "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
 
