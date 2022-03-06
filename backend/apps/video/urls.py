@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import LearningVideoDifficultyView, LearningVideoView
+from .views import (LearningVideoCategoryView, LearningVideoDifficultyView,
+                    LearningVideoView)
 
 urlpatterns = [
     path(
@@ -9,13 +10,8 @@ urlpatterns = [
         name="video"
     ),
     path(
-        "upload/",
-        LearningVideoView.as_view(),
-        name="video"
-    ),
-    path(
-        "list/<str:difficulty>",
+        "diff_list/<str:difficulty>",
         LearningVideoDifficultyView.as_view(),
-        name="list"
+        name="list_difficulty"
     ),
 ]
