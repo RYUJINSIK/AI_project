@@ -18,13 +18,14 @@ def video_resolution(video_name):
 
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
 
-    output_name = video_name.split(".")[0]
+    output_name = video_name.split(".webm")[0]
     output = f"{output_name}.avi"
 
     out = cv2.VideoWriter(
         os.path.join("backend/media/", output), fourcc, 30, (1280, 720)
     )
 
+    frame_cnt = 0
     while True:
         ret, frame = cap.read()
         if ret:
@@ -32,8 +33,11 @@ def video_resolution(video_name):
                 frame, (1280, 720), fx=0, fy=0, interpolation=cv2.INTER_CUBIC
             )
             out.write(b)
+            frame_cnt += 1
         else:
             break
+    if frame_cnt < 61:
+        return False
 
     cap.release()
     out.release()
@@ -49,7 +53,7 @@ def upload_to(instance, filename):
     instance.user_id => 조회한 user_id의 user_name 반환.
     """
     filename = filename.split(".")[0]
-    filename = f"{filename}.mp4"
+    filename = f"{filename}.webm"
     cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
     return "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
 
@@ -132,10 +136,10 @@ def predict_check(video_url):
     '''
         사용자가 보낸 비디오에서
         keypoints를 추출하고
-        추출 했을 때 추론에 충분한 길이가 
+        추출 했을 때 추론에 충분한 길이가
         추출 되었는지 확인한다.
     '''
-    video = "backend" + video_url
+    video = "backend/media/" + video_url
     cap = cv2.VideoCapture(video)
     # 프레임 추출
 
@@ -223,3 +227,16 @@ def predict_score(predict_data, user_sign):
         accuracy = round(accuracy, 2) * 100
 
     return accuracy
+
+
+def video_patch(video_obj):
+    '''
+        video 변환 함수
+    '''
+    video_name = video_obj.video_url.name
+    video_name = video_resolution(str(video_name))
+    if not video_name:
+        raise ValueError
+    video_obj.video_url = video_name
+    video_obj.save()
+    return True

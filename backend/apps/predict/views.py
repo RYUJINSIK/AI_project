@@ -1,33 +1,29 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.user.models import User
-
+from ..core.utils import extract_user_id
 from .models import RecordVideo
-from .serializers import (PredictScoreSerializer, VideoSerializer,
-                          VideoUpdateSerializer)
-from .utils import keypoints_labeling, predict_check, predict_score
+from .serializers import VideoSerializer, VideoUpdateSerializer
+from .utils import (keypoints_labeling, predict_check, predict_score,
+                    video_patch)
 
 
 class VideoView(GenericAPIView):
     """
     Frontend의 웹캠 비디오를 업로드 받는 API
-    1. Frontend 에서 Video file을 전달.
-    2. Backend 에서 저장.
+    user_id : JWT 토큰에서 추출.
     """
 
     serializer_class = VideoSerializer
 
-    """
-        쿼리 조회에 필요한 queryset
-    """
-
-    def get_queryset(self):
-        return User.objects.filter(id=self.kwargs["user_id"])
-
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        user_id = extract_user_id(request)
+        request_data = request.data
+        request_data.update(user_id)
+        # user_id와 video_url을 serailizer에 query_dict 형태로 전달.
+        serializer = self.serializer_class(data=request_data)
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -45,16 +41,29 @@ class VideoPatchView(GenericAPIView):
     """
     받은 웹캠 비디오의 해상도를 변환해주는 View
     PATCH : 사용자의 가장 최신 비디오를 변환 한다.
+    user_id : JWT 토큰에서 추출.
     """
 
     serializer_class = VideoUpdateSerializer
 
-    def get_queryset(self):
-        return User.objects.filter(id=self.kwargs["user_id"])
-
     def patch(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        user_id = extract_user_id(request)
+        """
+        Patch API
+        1. 사용자의 가장 최근 영상의 해상도를 변경하고 .avi 확장자로 변경한다.
+        2. 해당 변경된 파일을 DB에 Patch한다.
+        """
+        serializer = self.serializer_class(data=user_id)
+        serializer.is_valid()
+        user_id = serializer.data['user_id']
+        video_obj = RecordVideo.objects.filter(user_id=user_id).last()
+        try:
+            video_patch(video_obj)
+        except Exception:
+            return Response(
+                {"변환 실패, 총 61frame 이상의 영상을 가지고 오세요"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response(
             {
                 "success": True,
@@ -64,23 +73,23 @@ class VideoPatchView(GenericAPIView):
         )
 
 
-class PredictScoreView(GenericAPIView):
+class PredictScoreView(APIView):
     """
     영상에서 필요한 부분을 추출하여
     모델을 채점할 수 있는 형태로 가공한다.
+    user_id : JWT 토큰에서 추출.
+    user_video : 사용자가 제공한 video
+    user_sign : 사용자가 예측한 단어
     """
-
-    serializer_class = PredictScoreSerializer
 
     def get_object(self, user_id):
         return RecordVideo.objects.filter(user_id=user_id).last()
 
-    def get(self, request, user_id):
-        score = self.get_object(user_id)
+    def get(self, request):
+        user_id = extract_user_id(request)['user_id']
+        user_video = self.get_object(user_id).video_url.name
         user_sign = request.query_params.get("label")
-        serializer = self.serializer_class(score)
-        video_url = serializer.data["video_url"]
-        keypoints_data = predict_check(video_url)
+        keypoints_data = predict_check(user_video)
         if not keypoints_data:
             return Response(
                 {"추론을 진행하기에 영상 길이가 너무 짧습니다"},

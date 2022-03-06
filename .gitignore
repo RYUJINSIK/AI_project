@@ -8,6 +8,7 @@ static
 poetry.lock
 *.h5
 .static_root
+poetry.lock
 
 # --------------------------------------------------
 
@@ -43,4 +44,3 @@ yarn-error.log*
 .env.production.local
 
 # --------------------------------------------------
-
