@@ -33,6 +33,21 @@ class LearningVideoView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class LearningVideoAllView(APIView):
+    '''
+        난이도에 따라서 분류된 영상을
+        보여주는 View
+        difficulty
+        - L : 쉬움
+        - M : 중간
+        - H : 상
+    '''
+    def get(self, request, format=None):
+        queryset = LearningVideo.objects.all()
+        serializer = LearningVideoSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class LearningVideoDifficultyView(APIView):
     '''
         난이도에 따라서 분류된 영상을
