@@ -66,8 +66,12 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://20.120.111.59:8000",
+    "https://20.120.111.59:8000",
     "http://localhost:3000",
+    "https://localhost:3000"
 ]
+
 
 ROOT_URLCONF = "config.urls"
 
@@ -144,10 +148,7 @@ USE_TZ = True
 # Static File Upload -------------
 STATIC_URL = "/static/"
 STATIC_DIR = os.path.join(BASE_DIR, 'media/static')
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
-STATIC_ROOT = os.path.join(BASE_DIR, '.static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'media/static')
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
