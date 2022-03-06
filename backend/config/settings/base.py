@@ -47,7 +47,7 @@ USER_APPS = [
     "apps.signcenter",
     "apps.user",
     "apps.video",
-
+    "apps.quiz",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + USER_APPS
