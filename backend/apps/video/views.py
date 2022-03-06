@@ -46,3 +46,17 @@ class LearningVideoDifficultyView(APIView):
         queryset = LearningVideo.objects.filter(difficulty=difficulty)
         serializer = LearningVideoSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LearningVideoCategoryView(APIView):
+    '''
+        카테고리에 따라서 분류된 영상을
+        보여주는 View
+        category
+        - B : 신체
+        - S : 질환
+    '''
+    def get(self, request, category=None, format=None):
+        queryset = LearningVideo.objects.filter(category=category)
+        serializer = LearningVideoSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

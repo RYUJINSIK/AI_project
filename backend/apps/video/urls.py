@@ -14,4 +14,9 @@ urlpatterns = [
         LearningVideoDifficultyView.as_view(),
         name="list_difficulty"
     ),
+    path(
+        "category_list/<str:category>",
+        LearningVideoCategoryView.as_view(),
+        name="list_category"
+    )
 ]
