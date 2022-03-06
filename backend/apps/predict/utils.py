@@ -25,6 +25,7 @@ def video_resolution(video_name):
         os.path.join("backend/media/", output), fourcc, 30, (1280, 720)
     )
 
+    frame_cnt = 0
     while True:
         ret, frame = cap.read()
         if ret:
@@ -32,8 +33,11 @@ def video_resolution(video_name):
                 frame, (1280, 720), fx=0, fy=0, interpolation=cv2.INTER_CUBIC
             )
             out.write(b)
+            frame_cnt += 1
         else:
             break
+    if frame_cnt < 61:
+        return False
 
     cap.release()
     out.release()
@@ -223,3 +227,16 @@ def predict_score(predict_data, user_sign):
         accuracy = round(accuracy, 2) * 100
 
     return accuracy
+
+
+def video_patch(video_obj):
+    '''
+        video 변환 함수
+    '''
+    video_name = video_obj.video_url.name
+    video_name = video_resolution(str(video_name))
+    if not video_name:
+        raise ValueError
+    video_obj.video_url = video_name
+    video_obj.save()
+    return True
