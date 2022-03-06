@@ -75,6 +75,7 @@ const LoginModal = (props) => {
 						sameSite: 'none',
 					});
 
+					close();
 					router.push('/education_test');
 				} else {
 					setMessage('아이디 또는 비밀번호가 잘못 입력 되었습니다.');

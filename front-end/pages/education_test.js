@@ -30,7 +30,7 @@ const EducataionTest = () => {
 	const [data, setData] = useState({});
 
 	useEffect(() => {
-		let videoTest = 'right_eye';
+		let videoTest = 'back';
 		axios
 			.get(`${process.env.NEXT_PUBLIC_URL}/video/upload/${videoTest}`, {
 				headers: {
@@ -180,7 +180,7 @@ const EducataionTest = () => {
 												<video style={CamStyle} controls>
 													<source
 														src={`${process.env.NEXT_PUBLIC_URL}${data}`}
-													/>
+													></source>
 												</video>
 											</div>
 										</div>
