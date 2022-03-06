@@ -24,6 +24,14 @@ const pages = ['메뉴1', '메뉴2', '메뉴3'];
 const HeaderForm = () => {
 	const router = useRouter();
 	const { showModal, openModal, closeModal } = useModal();
+	const [userName, setUserName] = useState(null);
+
+	useEffect(() => {
+		console.log('123');
+		console.log(localStorage);
+		setUserName(localStorage.getItem('user'));
+		console.log(userName);
+	}, []);
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertMsg, setAlertMsg] = useState('');
@@ -239,45 +247,52 @@ const HeaderForm = () => {
 							))}
 						</Box>
 						<Box sx={{ flexGrow: 0, display: 'flex', margin: '0px' }}>
-							<Button
-								key="마이페이지"
-								sx={{ my: 2, color: 'white', display: 'block' }}
-								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
-							>
-								마이페이지
-							</Button>
-							<Button
-								key="로그인"
-								sx={{ my: 2, color: 'white', display: 'block' }}
-								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
-								onClick={openModal}
-							>
-								로그인
-							</Button>
+							{userName !== null ? (
+								<>
+									<Button
+										key="마이페이지"
+										sx={{ my: 2, color: 'white', display: 'block' }}
+										style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+									>
+										마이페이지
+									</Button>
+									<Button
+										key="로그아웃"
+										sx={{ my: 2, color: 'white', display: 'block' }}
+										style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+									>
+										로그아웃
+									</Button>
+								</>
+							) : (
+								<>
+									<Button
+										key="로그인"
+										sx={{ my: 2, color: 'white', display: 'block' }}
+										style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+										onClick={openModal}
+									>
+										로그인
+									</Button>
 
-							{showModal && (
-								<LoginModal
-									show={showModal}
-									open={openModal}
-									close={closeModal}
-								/>
+									{showModal && (
+										<LoginModal
+											show={showModal}
+											open={openModal}
+											close={closeModal}
+										/>
+									)}
+
+									<Button
+										key="회원가입"
+										sx={{ my: 2, color: 'white', display: 'block' }}
+										style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+										onClick={handleClickOpen}
+									>
+										회원가입
+									</Button>
+								</>
 							)}
-
-							<Button
-								key="로그아웃"
-								sx={{ my: 2, color: 'white', display: 'block' }}
-								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
-							>
-								로그아웃
-							</Button>
-							<Button
-								key="회원가입"
-								sx={{ my: 2, color: 'white', display: 'block' }}
-								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
-								onClick={handleClickOpen}
-							>
-								회원가입
-							</Button>
 						</Box>
 					</Toolbar>
 				</AppBar>
