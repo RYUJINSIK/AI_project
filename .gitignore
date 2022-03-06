@@ -4,7 +4,12 @@
 __pycache__/
 .venv/
 media
+static
 poetry.lock
+*.h5
+.static_root
+poetry.lock
+
 # --------------------------------------------------
 
 # Frontend
@@ -39,5 +44,3 @@ yarn-error.log*
 .env.production.local
 
 # --------------------------------------------------
-
-
