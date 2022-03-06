@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 from ..core.utils import extract_user_id
 from .models import RecordVideo
 from .serializers import VideoSerializer, VideoUpdateSerializer
-from .utils import keypoints_labeling, predict_check, predict_score
+from .utils import (keypoints_labeling, predict_check, predict_score,
+                    video_patch)
 
 
 class VideoView(GenericAPIView):
@@ -47,8 +48,22 @@ class VideoPatchView(GenericAPIView):
 
     def patch(self, request):
         user_id = extract_user_id(request)
+        """
+        Patch API
+        1. 사용자의 가장 최근 영상의 해상도를 변경하고 .avi 확장자로 변경한다.
+        2. 해당 변경된 파일을 DB에 Patch한다.
+        """
         serializer = self.serializer_class(data=user_id)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid()
+        user_id = serializer.data['user_id']
+        video_obj = RecordVideo.objects.filter(user_id=user_id).last()
+        try:
+            video_patch(video_obj)
+        except Exception:
+            return Response(
+                {"변환 실패, 총 61frame 이상의 영상을 가지고 오세요"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response(
             {
                 "success": True,
