@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
 
-from .models import User
+from .models import LearningHistory, User
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -59,3 +59,10 @@ class UserLoginSerializer(serializers.Serializer):
             'access_token': tokens['access'],
             'refresh_token': tokens['refresh']
         }
+
+
+class UserRecordSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LearningHistory
+        fields = "__all__"

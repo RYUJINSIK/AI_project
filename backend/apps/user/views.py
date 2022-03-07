@@ -1,9 +1,12 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from ..core.utils import extract_user_id
+from .models import LearningHistory
 from .serializers import (IdCheckSerializer, UserCreateSerializer,
-                          UserLoginSerializer)
+                          UserLoginSerializer, UserRecordSerializer)
+from .utils import medal_score, update_query_dict
 
 
 class IdcheckView(generics.GenericAPIView):
@@ -62,3 +65,93 @@ class UserloginView(generics.GenericAPIView):
 
         }
         return Response(response, status=200)
+
+
+class UserScoreRecordView(generics.GenericAPIView):
+
+    serializer_class = UserRecordSerializer
+
+    def get_object(self, learning_video_id, user_id):
+        return LearningHistory.objects.filter(
+                learning_video_id=learning_video_id,
+                user_id=user_id
+            )
+
+    def get(self, request):
+        '''
+            유저가 해당 영상을 학습한 이력이 있는지 확인한다.
+            있다면 exists: True, 없다면 exists: False 반환
+        '''
+        user_id = extract_user_id(request)
+        learning_video_id = request.query_params.get("learning_video_id")
+        object = self.get_object(
+            learning_video_id=learning_video_id,
+            user_id=user_id
+        )
+        if object.exists():
+            return Response(
+                {"exists": True},
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"exists": False},
+                status=status.HTTP_200_OK
+            )
+
+    def post(self, request):
+        '''
+            request body
+            score, learning_video_id
+            get 요청시 exists가 False 인 경우 요청한다.
+            단어에 맞는 user의 점수와 메달을 기입한다.
+        '''
+        score = int(request.data['score'])
+        user_id = extract_user_id(request)
+        medal_id = medal_score(score)
+        request_data = update_query_dict(request.data, [user_id, medal_id])
+        serializer = self.serializer_class(data=request_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"success"},
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {"Bad Request"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    def patch(self, request):
+        '''
+            request body
+            score, learning_video_id
+            get 요청시 exists가 True 인 경우 요청한다.
+            단어에 맞는 user의 점수와 메달을 수정한다.
+        '''
+        score = int(request.data['score'])
+        learning_video_id = request.data['learning_video_id']
+        user_id = extract_user_id(request)
+        medal_id = medal_score(score)
+        request_data = update_query_dict(request.data, [user_id, medal_id])
+        history_obj = LearningHistory.objects.filter(
+                user_id=user_id['user_id'],
+                learning_video_id=learning_video_id
+            ).first()
+        serializer = self.serializer_class(
+            history_obj,
+            data=request_data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"success": True},
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"Bad Request"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
