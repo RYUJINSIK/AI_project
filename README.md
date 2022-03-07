@@ -36,7 +36,8 @@
 
 ## 4. 프로젝트 구성도
 
-- https://www.figma.com/file/Y6gO9S5HQy6o8CboeJMJSh/Untitled?node-id=0%3A1
+- https://www.figma.com/file/Y6gO9S5HQy6o8CboeJMJSh/Untitled?node-id=0%3A1<br>
+-https://www.figma.com/file/OensWKNd4JQh1LLIYR9kkx/Untitled?node-id=0%3A1
 
   
 
