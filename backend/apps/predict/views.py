@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from ..core.utils import extract_user_id
 from .models import RecordVideo
-from .serializers import VideoSerializer, VideoUpdateSerializer
+from .serializers import VideoSerializer
 from .utils import (keypoints_labeling, predict_check, predict_score,
                     video_patch)
 
@@ -44,18 +44,13 @@ class VideoPatchView(GenericAPIView):
     user_id : JWT 토큰에서 추출.
     """
 
-    serializer_class = VideoUpdateSerializer
-
     def patch(self, request):
-        user_id = extract_user_id(request)
+        user_id = extract_user_id(request)['user_id']
         """
         Patch API
         1. 사용자의 가장 최근 영상의 해상도를 변경하고 .avi 확장자로 변경한다.
         2. 해당 변경된 파일을 DB에 Patch한다.
         """
-        serializer = self.serializer_class(data=user_id)
-        serializer.is_valid()
-        user_id = serializer.data['user_id']
         video_obj = RecordVideo.objects.filter(user_id=user_id).last()
         try:
             video_patch(video_obj)
