@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from .models import RecordVideo
-from .utils import video_resolution
 
 
 class VideoSerializer(serializers.ModelSerializer):
