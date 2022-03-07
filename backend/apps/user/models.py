@@ -65,6 +65,14 @@ class User(AbstractBaseUser, TimeStampModel):
         db_table = "user"
 
 
+class MedalType(models.Model):
+
+    medal_name = models.CharField(max_length=10)
+
+    class Meata:
+        db_table = "medal_type"
+
+
 class LearningHistory(TimeStampModel):
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE,
@@ -74,6 +82,11 @@ class LearningHistory(TimeStampModel):
     learning_video_id = models.ForeignKey(
         LearningVideo, on_delete=models.CASCADE,
         db_column="learning_video_id",
+        default=""
+    )
+    medal_id = models.ForeignKey(
+        MedalType, on_delete=models.CASCADE,
+        db_column="medal_id",
         default=""
     )
     score = models.IntegerField(blank=True)
