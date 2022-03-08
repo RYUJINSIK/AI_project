@@ -21,7 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-const pages = ['메뉴1', '메뉴2', '메뉴3'];
+const pages = ['수화배우기', '수화센터찾기', '메뉴3'];
 
 const HeaderForm = () => {
 	const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -50,6 +50,15 @@ const HeaderForm = () => {
 		router.push('/');
 	};
 
+	const onClickMenu = (e) => {
+		if (e.target.value === '수화배우기') {
+			router.push('/wordlist');
+		}
+		if (e.target.value === '수화센터찾기') {
+			router.push('/map');
+		}
+	};
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar
@@ -64,7 +73,7 @@ const HeaderForm = () => {
 						component="div"
 						style={{ marginRight: '25px', cursor: 'pointer' }}
 						onClick={() => {
-							alert('click!');
+							router.push('/');
 						}}
 					>
 						<img
@@ -82,8 +91,10 @@ const HeaderForm = () => {
 						{pages.map((page) => (
 							<Button
 								key={page}
+								value={page}
 								sx={{ my: 1, color: 'white', display: 'block' }}
 								style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+								onClick={onClickMenu}
 							>
 								{page}
 							</Button>

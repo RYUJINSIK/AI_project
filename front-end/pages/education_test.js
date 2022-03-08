@@ -19,6 +19,8 @@ import Chip from '@mui/material/Chip';
 import Backdrop from '@mui/material/Backdrop';
 
 const EducataionTest = () => {
+	const router = useRouter();
+
 	const [showData, setShowData] = useState(false);
 	const webcamRef = useRef(null);
 	const [videoBlob, setVideoBlob] = useState(null);
@@ -30,14 +32,17 @@ const EducataionTest = () => {
 	const [data, setData] = useState({});
 
 	useEffect(() => {
-		let videoTest = 'back';
 		axios
-			.get(`${process.env.NEXT_PUBLIC_URL}/video/upload/${videoTest}`, {
-				headers: {
-					Authorization: `Bearer ${getCookie('access_token')}`,
+			.get(
+				`${process.env.NEXT_PUBLIC_URL}/video/upload/${router.query.video_name}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getCookie('access_token')}`,
+					},
 				},
-			})
+			)
 			.then((response) => {
+				console.log(response);
 				console.log(response.data[0]['video_url']);
 				if (response['status'] === 200) {
 					// console.log(response['data'][0]['video_url']);
@@ -163,7 +168,7 @@ const EducataionTest = () => {
 										</div>
 										<div style={{ float: 'right', display: 'inline-block' }}>
 											<Chip
-												label="[단어이름]"
+												label={router.query.video_kor}
 												style={{
 													padding: '25px 0px 25px 0px',
 													backgroundColor: '#B3E1FC',
@@ -177,11 +182,11 @@ const EducataionTest = () => {
 										<br />
 										<div style={{ marginTop: '10px' }}>
 											<div className="recordStandby">
-												<video style={CamStyle} controls>
-													<source
-														src={`${process.env.NEXT_PUBLIC_URL}${data}`}
-													></source>
-												</video>
+												<video
+													src={`${process.env.NEXT_PUBLIC_URL}${data}`}
+													style={CamStyle}
+													controls
+												></video>
 											</div>
 										</div>
 									</div>

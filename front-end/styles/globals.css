@@ -73,3 +73,15 @@ input:focus {
 	outline: none;
 	box-shadow: 0 0 0 3px #8ab3ff;
 }
+
+select {
+	width: 150px;
+	padding: 5px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	text-align: center;
+	font-size: 15px;
+}
