@@ -171,7 +171,8 @@ class MyPageListView(generics.GenericAPIView):
         user_id = extract_user_id(request)
 
         learning_list = LearningHistory.objects.filter(
-            user_id=user_id['user_id']).order_by('-updated_at').values('learning_video_id', 'score', 'medal_id')
+            user_id=user_id['user_id']).order_by('-updated_at').values(
+                'score', 'medal_id', 'learning_video_id')
 
         learning_rate = len(learning_list)
 
@@ -183,9 +184,11 @@ class MyPageListView(generics.GenericAPIView):
                     id=learn['medal_id']).values('medal_name')
                 video_id = learn['learning_video_id']
                 word = LearningVideo.objects.filter(
-                    id=video_id).values('video_name', 'korean_name', 'image_url')
-                word_list.append([word[0]['video_name'], word[0]['korean_name'],
-                                 word[0]['image_url'], medal[0]['medal_name'], learn['score']])
+                    id=video_id).values('video_name', 'korean_name',
+                                        'image_url')
+                word_list.append([word[0]['video_name'],
+                                  word[0]['korean_name'], word[0]['image_url'],
+                                  medal[0]['medal_name'], learn['score']])
 
             if learn['medal_id'] == 1:
                 gold += 1
