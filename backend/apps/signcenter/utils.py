@@ -30,7 +30,6 @@ def select_centers(queryset, lat, lng, cnt):
             center_info=center.data,
             distance=km
         )  # distance를 추가하여 dict로 만든다
-        test_dic[f"center_{id}"] = x
-        centers.append(test_dic)
+        centers.append(x)
 
     return centers
