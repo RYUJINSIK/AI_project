@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import HeaderNav from '../components/HeaderNav';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-import cookie from 'react-cookies';
-import { useAsync } from 'react-async';
 import Cookie, { setCookie, getCookie, removeCookie } from '../utils/cookie';
 import jwt_decode from 'jwt-decode';
 
@@ -29,53 +27,49 @@ const Main = () => {
 		}
 	};
 
+	// interceptors 코드 위치??
 	axios.interceptors.response.use(
 		// 정상 응답처리
 		(config) => {
-			return Promise.resolve(config);
+			return config;
 		},
 		// 오류 발생시
-		(error) => {
+		async (error) => {
 			const originalRequest = error.config;
 			const refresh_token = getCookie('refresh');
-			//AccessToken이 만료됬고, RefreshToken이 유효하다면
+			// AccessToken이 만료됐다면
 			if (!validateTimeAccesstoken()) {
 				// Refreshtoken을 통해 Accesstoken을 재발급한다.
 				console.log('access token 재발급 필요!');
 				// getAccesstokenWithRefreshtoken(originalRequest)
-				axios({
+				const { data } = await axios({
 					method: 'post',
 					url: `http://127.0.0.1:8000/user/api/token/refresh/`,
 					data: { refresh: refresh_token },
-				})
-					.then((response) => {
-						// console.log(response);
-						// console.log(originalRequest);
-						// removeCookie('access');
-						// setCookie('access', response['data']['access'], {
-						//   path: '/',
-						//   secure: true,
-						//   sameSite: 'none',
-						// });
-						// console.log('zzzzzz');
-						// console.log(originalRequest['headers']['Authorization']);
-						originalRequest['headers'][
-							'Authorization'
-						] = `Bearer ${response['data']['access']}`;
-						console.log(originalRequest);
-						// console.log(originalRequest['headers']['Authorization']);
-						console.log('eeee');
-						axios(originalRequest).then((res) => {
-							console.log('post : ', res);
-						});
-						console.log('???zzz');
-					})
-					.catch(function (error) {
-						console.log(error);
-					});
+				});
+				console.log(data['access']);
+				console.log('나난나뇨');
+				// 쿠키 새로 지정하는 부분
+				setCookie('access', data['access'], {
+					path: '/',
+					secure: true,
+					sameSite: 'none',
+				});
+				axios.defaults.headers.common.Authorization = `Bearer ${data['access']}`;
+
+				originalRequest['headers'][
+					'Authorization'
+				] = `Bearer ${data['access']}`;
+
+				await axios(originalRequest).then((res) => {
+					console.log('post : ', res);
+				}); // 원래 axios 요청 그대로 할려면 then 부분까지 다 써야 하는지?
+				console.log('끄으읏??');
 			}
+			return Promise.reject(error);
 		},
 	);
+
 	const logout = async () => {
 		axios({
 			method: 'post',

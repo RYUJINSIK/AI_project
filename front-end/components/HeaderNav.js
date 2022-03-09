@@ -21,7 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-const pages = ['수화배우기', '수화센터찾기', '메뉴3'];
+const pages = ['수화배우기', '수화센터찾기', '수화퀴즈'];
 
 const HeaderForm = () => {
 	const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -40,14 +40,14 @@ const HeaderForm = () => {
 
 	useEffect(() => {
 		setUserName(localStorage.getItem('user'));
-		console.log(userName);
+		// console.log(userName);
 	}, []);
 
 	const onClickLogout = () => {
 		removeCookie('access_token');
 		removeCookie('refresh_token');
 		localStorage.clear();
-		router.push('/');
+		location.reload();
 	};
 
 	const onClickMenu = (e) => {
@@ -56,6 +56,9 @@ const HeaderForm = () => {
 		}
 		if (e.target.value === '수화센터찾기') {
 			router.push('/map');
+		}
+		if (e.target.value === '수화퀴즈') {
+			router.push('/quiz');
 		}
 	};
 
@@ -107,6 +110,9 @@ const HeaderForm = () => {
 									key="마이페이지"
 									sx={{ my: 2, color: 'white', display: 'block' }}
 									style={{ margin: '0px', color: 'black', fontSize: '20px' }}
+									onClick={() => {
+										router.push('/mypage');
+									}}
 								>
 									마이페이지
 								</Button>

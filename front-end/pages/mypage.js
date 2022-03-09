@@ -1,136 +1,175 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import HeaderNav from '../components/HeaderNav';
+import axios from 'axios';
+import { getCookie } from '../utils/cookie';
 
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
-const drawerWidth = 240;
+import { styled } from '@mui/material/styles';
+import LinearProgress, {
+	linearProgressClasses,
+} from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import { CardActionArea } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+	height: 60,
+	borderRadius: 5,
+	border: '1px solid gray',
+	[`&.${linearProgressClasses.colorPrimary}`]: {
+		backgroundColor:
+			theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+	},
+	[`& .${linearProgressClasses.bar}`]: {
+		borderRadius: 5,
+		backgroundColor: theme.palette.mode === 'light' ? '#C1E1FF' : '#308fe8',
+	},
+}));
 
 const MyPage = () => {
 	const router = useRouter();
+	const [progress, setProgress] = useState(10);
+	const [dialog, setDialog] = useState(false);
+
+	useEffect(() => {
+		axios
+			.get(`${process.env.NEXT_PUBLIC_URL}/user/mypage/`, {
+				headers: {
+					Authorization: `Bearer ${getCookie('access')}`,
+				},
+			})
+			.then((response) => {
+				console.log(response);
+				if (response['status'] === 200) {
+					console.log(response['data']);
+				}
+				if (response['status'] === 204) {
+					console.log('기록없음');
+					setDialog(true);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	return (
 		<>
 			<HeaderNav />
 			<br />
+			<br />
 			<div style={mainDiv}>
-				<div style={medalDiv}>
-					<table>
-						<tr>
-							<td colspan="3">
-								<Chip label="ㅇㅇㅇ님 보유 메달" style={medalTitle} />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<img src="/images/gold-medal.png" style={medalSize} />
-							</td>
-							<td>
-								<img src="/images/silver-medal.png" style={medalSize} />
-							</td>
-							<td>
-								<img src="/images/bronze-medal.png" style={medalSize} />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<Chip label="5개" style={medalText} />
-							</td>
-							<td>
-								<Chip label="3개" style={medalText} />
-							</td>
-							<td>
-								<Chip label="1개" style={medalText} />
-							</td>
-						</tr>
-					</table>
+				<div style={userInfoDiv}>
+					<Grid container spacing={0}>
+						<Grid item xs={3}>
+							<div style={medalDiv}>
+								<table>
+									<tbody>
+										<tr>
+											<td colspan="3">
+												<Chip label="ㅇㅇㅇ님 보유 메달" style={medalTitle} />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="/images/gold-medal.png" style={medalSize} />
+											</td>
+											<td>
+												<img src="/images/silver-medal.png" style={medalSize} />
+											</td>
+											<td>
+												<img src="/images/bronze-medal.png" style={medalSize} />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<Chip label="5개" style={medalText} />
+											</td>
+											<td>
+												<Chip label="3개" style={medalText} />
+											</td>
+											<td>
+												<Chip label="1개" style={medalText} />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</Grid>
+						<Grid item xs={9}>
+							<div style={progressDiv}>
+								<Typography variant="h5" component="div" gutterBottom>
+									학습진행률 : 00%
+								</Typography>
+								<BorderLinearProgress variant="determinate" value={80} />
+							</div>
+						</Grid>
+					</Grid>
 				</div>
-
-				<div style={gradeDiv}>
-					<table>
-						<tr>
-							<td colspan="3">
-								<Chip
-									label="교육 등급"
-									style={{
-										backgroundColor: '#FBFFDA',
-										boxShadow: '3px 3px 3px 0px black',
-										marginBottom: '20px',
-										fontSize: '20px',
-									}}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<img
-									src="/images/gold-medal.png"
-									style={{
-										width: '80px',
-										height: '80px',
-									}}
-								/>
-							</td>
-							<td>
-								<img
-									src="/images/silver-medal.png"
-									style={{
-										width: '80px',
-										height: '80px',
-									}}
-								/>
-							</td>
-							<td>
-								<img
-									src="/images/bronze-medal.png"
-									style={{
-										width: '80px',
-										height: '80px',
-									}}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<Chip
-									label="5개"
-									style={{
-										backgroundColor: '#C1E3FF',
-										boxShadow: '3px 3px 3px 0px black',
-										marginTop: '10px',
-										fontSize: '20px',
-									}}
-								/>
-							</td>
-							<td>
-								<Chip
-									label="3개"
-									style={{
-										backgroundColor: '#C1E3FF',
-										boxShadow: '3px 3px 3px 0px black',
-										marginTop: '10px',
-										fontSize: '20px',
-									}}
-								/>
-							</td>
-							<td>
-								<Chip
-									label="1개"
-									style={{
-										backgroundColor: '#C1E3FF',
-										boxShadow: '3px 3px 3px 0px black',
-										marginTop: '10px',
-										fontSize: '20px',
-									}}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">등급설명</td>
-						</tr>
-					</table>
+				<br />
+				<br />
+				<div style={cardDiv}>
+					<Typography variant="h4" component="div" gutterBottom>
+						최근 교육한 단어
+					</Typography>
+					<Grid container spacing={1}>
+						<Grid item xs={2}>
+							<Card style={{ width: '90%' }}>
+								<CardActionArea>
+									<CardMedia
+										component="img"
+										height="140"
+										image="/images/example.png"
+										alt=""
+									/>
+									<CardContent>
+										<Typography gutterBottom variant="h5" component="div">
+											안녕안녕
+											<br />
+											<span style={{ fontSize: '20px' }}>난이도 :</span>
+											<span style={{ fontSize: '20px', marginLeft: '10px' }}>
+												분류 :
+											</span>
+										</Typography>
+									</CardContent>
+								</CardActionArea>
+							</Card>
+						</Grid>
+					</Grid>
 				</div>
 			</div>
+
+			<Dialog
+				open={dialog}
+				// onClose={handleClose}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				{/* <DialogTitle id="alert-dialog-title">교육 기록이 없습니다.</DialogTitle> */}
+				<DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
+					학습기록이 없습니다. 학습을 먼저 진행해주세요.
+					<Button
+						variant="contained"
+						style={{
+							fontSize: '20px',
+							backgroundColor: '#C1E1FF',
+							color: 'black',
+						}}
+						onClick={() => {
+							router.push('/wordlist');
+						}}
+					>
+						수화 배우러가기
+					</Button>
+				</DialogContent>
+			</Dialog>
 		</>
 	);
 };
@@ -144,11 +183,40 @@ const mainDiv = {
 	paddingLeft: '50px',
 	paddingRight: '50px',
 };
-const medalDiv = {
-	marginLeft: '20px',
+
+const userInfoDiv = {
+	padding: '30px',
+	backgroundColor: '#fff',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
+	width: '100%',
+	borderRadius: '20px',
+	// border: '1px solid gray',
+};
+
+const cardDiv = {
+	padding: '30px',
+	backgroundColor: '#fff',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
+	width: '100%',
+	borderRadius: '20px',
+};
+
+const progressDiv = {
 	// backgroundColor: '#DADADA',
 	// boxShadow: '3px 3px 3px 0px black',
-	width: '300px',
+	padding: '30px 50px 30px 0px',
+	height: '140px',
+	borderRadius: '20px',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	alignItems: 'center',
+	textAlign: 'right',
+};
+const medalDiv = {
+	// marginLeft: '20px',
+	// backgroundColor: '#DADADA',
+	// boxShadow: '3px 3px 3px 0px black',
+	// width: '300px',
 	height: '200px',
 	borderRadius: '20px',
 	textAlign: 'center',
@@ -160,27 +228,27 @@ const medalDiv = {
 
 const medalTitle = {
 	backgroundColor: '#FBFFDA',
-	boxShadow: '3px 3px 3px 0px black',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
 	marginBottom: '20px',
 	fontSize: '20px',
 };
 
 const medalText = {
 	backgroundColor: '#C1E3FF',
-	boxShadow: '3px 3px 3px 0px black',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
 	marginTop: '5px',
-	fontSize: '15px',
+	fontSize: '18px',
 };
 
 const medalSize = {
-	width: '60px',
-	height: '60px',
+	width: '65px',
+	height: '65px',
 };
 
 const gradeDiv = {
 	marginLeft: '20px',
-	// backgroundColor: '#DADADA',
-	// boxShadow: '3px 3px 3px 0px black',
+	backgroundColor: '#DADADA',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
 	width: '500px',
 	height: '200px',
 	borderRadius: '20px',
