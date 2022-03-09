@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .views import (IdcheckView, RegisterView, UserloginView,
+from .views import (IdcheckView, MyPageListView, RegisterView, UserloginView,
                     UserScoreRecordView)
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
         TokenRefreshView.as_view(),
         name='token_refresh'
     ),
+    path("mypage/", MyPageListView.as_view(), name="mypage"),
     path(
         "score/",
         UserScoreRecordView.as_view(),
