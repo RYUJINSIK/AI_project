@@ -2,6 +2,8 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from apps.video.models import LearningVideo
+
 from ..core.utils import extract_user_id
 from .models import LearningHistory
 from .serializers import (IdCheckSerializer, UserCreateSerializer,
@@ -11,7 +13,7 @@ from .utils import medal_score, update_query_dict
 
 class IdcheckView(generics.GenericAPIView):
     """
-    아이디 중복 체크
+        아이디 중복 체크
     """
 
     serializer_class = IdCheckSerializer
@@ -27,7 +29,7 @@ class IdcheckView(generics.GenericAPIView):
 
 class RegisterView(generics.GenericAPIView):
     """
-    회원가입
+        회원가입
     """
 
     serializer_class = UserCreateSerializer
@@ -43,7 +45,7 @@ class RegisterView(generics.GenericAPIView):
 
 class UserloginView(generics.GenericAPIView):
     """
-    로그인
+        로그인
     """
 
     serializer_class = UserLoginSerializer
@@ -73,9 +75,9 @@ class UserScoreRecordView(generics.GenericAPIView):
 
     def get_object(self, learning_video_id, user_id):
         return LearningHistory.objects.filter(
-                learning_video_id=learning_video_id,
-                user_id=user_id
-            )
+            learning_video_id=learning_video_id,
+            user_id=user_id
+        )
 
     def get(self, request):
         '''
@@ -136,9 +138,9 @@ class UserScoreRecordView(generics.GenericAPIView):
         medal_id = medal_score(score)
         request_data = update_query_dict(request.data, [user_id, medal_id])
         history_obj = LearningHistory.objects.filter(
-                user_id=user_id['user_id'],
-                learning_video_id=learning_video_id
-            ).first()
+            user_id=user_id['user_id'],
+            learning_video_id=learning_video_id
+        ).first()
         serializer = self.serializer_class(
             history_obj,
             data=request_data,
@@ -155,3 +157,30 @@ class UserScoreRecordView(generics.GenericAPIView):
                 {"Bad Request"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class MyPageListView(generics.GenericAPIView):
+    """
+        마이페이지 들어갈 데이터 요청
+    """
+
+    serializer_class = UserRecordSerializer
+
+    def get(self, request):
+        user_id = extract_user_id(request)
+
+        learning_list = LearningHistory.objects.filter(
+            user_id=user_id['user_id']).order_by('-updated_at').values('learning_video_id')
+
+        word_list = []
+
+        for list in learning_list:
+            video_id = list['learning_video_id']
+            word_list.append(LearningVideo.objects.filter(
+                id=video_id).values('video_name', 'korean_name'))
+
+        if word_list == []:
+            return Response({
+                'message': "학습한 기록이 없습니다."
+            }, status=status.HTTP_200_OK)
+        return Response(word_list, status=status.HTTP_200_OK)
