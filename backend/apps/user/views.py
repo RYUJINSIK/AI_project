@@ -200,7 +200,7 @@ class MyPageListView(generics.GenericAPIView):
         if word_list == []:
             return Response({
                 'message': "학습한 기록이 없습니다."
-            }, status=status.HTTP_200_OK)
+            }, status=status.HTTP_204_NO_CONTENT)
 
         response = {
             'recent_learning': word_list,
