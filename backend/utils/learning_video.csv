@@ -1,30 +1,31 @@
-,video_name,korean_name,video_url,category,difficulty
-1,right_eye,오른쪽 눈,static/education/right_eye/0.mp4,B,L
-2,left_eye,왼쪽 눈,static/education/left_eye/0.mp4,B,L
-3,nose,코,static/education/nose/0.mp4,B,L
-4,waist,허리,static/education/waist/0.mp4,B,L
-5,knee,무릎,static/education/knee/0.mp4,B,L
-6,inside_of_thigh,허벅지,static/education/inside_of_thigh/0.mp4,B,L
-7,chest,가슴,static/education/chest/0.mp4,B,L
-8,ear,귀,static/education/ear/0.mp4,B,L
-9,head,머리,static/education/head/0.mp4,B,L
-10,neck,목,static/education/neck/0.mp4,B,L
-11,belly,복부,static/education/belly/0.mp4,B,L
-12,wrist,손목,static/education/wrist/0.mp4,B,L
-13,shoulder,어깨,static/education/shoulder/0.mp4,B,L
-14,back,등,static/education/back/0.mp4,B,M
-15,colic,복통,static/education/colic/0.mp4,B,M
-16,hand,손,static/education/hand/0.mp4,S,M
-17,heart_attack,심장마비,static/education/heart_attack/0.mp4,S,M
-18,whirl,어지러움,static/education/whirl/0.mp4,S,M
-19,fever,열,static/education/fever/0.mp4,S,M
-20,cut,자상,static/education/cut/0.mp4,S,H
-21,painkiller,진통제,static/education/painkiller/0.mp4,S,H
-22,fracture,탈골(골절),static/education/fracture/0.mp4,S,H
-23,burn,화상,static/education/burn/0.mp4,S,H
-24,seizure,발작,static/education/seizure/0.mp4,S,H
-25,choke,질식,static/education/choke/0.mp4,S,M
-26,bleeding,출혈,static/education/bleeding/0.mp4,S,M
-27,shortness of breath,호흡곤란,static/education/shortness of breath/0.mp4,S,M
-28,high_fever,고열,static/education/high_fever/0.mp4,S,M
-29,faint,기절,static/education/faint/0.mp4,S,M
+,video_name,korean_name,video_url,category,difficulty,image_url
+1,right_eye,오른쪽 눈,static/education/right_eye/0.mp4,B,L,static/thumbnail/right_eye.jpg
+2,left_eye,왼쪽 눈,static/education/left_eye/0.mp4,B,L,static/thumbnail/left_eye.jpg
+3,nose,코,static/education/nose/0.mp4,B,L,static/thumbnail/nose.jpg
+4,waist,허리,static/education/waist/0.mp4,B,L,static/thumbnail/waist.jpg
+5,knee,무릎,static/education/knee/0.mp4,B,L,static/thumbnail/knee.jpg
+6,inside_of_thigh,허벅지,static/education/inside_of_thigh/0.mp4,B,L,static/thumbnail/inside_of_thigh.jpg
+7,chest,가슴,static/education/chest/0.mp4,B,L,static/thumbnail/chest.jpg
+8,ear,귀,static/education/ear/0.mp4,B,L,static/thumbnail/ear.jpg
+9,head,머리,static/education/head/0.mp4,B,L,static/thumbnail/head.jpg
+10,neck,목,static/education/neck/0.mp4,B,L,static/thumbnail/neck.jpg
+11,belly,복부,static/education/belly/0.mp4,B,L,static/thumbnail/belly.jpg
+12,wrist,손목,static/education/wrist/0.mp4,B,L,static/thumbnail/wrist.jpg
+13,shoulder,어깨,static/education/shoulder/0.mp4,B,L,static/thumbnail/shoulder.jpg
+14,back,등,static/education/back/0.mp4,B,M,static/thumbnail/back.jpg
+15,colic,복통,static/education/colic/0.mp4,B,M,static/thumbnail/colic.jpg
+16,hand,손,static/education/hand/0.mp4,S,M,static/thumbnail/hand.jpg
+17,heart_attack,심장마비,static/education/heart_attack/0.mp4,S,M,static/thumbnail/heart_attack.jpg
+18,whirl,어지러움,static/education/whirl/0.mp4,S,M,static/thumbnail/whirl.jpg
+19,fever,열,static/education/fever/0.mp4,S,M,static/thumbnail/fever.jpg
+20,cut,자상,static/education/cut/0.mp4,S,H,static/thumbnail/cut.jpg
+21,painkiller,진통제,static/education/painkiller/0.mp4,S,H,static/thumbnail/painkiller.jpg
+22,fracture,골절,static/education/fracture/0.mp4,S,H,static/thumbnail/fracture.jpg
+23,burn,화상,static/education/burn/0.mp4,S,H,static/thumbnail/burn.jpg
+24,seizure,발작,static/education/seizure/0.mp4,S,H,static/thumbnail/seizure.jpg
+25,choke,질식,static/education/choke/0.mp4,S,M,static/thumbnail/choke.jpg
+26,bleeding,출혈,static/education/bleeding/0.mp4,S,M,static/thumbnail/bleeding.jpg
+27,shortness of breath,호흡곤란,static/education/shortness of breath/0.mp4,S,M,static/thumbnail/shortness_of_breath.jpg
+28,high_fever,고열,static/education/high_fever/0.mp4,S,M,static/thumbnail/high_fever.jpg
+29,faint,기절,static/education/faint/0.mp4,S,M,static/thumbnail/faint.jpg
+30,dislocation,탈골,static/education/dislocation/0.mp4,S,H,static/thumbnail/dislocation.jpg

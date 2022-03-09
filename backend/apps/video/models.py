@@ -12,6 +12,10 @@ class LearningVideo(models.Model):
         upload_to=upload_to,
         default="learning/default",
         )
+    image_url = models.FileField(
+        upload_to=upload_to,
+        default=""
+    )
     category = models.CharField(max_length=1, choices=CATEGORY)
     difficulty = models.CharField(max_length=1, choices=DIFFICULTY)
 
