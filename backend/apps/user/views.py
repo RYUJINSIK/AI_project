@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from apps.video.models import LearningVideo
 
 from ..core.utils import extract_user_id
-from .models import LearningHistory
+from .models import LearningHistory, MedalType
 from .serializers import (IdCheckSerializer, UserCreateSerializer,
                           UserLoginSerializer, UserRecordSerializer)
 from .utils import medal_score, update_query_dict
@@ -170,17 +170,40 @@ class MyPageListView(generics.GenericAPIView):
         user_id = extract_user_id(request)
 
         learning_list = LearningHistory.objects.filter(
-            user_id=user_id['user_id']).order_by('-updated_at').values('learning_video_id')
+            user_id=user_id['user_id']).order_by('-updated_at').values('learning_video_id', 'score', 'medal_id')
+
+        learning_rate = len(learning_list)
 
         word_list = []
-
+        gold = silver = bronze = 0
         for list in learning_list:
-            video_id = list['learning_video_id']
-            word_list.append(LearningVideo.objects.filter(
-                id=video_id).values('video_name', 'korean_name'))
+            if len(word_list) < 7:
+                medal = MedalType.objects.filter(
+                    id=list['medal_id']).values('medal_name')
+                video_id = list['learning_video_id']
+                word = LearningVideo.objects.filter(
+                    id=video_id).values('video_name', 'korean_name', 'image_url')
+                word_list.append([word[0]['video_name'], word[0]['korean_name'],
+                                 word[0]['image_url'], medal[0]['medal_name'], list['score']])
+
+            if list['medal_id'] == 1:
+                gold += 1
+            elif list['medal_id'] == 2:
+                silver += 1
+            else:
+                bronze += 1
 
         if word_list == []:
             return Response({
                 'message': "학습한 기록이 없습니다."
             }, status=status.HTTP_200_OK)
-        return Response(word_list, status=status.HTTP_200_OK)
+
+        response = {
+            'recent_learning': word_list,
+            'gold': gold,
+            'silver': silver,
+            'bronze': bronze,
+            'learning_rate': learning_rate
+        }
+
+        return Response(response, status=status.HTTP_200_OK)
