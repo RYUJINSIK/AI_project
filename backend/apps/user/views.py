@@ -62,6 +62,7 @@ class UserloginView(generics.GenericAPIView):
         response = {
             'success': 'True',
             'email': serializer.data['email'],
+            'name': serializer.data['name'],
             'access_token': serializer.data['access_token'],
             'refresh_token': serializer.data['refresh_token']
 
@@ -176,19 +177,19 @@ class MyPageListView(generics.GenericAPIView):
 
         word_list = []
         gold = silver = bronze = 0
-        for list in learning_list:
+        for learn in learning_list:
             if len(word_list) < 7:
                 medal = MedalType.objects.filter(
-                    id=list['medal_id']).values('medal_name')
-                video_id = list['learning_video_id']
+                    id=learn['medal_id']).values('medal_name')
+                video_id = learn['learning_video_id']
                 word = LearningVideo.objects.filter(
                     id=video_id).values('video_name', 'korean_name', 'image_url')
                 word_list.append([word[0]['video_name'], word[0]['korean_name'],
-                                 word[0]['image_url'], medal[0]['medal_name'], list['score']])
+                                 word[0]['image_url'], medal[0]['medal_name'], learn['score']])
 
-            if list['medal_id'] == 1:
+            if learn['medal_id'] == 1:
                 gold += 1
-            elif list['medal_id'] == 2:
+            elif learn['medal_id'] == 2:
                 silver += 1
             else:
                 bronze += 1

@@ -66,6 +66,9 @@ class User(AbstractBaseUser, TimeStampModel):
             'access': str(refresh.access_token)
         }
 
+    def get_name(self):
+        return self.name
+
     class Meta:
         db_table = "user"
 

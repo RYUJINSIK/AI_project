@@ -39,6 +39,7 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, write_only=True)
     access_token = serializers.CharField(max_length=150, read_only=True)
     refresh_token = serializers.CharField(max_length=150, read_only=True)
+    name = serializers.CharField(max_length=100, read_only=True)
 
     def validate(self, attrs):
         email = attrs.get("email", None)
@@ -53,9 +54,11 @@ class UserLoginSerializer(serializers.Serializer):
         update_last_login(None, user)
 
         tokens = user.tokens()
+        name = user.get_name()
 
         return {
             'email': user.email,
+            'name': name,
             'access_token': tokens['access'],
             'refresh_token': tokens['refresh']
         }

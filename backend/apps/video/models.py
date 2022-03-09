@@ -11,7 +11,7 @@ class LearningVideo(models.Model):
     video_url = models.FileField(
         upload_to=upload_to,
         default="learning/default",
-        )
+    )
     image_url = models.FileField(
         upload_to=upload_to,
         default=""
@@ -23,4 +23,4 @@ class LearningVideo(models.Model):
         return self.video_name
 
     class Meta:
-        db_table = "learning_video"
+        db_table = "learning_word"
