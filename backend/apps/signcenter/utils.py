@@ -26,15 +26,9 @@ def select_centers(queryset, lat, lng, cnt):
     distance_dic = dict(sorted(distance_dic.items(), key=lambda x: x[1])[:cnt])
 
     centers = []
-    for id, km in distance_dic.items():
+    for id, _ in distance_dic.items():
         center = SignCenter.objects.get(id=id)
         center = CenterSerializer(center)  # center객체 직렬화.
-
-        # distance를 추가하여 dict로 만든다
-        x = dict(
-            center_info=center.data,
-            distance=km
-        )
-        centers.append(x)
+        centers.append(center.data)
 
     return centers
