@@ -65,9 +65,10 @@ class VideoPatchView(GenericAPIView):
 class PredictScoreView(APIView):
     '''
         영상에서 keypoints을 추출하여 학습모델이 추론할 수 있는 형태로 가공하는 API
+        사용자가 학습을 선택한 단어의 video_name을 query_params의 labels 변수에 받는다.
         user_id : JWT 토큰에서 추출.
         user_video : 사용자가 제공한 video
-        user_sign : 사용자가 예측한 단어
+        user_sign : 사용자가 예측한 단어(label)
     '''
 
     def get_object(self, user_id):
