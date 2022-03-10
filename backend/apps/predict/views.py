@@ -77,7 +77,7 @@ class PredictScoreView(APIView):
     def get(self, request):
         user_id = extract_user_id(request)['user_id']
         user_video = self.get_object(user_id).video_url.name
-        user_sign = request.query_params.get("label")
+        user_sign = request.query_params.get("labels")
         keypoints_data = predict_check(user_video)
         if not keypoints_data:
             return Response(
