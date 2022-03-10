@@ -85,7 +85,7 @@ class UserScoreRecordView(generics.GenericAPIView):
             유저가 해당 영상을 학습한 이력이 있는지 확인한다.
             있다면 exists: True, 없다면 exists: False 반환
         '''
-        user_id = extract_user_id(request)
+        user_id = extract_user_id(request)["user_id"]
         learning_video_id = request.query_params.get("learning_video_id")
         object = self.get_object(
             learning_video_id=learning_video_id,
