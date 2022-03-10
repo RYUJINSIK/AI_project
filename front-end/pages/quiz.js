@@ -92,6 +92,7 @@ const Quiz = () => {
 	const [tryCount, setTryCount] = useState(1);
 	const [collectCount, setCollectCount] = useState(0);
 	const [user, setUser] = useState('');
+	const [quizEnd, setQuizEnd] = useState(false);
 
 	useEffect(() => {
 		setUser(localStorage.getItem('user'));
@@ -156,6 +157,7 @@ const Quiz = () => {
 	const getNextQuiz = () => {
 		if (quizNum + 1 === quiz.length) {
 			setQuizExist(false);
+			setQuizEnd(true);
 		} else {
 			var obj_length = document.getElementsByName('quiz').length;
 
@@ -291,55 +293,61 @@ const Quiz = () => {
 			) : (
 				<div style={mainDiv}>
 					<div style={quizDiv}>
-						<p style={{ fontSize: '30px', marginTop: '100px' }}>
-							{user} 님의 퀴즈 점수입니다.
-							<br />
-							<br />
-							총 문제 수 : 10
-							<br />
-							정답 수 : {collectCount}
-						</p>
-						<br />
-						<span style={{ fontSize: '150px', color: 'red' }}>
-							<RoughNotation type="underline" show="true" strokeWidth="3">
-								{(collectCount / 10) * 100}
-							</RoughNotation>{' '}
-							<span style={{ color: 'black' }}>점</span>
-						</span>
-						<br />
+						{quizEnd ? (
+							<>
+								<p style={{ fontSize: '30px', marginTop: '100px' }}>
+									{user} 님의 퀴즈 점수입니다.
+									<br />
+									<br />
+									총 문제 수 : 10
+									<br />
+									정답 수 : {collectCount}
+								</p>
+								<br />
+								<span style={{ fontSize: '150px', color: 'red' }}>
+									<RoughNotation type="underline" show="true" strokeWidth="3">
+										{(collectCount / 10) * 100}
+									</RoughNotation>{' '}
+									<span style={{ color: 'black' }}>점</span>
+								</span>
+								<br />
 
-						<Button
-							variant="contained"
-							style={{
-								fontSize: '20px',
-								backgroundColor: '#C1FFE3',
-								color: 'black',
-								borderRadius: '20px',
-								width: '50%',
-							}}
-							onClick={() => {
-								router.push('/wordlist');
-							}}
-						>
-							수화 공부하러가기
-						</Button>
-						<br />
-						<Button
-							variant="contained"
-							style={{
-								marginTop: '20px',
-								fontSize: '20px',
-								backgroundColor: '#C1E1FF',
-								color: 'black',
-								borderRadius: '20px',
-								width: '50%',
-							}}
-							onClick={() => {
-								router.push('/');
-							}}
-						>
-							메인화면으로 돌아가기
-						</Button>
+								<Button
+									variant="contained"
+									style={{
+										fontSize: '20px',
+										backgroundColor: '#C1FFE3',
+										color: 'black',
+										borderRadius: '20px',
+										width: '50%',
+									}}
+									onClick={() => {
+										router.push('/wordlist');
+									}}
+								>
+									수화 공부하러가기
+								</Button>
+								<br />
+								<Button
+									variant="contained"
+									style={{
+										marginTop: '20px',
+										fontSize: '20px',
+										backgroundColor: '#C1E1FF',
+										color: 'black',
+										borderRadius: '20px',
+										width: '50%',
+									}}
+									onClick={() => {
+										router.push('/');
+									}}
+								>
+									메인화면으로 돌아가기
+								</Button>
+							</>
+						) : (
+							<></>
+						)}
 					</div>
 				</div>
 			)}

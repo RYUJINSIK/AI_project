@@ -51,10 +51,11 @@ const LoginModal = (props) => {
 			.then((response) => {
 				console.log(response);
 				if (response['status'] === 200) {
+					console.log(response['data']);
 					console.log(response['data']['access_token']);
 					localStorage.setItem(
 						'user',
-						JSON.stringify(response['data']['email']),
+						JSON.stringify(response['data']['name']),
 					);
 
 					setCookie('access', response['data']['access_token'], {

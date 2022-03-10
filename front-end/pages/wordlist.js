@@ -19,7 +19,7 @@ const WordList = () => {
 
 	useEffect(() => {
 		axios
-			.get(`${process.env.NEXT_PUBLIC_URL}/video/list/`, {
+			.get(`${process.env.NEXT_PUBLIC_URL}/word/list/`, {
 				headers: {
 					Authorization: `Bearer ${getCookie('access')}`,
 				},
@@ -39,7 +39,7 @@ const WordList = () => {
 
 	const selectDifficulty = (difficulty) => {
 		axios
-			.get(`${process.env.NEXT_PUBLIC_URL}/video/diff_list/${difficulty}`, {
+			.get(`${process.env.NEXT_PUBLIC_URL}/word/diff_list/${difficulty}`, {
 				headers: {
 					Authorization: `Bearer ${getCookie('access_token')}`,
 				},
@@ -91,6 +91,7 @@ const WordList = () => {
 										router.push({
 											pathname: '/education_test',
 											query: {
+												video_id: data.id,
 												video_name: data.video_name,
 												video_kor: data.korean_name,
 											},
