@@ -3,13 +3,12 @@ from django.db import models
 from ..user.models import User
 from ..video.models import LearningVideo
 
-# Create your models here.
-
 
 class QuizCollection(models.Model):
     '''
-        문제 모음 모델
+        퀴즈 컬랙션 모델
     '''
+
     collection_name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -21,8 +20,9 @@ class QuizCollection(models.Model):
 
 class QuizDescription(models.Model):
     '''
-        지문 모음 모델
+        보기를 관리하는 모델
     '''
+
     collection_id = models.ForeignKey(
         QuizCollection, on_delete=models.CASCADE,
         db_column="collection_id",
@@ -31,6 +31,11 @@ class QuizDescription(models.Model):
     description = models.CharField(
         max_length=20,
         db_column="description",
+        default=""
+    )
+    korean_name = models.CharField(
+        max_length=20,
+        db_column="korean_name",
         default=""
     )
 
@@ -43,8 +48,9 @@ class QuizDescription(models.Model):
 
 class QuizQuestion(models.Model):
     '''
-        질문 종류 모델
+        퀴즈의 답과 보기를 관리하는 모델
     '''
+
     collection_id = models.ForeignKey(
         QuizCollection, on_delete=models.CASCADE,
         db_column="collection_id",
@@ -71,8 +77,10 @@ class QuizQuestion(models.Model):
 
 class QuizUserCollection(models.Model):
     '''
-        사용자 문제 모음 점수 관리
+        사용자 퀴즈 컬랙션 점수를 관리하는 모델
+        (차후 확장성을 고려한 모델, 현재 서비스에는 이용되지 않음)
     '''
+
     collection_id = models.ForeignKey(
         QuizCollection, on_delete=models.CASCADE,
         db_column="collection_id",

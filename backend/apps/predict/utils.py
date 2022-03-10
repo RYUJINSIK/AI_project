@@ -8,11 +8,15 @@ import numpy as np
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.models import Sequential
 
-from .predlabel import (  # actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
-    actions, labels)
+# actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
+from .predlabel import actions, labels
 
 
 def video_resolution(video_name):
+    '''
+        사용자 영상의 해상도를 변경하는 함수
+    '''
+
     video_url = os.path.join("backend/media/", video_name)
     cap = cv2.VideoCapture(video_url)
 
@@ -47,19 +51,20 @@ def video_resolution(video_name):
 
 
 def upload_to(instance, filename):
-    """
-    return 이후에 백엔드에 파일이 생성된다.
-    instance는 User Object 객체이다.
-    instance.user_id => 조회한 user_id의 user_name 반환.
-    """
+    '''
+        RecordVideo model의 영상경로 설정을 위한 함수
+    '''
+
     filename = filename.split(".")[0]
     filename = f"{filename}.webm"
     cur_time = str(datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
     return "recorded/{}/{}/{}".format(instance.user_id, cur_time, filename)
 
 
-# mediapipe 감지 함수
 def mediapipe_detection(image, model):
+    '''
+        사용자가 업로드한 영상의 mediapipe keypoints를 감지하는 함수
+    '''
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # COLOR CONVERSION BGR 2RGB
     image.flags.writeable = False  # Image is no longer writeable
     results = model.process(image)  # Make prediction
@@ -68,8 +73,12 @@ def mediapipe_detection(image, model):
     return image, results
 
 
-# keypoints 추출 함수
 def extract_keypoints(results):
+    '''
+        사용자가 업로드 한 영상의 keypoints를 추출하는 함수
+    '''
+
+    # 얼굴을 제외한 상체에서 keypoints를 추출한 변수
     pose = (
         np.array(
             [
@@ -79,42 +88,48 @@ def extract_keypoints(results):
         ).flatten()
         if results.pose_landmarks
         else np.zeros(33 * 4)
-    )  # member : x,y,z,visibility
+    )
 
+    # 얼굴에서 keypoints를 추출한 변수
     face = (
         np.array(
             [[res.x, res.y, res.z] for res in results.face_landmarks.landmark]
         ).flatten()
         if results.face_landmarks
         else np.zeros(468 * 3)
-    )  # member : x,y,z
+    )
 
+    # 왼쪽 손에서 keypoints를 추출한 변수
     lh = (
         np.array(
             [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark] # noqa : E501
         ).flatten()
         if results.left_hand_landmarks
         else np.zeros(21 * 3)
-    )  # member : x,y,z
+    )
 
+    # 오른쪽 손에서 keypoints를 추출한 변수
     rh = (
         np.array(
             [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark] # noqa : E501
         ).flatten()
         if results.right_hand_landmarks
         else np.zeros(21 * 3)
-    )  # member : x,y,z
+    )
     return np.concatenate([pose, face, lh, rh])
 
 
 def make_model():
+    '''
+        학습 모델을 생성하는 함수
+    '''
 
     output = np.array(actions)
 
     model = Sequential()
     model.add(
         LSTM(64, return_sequences=True, activation="tanh", input_shape=(60, 1662),) # noqa : E501
-    )  # (frame , keypoints)
+    )
     model.add(LSTM(128, return_sequences=True, activation="tanh"))
     model.add(LSTM(64, return_sequences=False, activation="tanh"))
     model.add(Dense(64, activation="tanh"))
@@ -134,20 +149,16 @@ def make_model():
 
 def predict_check(video_url):
     '''
-        사용자가 보낸 비디오에서
-        keypoints를 추출하고
-        추출 했을 때 추론에 충분한 길이가
-        추출 되었는지 확인한다.
+        사용자가 업로드한 영상에서 keypoints를 추출하고,
+        추론에 필요한 길이의 영상인지를 확인하는 함수
     '''
+
     video = "backend/media/" + video_url
-    cap = cv2.VideoCapture(video)
-    # 프레임 추출
+    cap = cv2.VideoCapture(video)  # 프레임 추출하는 함수 호출
 
-    mp_holistic = mp.solutions.holistic
-    # mediapipe model
+    mp_holistic = mp.solutions.holistic  # mediapipe model 선언
 
-    keypoints_data = []
-    # 추출할 keypoints 데이터
+    keypoints_data = []  # 추출할 keypoints 데이터를 담기 위한 변수
 
     with mp_holistic.Holistic(
         min_detection_confidence=0.5, min_tracking_confidence=0.5
@@ -171,11 +182,10 @@ def predict_check(video_url):
 
 def keypoints_labeling(keypoints_data):
     '''
-        사용자가 보낸 영상의
-        keypoints를 labeling한다.
+        사용자가 보낸 영상의 keypoints를 labeling하는 함수
     '''
-    predict_data = []
-    # 예측에 사용할 데이터
+
+    predict_data = []  # 예측에 사용할 데이터를 담기위한 변수
 
     window = deque(keypoints_data[:60])
     frame_length = len(keypoints_data) // 60
@@ -192,24 +202,23 @@ def keypoints_labeling(keypoints_data):
 
 
 def predict_score(predict_data, user_sign):
+    '''
+        학습 모델이 예측한 점수를 알려주는 함수
+        - logic
+            threshold = 0.5
+            => 예측 정확도가 최소 50%를 넘지 않으면 정확도 계산에 사용하지 않음.
+            predict_list
+            => 영상에서 뽑아낸 60frame 단위 예측 모음
+            accuracy
+            => round((사용자가 예측한 단어를 모델이 예측한 개수 / 전체 예측 길이),2) * 100
+    '''
 
     predict_value = np.array(predict_data)
 
-    """
-        예측
-    """
     model = make_model()
 
     predict_result = model.predict(predict_value)
 
-    '''
-        threshold = 0.5
-        => 예측 정확도가 최소 50%를 넘지 않으면 정확도 계산에 사용하지 않음.
-        predict_list
-        => 영상에서 뽑아낸 60frame 단위 예측 모음
-        accuracy
-        => round((사용자가 예측한 단어를 모델이 예측한 개수 / 전체 예측 길이),2) * 100
-    '''
     predict_list = []
     threshold = 0.5
 
@@ -231,8 +240,9 @@ def predict_score(predict_data, user_sign):
 
 def video_patch(video_obj):
     '''
-        video 변환 함수
+        영상 해상도를 변환하는 함수
     '''
+
     video_name = video_obj.video_url.name
     video_name = video_resolution(str(video_name))
     if not video_name:

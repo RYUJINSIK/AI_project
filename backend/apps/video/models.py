@@ -1,10 +1,14 @@
 from django.db import models
 
-from .video import upload_to
+from .utils import upload_to
 
 
 class LearningVideo(models.Model):
-    CATEGORY = [("B", "신체"), ("S", "질환")]  # 실제 필드명, human-readable name 순.
+    '''
+        학습용 단어 30개를 관리하는 model
+    '''
+
+    CATEGORY = [("B", "신체"), ("S", "질환")]
     DIFFICULTY = [("L", "하"), ("M", "중"), ("H", "상")]
     video_name = models.CharField(max_length=50)
     korean_name = models.CharField(max_length=50)

@@ -30,8 +30,10 @@ with open(CSV_PATH_PRODUCTS, encoding='utf8') as in_file:
     for row in data_reader:
         collection_id = row['collection_id']
         collection = QuizCollection.objects.get(id=collection_id)
+        korean_name = row['korean_name']
         quiz = QuizDescription(
                 description=row['description'],
-                collection_id=collection
+                collection_id=collection,
+                korean_name=korean_name
                 )
         quiz.save()

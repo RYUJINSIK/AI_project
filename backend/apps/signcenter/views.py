@@ -8,7 +8,11 @@ from .serializers import CenterSerializer
 from .utils import select_centers
 
 
-class MapView(GenericAPIView):
+class CenterView(GenericAPIView):
+    '''
+        수어통역센터 정보를 보여주는 API
+    '''
+
     serializer_class = CenterSerializer
     queryset = SignCenter.objects.all()
     permission_classes = (AllowAny,)
