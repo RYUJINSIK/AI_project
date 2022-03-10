@@ -9,7 +9,7 @@ urlpatterns = [
     path("idchk/", IdcheckView.as_view(), name="idchk"),
     path("login/", UserloginView.as_view(), name="login"),
     path(
-        'api/token/refresh/',
+        '/token/refresh/',
         TokenRefreshView.as_view(),
         name='token_refresh'
     ),
@@ -17,6 +17,6 @@ urlpatterns = [
     path(
         "score/",
         UserScoreRecordView.as_view(),
-        name='user-score'
+        name='user_score'
     )
 ]

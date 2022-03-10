@@ -6,6 +6,7 @@ def extract_user_id(request):
     '''
         JWT 토큰에서 user_id를 추출하는 method
     '''
+
     JWT_authenticator = JWTAuthentication()
     response = JWT_authenticator.authenticate(request)
     if response:

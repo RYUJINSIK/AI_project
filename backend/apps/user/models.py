@@ -7,7 +7,10 @@ from apps.video.models import LearningVideo
 
 
 class UserManager(BaseUserManager):
-    # 일반 user 생성
+    '''
+        사용자 생성 시 권한 설정을 위한 헬퍼 클래스
+    '''
+
     def create_user(self, email, name, password=None):
         if not email:
             raise ValueError('must have user email')
@@ -21,7 +24,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    # 관리자 user 생성
     def create_superuser(self, email, name, password=None):
         user = self.create_user(
             email,
@@ -34,6 +36,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, TimeStampModel):
+    '''
+        사용자 정보를 관리하는 모델
+    '''
+
     id = models.AutoField(primary_key=True)
     email = models.EmailField(default='', max_length=100,
                               null=False, blank=False, unique=True)
@@ -51,9 +57,7 @@ class User(AbstractBaseUser, TimeStampModel):
     # 헬퍼 클래스 사용
     objects = UserManager()
 
-    # 사용자의 username field는 name으로 설정
     USERNAME_FIELD = 'email'
-    # 필수로 작성해야하는 field
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
@@ -74,6 +78,9 @@ class User(AbstractBaseUser, TimeStampModel):
 
 
 class MedalType(models.Model):
+    '''
+        메달 정보를 관리하는 모델
+    '''
 
     medal_name = models.CharField(max_length=10)
 
@@ -82,6 +89,10 @@ class MedalType(models.Model):
 
 
 class LearningHistory(TimeStampModel):
+    '''
+        사용자의 학습 정보를 관리하는 모델
+    '''
+
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE,
         db_column="user_id",

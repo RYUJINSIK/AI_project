@@ -3,13 +3,16 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from .models import QuizDescription, QuizQuestion
+from .serializers import QuizSerializer
 from .utils import extract_quiz_list
 
 
 class QuizView(GenericAPIView):
     '''
-        quiz 선택시 문제 정보를 전달 해주는 API
+        퀴즈 유형 선택 시 해당 유형의 퀴즈 정보를 전달 해주는 API
     '''
+
+    serializer_class = QuizSerializer
 
     def get_queryset(self, model, collection_id):
         return model.objects.filter(collection_id=collection_id)

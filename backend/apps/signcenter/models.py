@@ -1,8 +1,11 @@
 from django.db import models
 
 
-# Create your models here.
 class SignCenter(models.Model):
+    '''
+        수어통역센터의 정보를 관리하는 모델
+    '''
+
     center_name = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
     phone_num = models.CharField(max_length=15, blank=True)

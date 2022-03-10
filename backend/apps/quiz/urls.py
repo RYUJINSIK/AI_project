@@ -4,8 +4,8 @@ from .views import QuizView
 
 urlpatterns = [
     path(
-        "choicelist/<int:collection_id>",
+        "type/<int:collection_id>",
         QuizView.as_view(),
-        name="choicelist"
+        name="quiztype"
         ),
 ]

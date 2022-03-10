@@ -6,13 +6,12 @@ from .models import LearningHistory, User
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ['email', 'name', 'password']
+    '''
+        사용자 생성을 위한 serializer
+    '''
 
     def create(self, validated_data):
-        user = User.objects.create_user(  # User 생성
+        user = User.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password']
@@ -21,8 +20,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    class Meta:
+        model = User
+        fields = ['email', 'name', 'password']
+
 
 class IdCheckSerializer(serializers.ModelSerializer):
+    '''
+        아이디 중복 확인 시 email을 확인하는 serializer
+    '''
+
     class Meta:
         model = User
         fields = ['email']
@@ -35,6 +42,10 @@ class IdCheckSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.Serializer):
+    '''
+        로그인 시 사용자 확인 후 사용자 정보를 확인하는 serializer
+    '''
+
     email = serializers.CharField(max_length=64)
     password = serializers.CharField(max_length=128, write_only=True)
     access_token = serializers.CharField(max_length=150, read_only=True)
@@ -65,6 +76,9 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class UserRecordSerializer(serializers.ModelSerializer):
+    '''
+        사용자의 학습현황 데이터를 확인하는 serializer
+    '''
 
     class Meta:
         model = LearningHistory

@@ -4,9 +4,9 @@ from .models import RecordVideo
 
 
 class VideoSerializer(serializers.ModelSerializer):
-    """
-    비디오 등록.
-    """
+    '''
+        RecordVideo model을 위한 serializer
+    '''
 
     class Meta:
         model = RecordVideo
