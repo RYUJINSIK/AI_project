@@ -8,7 +8,7 @@
 
 사용자가 신체, 증상에 관련한 단어들의 수화를 배우고, 직접 카메라를 통해 동작을 따라하며 학습하는 서비스
 
-- 사용 기술 스택 (Next.js, Django, Python, Tensorflow, Mediapipe, )
+- 사용 기술 스택 (Next.js, Django, Python, Tensorflow, Mediapipe, Pandas, )
 
 
 
