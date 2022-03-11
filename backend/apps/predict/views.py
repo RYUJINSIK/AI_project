@@ -35,7 +35,7 @@ class VideoUploadView(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class VideoPatchView(GenericAPIView):
+class VideoPatchView(APIView):
     '''
         받은 웹캠 영상의 해상도를 변환해주는 API
         user_id : JWT 토큰에서 추출
@@ -86,8 +86,9 @@ class PredictScoreView(APIView):
             )
         predict_data = keypoints_labeling(keypoints_data)
         accuracy = predict_score(predict_data, user_sign)
+        score = int(accuracy)
 
         return Response(
-            accuracy,
+            {"score": score},
             status=status.HTTP_200_OK,
         )
