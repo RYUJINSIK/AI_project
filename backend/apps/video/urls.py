@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (LearningVideoAllView, LearningVideoCategoryView,
-                    LearningVideoDifficultyView, LearningVideoView)
+                    LearningVideoDifficultyView, LearningVideoView, LearningWordListView)
 
 urlpatterns = [
     path(
@@ -23,5 +23,10 @@ urlpatterns = [
         "category_list/<str:category>",
         LearningVideoCategoryView.as_view(),
         name="list_category"
+    ),
+    path(
+        "random_list/<int:id>",
+        LearningWordListView.as_view(),
+        name="random_list"
     )
 ]
