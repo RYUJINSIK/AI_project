@@ -1,3 +1,4 @@
+from apps.signcenter.models import SignCenter
 import csv
 import os
 import sys
@@ -18,9 +19,7 @@ dotenv.read_dotenv(BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 django.setup()
 
-from apps.signcenter.models import SignCenter
 
-# 문제: 이러면 테이블에 id가 1부터 시작안하고 계속 증가함. (아예 테이블을 버리고 하는 방법이 있어야할듯)
 SignCenter.objects.all().delete()
 
 CSV_PATH_PRODUCTS = 'center.csv'
@@ -29,11 +28,11 @@ with open(CSV_PATH_PRODUCTS, encoding='utf8') as in_file:
     data_reader = csv.DictReader(in_file)
     for row in data_reader:
         center = SignCenter(
-                center_name=row['name'],
-                location=row['location'],
-                phone_num=row['voice_call'],
-                video_phone_num=row['video_call'],
-                lat=row['lat'],
-                lng=row['lng']
-                )
+            center_name=row['name'],
+            location=row['location'],
+            phone_num=row['voice_call'],
+            video_phone_num=row['video_call'],
+            lat=row['lat'],
+            lng=row['lng']
+        )
         center.save()

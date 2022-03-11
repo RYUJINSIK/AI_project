@@ -17,7 +17,7 @@ for i in range(1, 18):
 name, address, voice, video = [], [], [], []
 result = []
 
-for query in querys:    # for query in querys
+for query in querys:
     for page in range(1, 5):
         url = f'http://17nsl.com/franchise/list?wm_area={query}&wm_area2=&wm_area2&text=&page={page}'
         html = requests.get(url).content
@@ -25,11 +25,9 @@ for query in querys:    # for query in querys
 
     for n in soup.select('.mo-hidden + td'):
         name.append(n.text)
-        # print(len(name), name)
 
     for a in soup.find_all(class_='tal'):
         address.append(a.text)
-        # print(len(address), address)
 
     for p in soup.select('.tal + td'):
         p = p.text
@@ -42,12 +40,11 @@ for query in querys:    # for query in querys
             video.append(p)
             voice.append(None)
         else:
-            p = p.replace('전화', '').replace('영통','')
+            p = p.replace('전화', '').replace('영통', '')
             v1, v2 = p.split()
             voice.append(v1)
             video.append(v2)
-        # print(len(voice), voice)
-        # print(len(video), video)
+
 
 for i in range(len(name)):
     result.append([name[i], address[i], voice[i], video[i]])
