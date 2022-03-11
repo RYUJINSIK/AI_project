@@ -258,5 +258,5 @@ def get_medal_name(score):
         점수 에 따른 medal_name을 반환하는 함수
     '''
     medal_id = calc_medal(score)
-    medal_name = MedalType.objects.get(medal_id=medal_id).medal_name
+    medal_name = MedalType.objects.get(id__exact=medal_id).medal_name
     return medal_name
