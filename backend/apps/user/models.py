@@ -84,6 +84,9 @@ class MedalType(models.Model):
 
     medal_name = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.medal_name
+
     class Meata:
         db_table = "medal_type"
 

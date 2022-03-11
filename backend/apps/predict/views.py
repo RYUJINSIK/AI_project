@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from ..core.utils import extract_user_id
 from .models import RecordVideo
 from .serializers import VideoSerializer
-from .utils import (keypoints_labeling, predict_check, predict_score,
-                    video_patch)
+from .utils import (get_medal_name, keypoints_labeling, predict_check,
+                    predict_score, video_patch)
 
 
 class VideoUploadView(GenericAPIView):
@@ -35,7 +35,7 @@ class VideoUploadView(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class VideoPatchView(GenericAPIView):
+class VideoPatchView(APIView):
     '''
         받은 웹캠 영상의 해상도를 변환해주는 API
         user_id : JWT 토큰에서 추출
@@ -50,8 +50,7 @@ class VideoPatchView(GenericAPIView):
             video_patch(video_obj)
         except ValueError:
             return Response(
-                {"변환 실패, 총 61frame 이상의 영상을 가지고 오세요"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         return Response(
             {
@@ -82,12 +81,16 @@ class PredictScoreView(APIView):
         if not keypoints_data:
             return Response(
                 {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
-                status=status.HTTP_501_NOT_IMPLEMENTED,
+                status=status.HTTP_400_BAD_REQUEST,
             )
         predict_data = keypoints_labeling(keypoints_data)
         accuracy = predict_score(predict_data, user_sign)
-
+        score = int(accuracy)
+        medal_name = get_medal_name(score)
         return Response(
-            accuracy,
+            {
+                "score": score,
+                "medal_name": medal_name
+            },
             status=status.HTTP_200_OK,
         )

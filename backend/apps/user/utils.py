@@ -2,10 +2,10 @@ import copy
 
 from django.http import QueryDict
 
-from .models import LearningVideo, MedalType
+from .models import LearningHistory, LearningVideo, MedalType
 
 
-def medal_score(score):
+def calc_medal(score):
     '''
         점수에 맞는 메달을 반환하는 함수
     '''
@@ -23,6 +23,8 @@ def medal_score(score):
 def update_query_dict(request_data, query_obj_list):
     '''
         QueryDict 객체 업데이트 함수
+        불변성을 가지는 QureyDict 객체에
+        Query Object를 추가해 주기 위해서
         query_obj_list : QueryDict 객체 모음
     '''
 
@@ -65,3 +67,20 @@ def response_mypage(learning_list):
             bronze += 1
 
     return learning_rate, gold, silver, bronze, word_list
+
+
+def learning_record_check(user_id, learning_video_id):
+    '''
+        user_id와 현재 학습중인 영상의 id를 받아서
+        사용자가 현재 학습중인 영상에서 점수를 받은
+        기록이 있는지를 확인하는 함수.
+    '''
+
+    objects = LearningHistory.objects.filter(
+        user_id=user_id,
+        learning_video_id=learning_video_id
+    )
+    if objects:
+        return True
+    else:
+        return False
