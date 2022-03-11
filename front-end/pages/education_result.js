@@ -72,7 +72,9 @@ const EducataionResult = () => {
 										variant="contained"
 										style={{ backgroundColor: '#86BEFF', marginLeft: '20px' }}
 									>
-										<span style={{ fontSize: '20px' }}>단어카드 보러가기</span>
+										<span style={{ fontSize: '20px' }}>
+											마이페이지 이동하기
+										</span>
 									</Button>
 								</div>
 							</div>

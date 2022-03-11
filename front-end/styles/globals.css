@@ -73,3 +73,36 @@ input:focus {
 	outline: none;
 	box-shadow: 0 0 0 3px #8ab3ff;
 }
+
+select {
+	width: 150px;
+	padding: 5px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	text-align: center;
+	font-size: 15px;
+}
+
+.radioLabel input[type='radio'] {
+	display: none;
+}
+
+.radioLabel input[type='radio'] + span {
+	display: inline-block;
+	padding: 15px 10px;
+	border: 1px solid #b1b1b1;
+	border-radius: 20px;
+	width: 85%;
+	background-color: #ffffff;
+	text-align: center;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+.radioLabel input[type='radio']:checked + span {
+	background-color: #113a6b;
+	color: #ffffff;
+}

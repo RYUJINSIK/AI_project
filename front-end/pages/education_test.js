@@ -17,8 +17,12 @@ import SendIcon from '@mui/icons-material/Send';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Backdrop from '@mui/material/Backdrop';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 
 const EducataionTest = () => {
+	const router = useRouter();
+
 	const [showData, setShowData] = useState(false);
 	const webcamRef = useRef(null);
 	const [videoBlob, setVideoBlob] = useState(null);
@@ -30,14 +34,17 @@ const EducataionTest = () => {
 	const [data, setData] = useState({});
 
 	useEffect(() => {
-		let videoTest = 'right_eye';
 		axios
-			.get(`${process.env.NEXT_PUBLIC_URL}/video/upload/${videoTest}`, {
-				headers: {
-					Authorization: `Bearer ${getCookie('access_token')}`,
+			.get(
+				`${process.env.NEXT_PUBLIC_URL}/word/upload/${router.query.video_name}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getCookie('access')}`,
+					},
 				},
-			})
+			)
 			.then((response) => {
+				console.log(response);
 				console.log(response.data[0]['video_url']);
 				if (response['status'] === 200) {
 					// console.log(response['data'][0]['video_url']);
@@ -77,7 +84,7 @@ const EducataionTest = () => {
 			data: formData,
 			headers: {
 				'Content-Type': 'multipart/form-data',
-				Authorization: `Bearer ${getCookie('access_token')}`,
+				Authorization: `Bearer ${getCookie('access')}`,
 			},
 		})
 			.then(function (response) {
@@ -96,12 +103,11 @@ const EducataionTest = () => {
 			method: 'patch',
 			url: `${process.env.NEXT_PUBLIC_URL}/predict/change/`,
 			headers: {
-				Authorization: `Bearer ${getCookie('access_token')}`,
+				Authorization: `Bearer ${getCookie('access')}`,
 			},
 		})
 			.then(function (response) {
 				console.log('patch : ', response);
-				setIsLoading(true);
 				getScore();
 			})
 			.catch(function (error) {
@@ -110,11 +116,12 @@ const EducataionTest = () => {
 	};
 
 	const getScore = () => {
+		setIsLoading(true);
 		axios({
 			method: 'get',
-			url: `${process.env.NEXT_PUBLIC_URL}/predict/score/?label=right_eye`,
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/score/labels=${router.query.video_name}`,
 			headers: {
-				Authorization: `Bearer ${getCookie('access_token')}`,
+				Authorization: `Bearer ${getCookie('access')}`,
 			},
 		})
 			.then(function (response) {
@@ -125,6 +132,18 @@ const EducataionTest = () => {
 				console.log(error);
 			});
 	};
+
+	const InfoTooltip = styled(({ className, ...props }) => (
+		<Tooltip {...props} classes={{ popper: className }} />
+	))(({ theme }) => ({
+		[`& .${tooltipClasses.tooltip}`]: {
+			backgroundColor: theme.palette.common.white,
+			color: 'rgba(0, 0, 0, 0.87)',
+			boxShadow: theme.shadows[1],
+			fontSize: 20,
+			maxWidth: 500,
+		},
+	}));
 
 	return (
 		<>
@@ -163,7 +182,7 @@ const EducataionTest = () => {
 										</div>
 										<div style={{ float: 'right', display: 'inline-block' }}>
 											<Chip
-												label="[단어이름]"
+												label={router.query.video_kor}
 												style={{
 													padding: '25px 0px 25px 0px',
 													backgroundColor: '#B3E1FC',
@@ -177,11 +196,11 @@ const EducataionTest = () => {
 										<br />
 										<div style={{ marginTop: '10px' }}>
 											<div className="recordStandby">
-												<video style={CamStyle} controls>
-													<source
-														src={`${process.env.NEXT_PUBLIC_URL}${data}`}
-													/>
-												</video>
+												<video
+													src={`${process.env.NEXT_PUBLIC_URL}${data}`}
+													style={CamStyle}
+													controls
+												></video>
 											</div>
 										</div>
 									</div>
@@ -218,6 +237,21 @@ const EducataionTest = () => {
 													}}
 												/>
 												동작을 따라하는 모습을 녹화해보세요
+												<InfoTooltip
+													title="정확한 채점을 위해 천천히 6초 이상 영상을 촬영해주세요."
+													placement="top"
+												>
+													<Chip
+														label="?"
+														style={{
+															// padding: '25px 0px 25px 0px',
+															backgroundColor: '#A9ACFF',
+															color: '#000',
+															marginLeft: '10px',
+															fontSize: '20px',
+														}}
+													/>
+												</InfoTooltip>
 											</Typography>
 										</div>
 										<div style={{ float: 'right', display: 'inline-block' }}>
