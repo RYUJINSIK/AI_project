@@ -1,12 +1,13 @@
 import os
+import subprocess
 from collections import deque
 from datetime import datetime
 
 import cv2
 import mediapipe as mp
 import numpy as np
-from tensorflow.keras.layers import LSTM, Dense
-from tensorflow.keras.models import Sequential
+from tensorflow.python.keras.layers import LSTM, Dense
+from tensorflow.python.keras.models import Sequential
 
 from apps.user.models import MedalType
 
@@ -16,40 +17,25 @@ from .predlabel import actions, labels
 
 def video_resolution(video_name):
     '''
-        사용자 영상의 해상도를 변경하는 함수
+        ffmpeg가 설치되어 있어야 사용 가능.
+        사용자 영상의 해상도, 확장자, frame을 변경하는 함수.
+        해상도 : 1280 * 720
+        초당 프레임 : 30 frame
+        확장자 : .avi
     '''
+    video_url = os.path.abspath(os.path.join("backend/media", video_name))
+    output_name = video_name.split('.webm')[0]
+    output_url = f'{output_name}.avi'
+    convert_url = os.path.abspath(os.path.join("backend/media", output_name))
 
-    video_url = os.path.join("backend/media/", video_name)
-    cap = cv2.VideoCapture(video_url)
-
-    fourcc = cv2.VideoWriter_fourcc(*"XVID")
-
-    output_name = video_name.split(".webm")[0]
-    output = f"{output_name}.avi"
-
-    out = cv2.VideoWriter(
-        os.path.join("backend/media/", output), fourcc, 30, (1280, 720)
-    )
-
-    frame_cnt = 0
-    while True:
-        ret, frame = cap.read()
-        if ret:
-            b = cv2.resize(
-                frame, (1280, 720), fx=0, fy=0, interpolation=cv2.INTER_CUBIC
-            )
-            out.write(b)
-            frame_cnt += 1
-        else:
-            break
-    if frame_cnt < 61:
+    # ffmpeg 명령어를 shell에서 실행한다.
+    try:
+        subprocess.run(
+            f'ffmpeg -i {video_url} -r 30 {convert_url}', shell=True
+        )
+    except ValueError:
         return False
-
-    cap.release()
-    out.release()
-    cv2.destroyAllWindows()
-
-    return output
+    return output_url
 
 
 def upload_to(instance, filename):

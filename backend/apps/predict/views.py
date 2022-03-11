@@ -50,8 +50,7 @@ class VideoPatchView(APIView):
             video_patch(video_obj)
         except ValueError:
             return Response(
-                {"변환 실패, 총 61frame 이상의 영상을 가지고 오세요"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         return Response(
             {
@@ -82,7 +81,7 @@ class PredictScoreView(APIView):
         if not keypoints_data:
             return Response(
                 {"추론을 진행하기에 영상 길이가 너무 짧습니다"},
-                status=status.HTTP_501_NOT_IMPLEMENTED,
+                status=status.HTTP_400_BAD_REQUEST,
             )
         predict_data = keypoints_labeling(keypoints_data)
         accuracy = predict_score(predict_data, user_sign)
