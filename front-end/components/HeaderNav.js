@@ -7,7 +7,7 @@ import useModal from '../utils/useModal';
 import Cookie from '../utils/cookie';
 // components
 import LoginModal from '../components/LoginModal';
-import SigninModal from '../components/SigninModal';
+import SignInModal from '../components/SignInModal';
 
 // MUI
 import AppBar from '@mui/material/AppBar';

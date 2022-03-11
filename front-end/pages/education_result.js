@@ -46,7 +46,7 @@ const EducataionResult = () => {
 									<span style={{ fontSize: '40px' }}>점수 :</span>
 									<span style={Score}>
 										<RoughNotation type="underline" show="true" strokeWidth="3">
-											100
+											{router.query.score}
 										</RoughNotation>{' '}
 									</span>
 									<span style={{ fontSize: '40px', marginLeft: '10px' }}>

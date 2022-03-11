@@ -106,3 +106,14 @@ select {
 	background-color: #113a6b;
 	color: #ffffff;
 }
+
+.mapTable th {
+	width: 15%;
+	font-size: 25px;
+	text-align: left;
+}
+.mapTable td {
+	width: 60%;
+	font-size: 20px;
+	text-align: left;
+}

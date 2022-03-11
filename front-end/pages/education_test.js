@@ -119,14 +119,24 @@ const EducataionTest = () => {
 		setIsLoading(true);
 		axios({
 			method: 'get',
-			url: `${process.env.NEXT_PUBLIC_URL}/predict/score/labels=${router.query.video_name}`,
+			url: `${process.env.NEXT_PUBLIC_URL}/predict/score/?labels=${router.query.video_name}`,
 			headers: {
 				Authorization: `Bearer ${getCookie('access')}`,
 			},
 		})
 			.then(function (response) {
 				setIsLoading(false);
-				console.log('get : ', response);
+				console.log('get : ', response['data']);
+
+				router.push({
+					pathname: '/education_result',
+					query: {
+						video_id: router.query.video_id,
+						video_name: router.query.video_name,
+						video_kor: router.query.video_kor,
+						score: response['data'],
+					},
+				});
 			})
 			.catch(function (error) {
 				console.log(error);

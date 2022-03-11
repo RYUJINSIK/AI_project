@@ -29,7 +29,6 @@ const WordList = () => {
 					console.log(response['data']);
 					setWordList(response['data']);
 					console.log('ok');
-					console.log(wordList);
 				}
 			})
 			.catch((err) => {
