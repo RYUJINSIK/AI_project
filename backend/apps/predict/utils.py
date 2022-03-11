@@ -26,12 +26,13 @@ def video_resolution(video_name):
     video_url = os.path.abspath(os.path.join("backend/media", video_name))
     output_name = video_name.split('.webm')[0]
     output_url = f'{output_name}.avi'
-    convert_url = os.path.abspath(os.path.join("backend/media", output_name))
+    convert_url = os.path.abspath(os.path.join("backend/media", output_url))
 
     # ffmpeg 명령어를 shell에서 실행한다.
     try:
         subprocess.run(
-            f'ffmpeg -i {video_url} -r 30 {convert_url}', shell=True
+            f'ffmpeg -i {video_url} -vf "scale=1280*720" -r 30 {convert_url} ',
+            shell=True
         )
     except ValueError:
         return False
