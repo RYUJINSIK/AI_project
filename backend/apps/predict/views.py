@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from ..core.utils import extract_user_id
 from .models import RecordVideo
 from .serializers import VideoSerializer
-from .utils import (keypoints_labeling, predict_check, predict_score,
-                    video_patch)
+from .utils import (get_medal_name, keypoints_labeling, predict_check,
+                    predict_score, video_patch)
 
 
 class VideoUploadView(GenericAPIView):
@@ -87,8 +87,11 @@ class PredictScoreView(APIView):
         predict_data = keypoints_labeling(keypoints_data)
         accuracy = predict_score(predict_data, user_sign)
         score = int(accuracy)
-
+        medal_name = get_medal_name(score)
         return Response(
-            {"score": score},
+            {
+                "score": score,
+                "medal_name": medal_name
+            },
             status=status.HTTP_200_OK,
         )

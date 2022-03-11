@@ -8,6 +8,8 @@ import numpy as np
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.models import Sequential
 
+from apps.user.models import MedalType
+
 # actions : 모델이 사용하는 단어, labels : 모델 사용 단어 라벨링
 from .predlabel import actions, labels
 
@@ -250,3 +252,25 @@ def video_patch(video_obj):
     video_obj.video_url = video_name
     video_obj.save()
     return True
+
+
+def calc_medal(score):
+    '''
+        점수에 따른 메달 id를 반환
+    '''
+    if score >= 70:
+        medal_id = 1
+    elif score >= 50:
+        medal_id = 2
+    else:
+        medal_id = 3
+    return medal_id
+
+
+def get_medal_name(score):
+    '''
+        점수 에 따른 medal_name을 반환하는 함수
+    '''
+    medal_id = calc_medal(score)
+    medal_name = MedalType.objects.get(medal_id=medal_id).medal_name
+    return medal_name
