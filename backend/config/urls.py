@@ -20,9 +20,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("api/admin/", admin.site.urls),
     path(
-        "readoc/",
+        "api/readoc/",
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
@@ -31,11 +31,11 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("signcenter/", include("apps.signcenter.urls"), name="signcenter"),
-    path("word/", include("apps.video.urls"), name="learning_word"),
-    path("predict/", include("apps.predict.urls"), name='predict'),
-    path("user/", include("apps.user.urls"), name='user'),
-    path("quiz/", include("apps.quiz.urls"), name='quiz'),
+    path("api/signcenter/", include("apps.signcenter.urls"), name="signcenter"),
+    path("api/video/", include("apps.video.urls"), name="video"),
+    path("api/predict/", include("apps.predict.urls"), name='predict'),
+    path("api/user/", include("apps.user.urls"), name='user'),
+    path("api/quiz/", include("apps.quiz.urls"), name='quiz'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

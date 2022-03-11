@@ -105,10 +105,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://20.120.111.59:8000",
-    "https://20.120.111.59:8000",
     "http://localhost:3000",
-    "https://localhost:3000"
+    "https://localhost:3000",
+    "http://team09.eastus.cloudapp.azure.com",
+    "http://team09.eastus.cloudapp.azure.com:3000",
 ]
 
 
@@ -188,6 +188,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_DIR = os.path.join(BASE_DIR, 'media/static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'media/static')
+print(STATIC_ROOT)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
