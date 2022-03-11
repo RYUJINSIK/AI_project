@@ -33,6 +33,7 @@ with open(CSV_PATH_PRODUCTS, encoding='utf8') as in_file:
                 korean_name=row['korean_name'],
                 video_url=row['video_url'],
                 category=row['category'],
-                difficulty=row['difficulty']
+                difficulty=row['difficulty'],
+                image_url=row['image_url']
                 )
         video.save()
