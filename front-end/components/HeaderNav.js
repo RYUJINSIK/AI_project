@@ -37,28 +37,74 @@ const HeaderForm = () => {
 		closeModal: closeSignin,
 	} = useModal();
 	const [userName, setUserName] = useState(null);
+	const [signinVal, setSigninVal] = useState(null);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertMsg, setAlertMsg] = useState('');
+	const [alertType, setAlertType] = useState('');
 
 	useEffect(() => {
 		setUserName(localStorage.getItem('user'));
-		// console.log(userName);
+		setSigninVal(localStorage.getItem('signin'));
 	}, []);
+
+	useEffect(() => {
+		if (userName !== null) {
+			if (router.pathname === '/') {
+				setAlertMsg(`${userName}님 환영합니다. 😊`);
+				setAlertType('success');
+				setOpenAlert(true);
+			}
+		}
+	}, [userName]);
+
+	useEffect(() => {
+		if (signinVal === 'success') {
+			if (router.pathname === '/') {
+				setAlertMsg(`회원가입이 완료되었습니다. 😀`);
+				setAlertType('success');
+				setOpenAlert(true);
+				setSigninVal(null);
+				localStorage.setItem('signin', 'false');
+			}
+		}
+	}, [signinVal]);
+
+	useEffect(() => {
+		console.log(router);
+	}, [router]);
 
 	const onClickLogout = () => {
 		removeCookie('access');
 		removeCookie('refresh');
 		localStorage.clear();
-		location.reload();
+		setUserName(null);
+		if (router.pathname === '/') {
+			location.reload();
+		} else {
+			router.push('/');
+		}
 	};
-
+	const handleCloseAlert = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenAlert(false);
+	};
 	const onClickMenu = (e) => {
-		if (e.target.value === '수화배우기') {
-			router.push('/wordlist');
-		}
-		if (e.target.value === '수화센터찾기') {
-			router.push('/map');
-		}
-		if (e.target.value === '수화퀴즈') {
-			router.push('/quiz');
+		if (userName !== null) {
+			if (e.target.value === '수화배우기') {
+				router.push('/wordlist');
+			}
+			if (e.target.value === '수화센터찾기') {
+				router.push('/map');
+			}
+			if (e.target.value === '수화퀴즈') {
+				router.push('/quiz');
+			}
+		} else {
+			setAlertMsg('로그인이 필요한 서비스입니다 로그인해주세요 !');
+			setAlertType('warning');
+			setOpenAlert(true);
 		}
 	};
 
@@ -165,6 +211,21 @@ const HeaderForm = () => {
 					</Box>
 				</Toolbar>
 			</AppBar>
+
+			<Snackbar
+				open={openAlert}
+				autoHideDuration={2000}
+				onClose={handleCloseAlert}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<Alert
+					onClose={handleCloseAlert}
+					severity={alertType}
+					sx={{ width: '100%' }}
+				>
+					{alertMsg}
+				</Alert>
+			</Snackbar>
 		</Box>
 	);
 };

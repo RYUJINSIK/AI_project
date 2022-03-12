@@ -142,8 +142,11 @@ const Quiz = () => {
 			}
 			setAlertMsg('정답입니다 !');
 			setAlertType('success');
-			setShowNext(true);
+
 			setOpenAlert(true);
+
+			getNextQuiz();
+			// setShowNext(true);
 		}
 
 		if (quiz[quizNum].answer !== value) {
@@ -217,7 +220,9 @@ const Quiz = () => {
 			{quizExist ? (
 				<div style={mainDiv}>
 					<div style={quizDiv}>
-						<p style={quizTitle}>Quiz. 영상이 설명하는 동작을 맞춰보세요.</p>
+						<p style={quizTitle}>
+							Quiz {quizNum + 1}. 영상이 설명하는 동작을 맞춰보세요.
+						</p>
 						<video
 							src={`${process.env.NEXT_PUBLIC_URL}/${quiz[quizNum].video}`}
 							style={quizVideo}
@@ -354,7 +359,7 @@ const Quiz = () => {
 
 			<Snackbar
 				open={openAlert}
-				autoHideDuration={6000}
+				autoHideDuration={2000}
 				onClose={handleCloseAlert}
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 			>
@@ -382,6 +387,7 @@ const mainDiv = {
 };
 
 const quizDiv = {
+	padding: '15px',
 	textAlign: 'center',
 	minHeight: '80vh',
 	width: '40%',

@@ -57,7 +57,6 @@ const MyPage = () => {
 				console.log(response);
 				if (response['status'] === 200) {
 					console.log(response['data']);
-					console.log('medal ? ', response['data']['bronze']);
 					setMedalCount({
 						...medalCount,
 						bronze: response['data']['bronze'],
@@ -155,41 +154,54 @@ const MyPage = () => {
 						최근 학습한 단어
 					</Typography>
 					<Grid container spacing={1}>
-						{/* {learningData[0][1]} */}
-						{learningData.length &&
+						{learningData.length === 0 ? (
+							<></>
+						) : (
 							learningData.map((data, index) => (
 								<Grid item xs={2}>
 									<Card style={{ width: '90%', backgroundColor: '#F5EFFF' }}>
-										<CardMedia
-											component="img"
-											height="180"
-											image={`${process.env.NEXT_PUBLIC_URL}/${data[2]}`}
-											alt=""
-											key={index}
-										/>
-										<CardContent>
-											<span style={wordTitle}>{data[1]}</span>
-											<span style={wordDifficulty}>
-												점수 : {data[4]}
-												&nbsp; 메달 :{data[3] === 'gold' && <span>🥇</span>}
-												{data[3] === 'silver' && <span>🥈</span>}
-												{data[3] === 'bronze' && <span>🥉</span>}
-											</span>
-										</CardContent>
+										<CardActionArea>
+											<CardMedia
+												component="img"
+												height="180"
+												image={`${process.env.NEXT_PUBLIC_URL}/${data[3]}`}
+												alt={data[2]}
+												key={index}
+												onClick={() => {
+													router.push({
+														pathname: '/education_test',
+														query: {
+															video_id: data[0],
+															video_name: data[1],
+															video_kor: data[2],
+															difficulty: data[4],
+														},
+													});
+												}}
+											/>
+											<CardContent>
+												<span style={wordTitle}>{data[2]}</span>
+												<span style={wordDifficulty}>
+													점수 : {data[6]}
+													&nbsp; 메달 :{data[5] === 'gold' && <span>🥇</span>}
+													{data[5] === 'silver' && <span>🥈</span>}
+													{data[5] === 'bronze' && <span>🥉</span>}
+												</span>
+											</CardContent>
+										</CardActionArea>
 									</Card>
 								</Grid>
-							))}
+							))
+						)}
 					</Grid>
 				</div>
 			</div>
 
 			<Dialog
 				open={dialog}
-				// onClose={handleClose}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				{/* <DialogTitle id="alert-dialog-title">교육 기록이 없습니다.</DialogTitle> */}
 				<DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
 					학습기록이 없습니다. 학습을 먼저 진행해주세요.
 					<Button
