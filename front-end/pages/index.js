@@ -66,7 +66,19 @@ const Main = () => {
 				</div>
 				<div style={flowDiv}>
 					<div style={flowWrap}>
-						<div style={flowTitle1}>학습 순서</div>
+						<div style={flowTitle1}>
+							<img
+								src="images/see.png"
+								style={{
+									width: '200px',
+									height: '200px',
+									marginBottom: '14rem',
+									position: 'absolute',
+									left: '15rem',
+								}}
+							/>
+							학습 순서
+						</div>
 						<div className="container">
 							<div className="box">
 								<div className="icon">01</div>
@@ -75,7 +87,7 @@ const Main = () => {
 									<p>
 										난이도별로 나눠진 신체 · 증상 단어 30개중
 										<br />
-										학습하고싶은 단어를 선택하세요.
+										학습하고싶은 단어를 선택하세요
 									</p>
 								</div>
 							</div>
@@ -114,10 +126,31 @@ const Main = () => {
 						</div>
 					</div>
 				</div>
-
+				<br />
+				<div style={{ width: '100%', textAlign: 'center', fontSize: '30px' }}>
+					📊 학습기록 관리 및 복습까지 한번에
+					<br />
+					<span style={{ fontSize: '20px' }}>
+						학습한 기록을 확인하고, 퀴즈를 통해 배운내용을 복습해보세요
+						<br />
+						집에서 가까운 수화센터의 위치도 확인할 수 있습니다
+					</span>
+				</div>
 				<div style={flowDiv}>
 					<div style={flowWrap}>
-						<div style={flowTitle2}>추가 서비스</div>
+						<div style={flowTitle2}>
+							추가 서비스
+							<img
+								src="images/see2.png"
+								style={{
+									width: '200px',
+									height: '200px',
+									marginBottom: '14rem',
+									position: 'absolute',
+									right: '17rem',
+								}}
+							/>
+						</div>
 						<div className="container">
 							<div className="box2">
 								<div className="icon">01</div>
