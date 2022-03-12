@@ -23,10 +23,6 @@ const LoginModal = (props) => {
 	const [alertMsg, setAlertMsg] = useState('');
 	const [alertType, setAlertType] = useState('');
 
-	const handleClickAlert = () => {
-		setOpenAlert(true);
-	};
-
 	const handleCloseAlert = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
