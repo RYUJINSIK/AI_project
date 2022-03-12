@@ -50,7 +50,7 @@ const Quiz = () => {
 				// getAccesstokenWithRefreshtoken(originalRequest)
 				const { data } = await axios({
 					method: 'post',
-					url: `http://127.0.0.1:8000/user/api/token/refresh/`,
+					url: `http://127.0.0.1:8000/user/token/refresh/`,
 					data: { refresh: refresh_token },
 				});
 				console.log(data['access']);
@@ -107,7 +107,7 @@ const Quiz = () => {
 
 	const getQuiz = (category) => {
 		axios
-			.get(`${process.env.NEXT_PUBLIC_URL}/quiz/choicelist/${category}`, {
+			.get(`${process.env.NEXT_PUBLIC_URL}/quiz/type/${category}`, {
 				headers: {
 					Authorization: `Bearer ${getCookie('access')}`,
 				},
@@ -219,7 +219,7 @@ const Quiz = () => {
 					<div style={quizDiv}>
 						<p style={quizTitle}>Quiz. 영상이 설명하는 동작을 맞춰보세요.</p>
 						<video
-							src={`${process.env.NEXT_PUBLIC_URL}${quiz[quizNum].video}`}
+							src={`${process.env.NEXT_PUBLIC_URL}/${quiz[quizNum].video}`}
 							style={quizVideo}
 							controls
 						></video>

@@ -7,7 +7,7 @@ import useModal from '../utils/useModal';
 import Cookie from '../utils/cookie';
 // components
 import LoginModal from '../components/LoginModal';
-import SigninModal from '../components/SigninModal';
+import SignInModal from '../components/SignInModal';
 
 // MUI
 import AppBar from '@mui/material/AppBar';
@@ -44,8 +44,8 @@ const HeaderForm = () => {
 	}, []);
 
 	const onClickLogout = () => {
-		removeCookie('access_token');
-		removeCookie('refresh_token');
+		removeCookie('access');
+		removeCookie('refresh');
 		localStorage.clear();
 		location.reload();
 	};
@@ -154,7 +154,7 @@ const HeaderForm = () => {
 								</Button>
 
 								{showSignin && (
-									<SigninModal
+									<SignInModal
 										show={showSignin}
 										open={openSignin}
 										close={closeSignin}

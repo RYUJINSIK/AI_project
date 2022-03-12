@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from .models import LearningVideo
 from .serializers import LearningVideoSerializer
+from .utils import random_num
 
 
 class LearningVideoView(APIView):
@@ -65,3 +66,18 @@ class LearningVideoCategoryView(APIView):
         queryset = LearningVideo.objects.filter(category=category)
         serializer = LearningVideoSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LearningWordListView(APIView):
+    '''
+        결과페이지에서 랜덤으로 단어 리스트를 보여주는 API
+    '''
+
+    def get(self, request, id=None):
+        word_id = random_num(id)
+        random_list = []
+        for i in word_id:
+            queryset = LearningVideo.objects.filter(id=i)
+            serializer = LearningVideoSerializer(queryset, many=True)
+            random_list.append(serializer.data[0])
+
+        return Response(random_list, status=status.HTTP_200_OK)
