@@ -4,11 +4,25 @@ import HeaderNav from '../components/HeaderNav';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Main = () => {
 	const router = useRouter();
-	const goMainPage = () => {
-		router.push('/main');
+	const [userName, setUserName] = useState(null);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertMsg, setAlertMsg] = useState('');
+	const [alertType, setAlertType] = useState('');
+
+	useEffect(() => {
+		setUserName(localStorage.getItem('user'));
+	}, []);
+
+	const handleCloseAlert = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenAlert(false);
 	};
 
 	return (
@@ -19,6 +33,7 @@ const Main = () => {
 					<Grid item xs={6} style={mainGrid}>
 						<span
 							style={{ fontSize: '50px', color: 'white', textAlign: 'right' }}
+							className="mainTitle"
 						>
 							<span style={{ fontSize: '60px' }}>마음의 소리</span>
 							<br />
@@ -39,7 +54,15 @@ const Main = () => {
 									boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5)',
 								}}
 								onClick={() => {
-									router.push('/wordlist');
+									if (userName !== null) {
+										router.push('/wordlist');
+									} else {
+										setAlertMsg(
+											'로그인이 필요한 서비스입니다 로그인해주세요 !',
+										);
+										setAlertType('warning');
+										setOpenAlert(true);
+									}
 								}}
 							>
 								수화 배우러가기
@@ -75,7 +98,7 @@ const Main = () => {
 									<p>
 										난이도별로 나눠진 신체 · 증상 단어 30개중
 										<br />
-										학습하고싶은 단어를 선택하세요.
+										학습하고싶은 단어를 선택하세요
 									</p>
 								</div>
 							</div>
@@ -114,7 +137,16 @@ const Main = () => {
 						</div>
 					</div>
 				</div>
-
+				<br />
+				<div style={{ width: '100%', textAlign: 'center', fontSize: '30px' }}>
+					📊 학습기록 관리 및 복습까지 한번에
+					<br />
+					<span style={{ fontSize: '20px' }}>
+						학습한 기록을 확인하고, 퀴즈를 통해 배운내용을 복습해보세요
+						<br />
+						집에서 가까운 수화센터의 위치도 확인할 수 있습니다
+					</span>
+				</div>
 				<div style={flowDiv}>
 					<div style={flowWrap}>
 						<div style={flowTitle2}>추가 서비스</div>
@@ -167,6 +199,21 @@ const Main = () => {
 					</div>
 				</div>
 			</div>
+
+			<Snackbar
+				open={openAlert}
+				autoHideDuration={2000}
+				onClose={handleCloseAlert}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<Alert
+					onClose={handleCloseAlert}
+					severity={alertType}
+					sx={{ width: '100%' }}
+				>
+					{alertMsg}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

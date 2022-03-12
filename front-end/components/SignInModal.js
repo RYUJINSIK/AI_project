@@ -123,8 +123,6 @@ const LoginModal = (props) => {
 
 			return;
 		}
-
-		console.log(user);
 		postSignin(user);
 	};
 
@@ -133,7 +131,7 @@ const LoginModal = (props) => {
 			return true;
 		}
 	}
-	// parameter를 명확하게, user 정보를 세분화해서 전달(데이터가 적다면) / 데이터가 많을땐 객체그대로 보내지만, 문서화 필수
+
 	const postSignin = async (user) => {
 		axios
 			.post(`${process.env.NEXT_PUBLIC_URL}/user/register/`, {
@@ -143,13 +141,12 @@ const LoginModal = (props) => {
 				password2: user.passwordCheck,
 			})
 			.then((response) => {
-				console.log(response);
 				if (response['status'] === 201) {
-					console.log('signin!');
 					setAlertMsg('회원가입이 완료되었습니다.');
 					setAlertType('success');
+					localStorage.setItem('signin', 'success');
 					close();
-					router.push('/');
+					location.reload();
 				}
 			})
 			.catch((err) => {
@@ -159,13 +156,10 @@ const LoginModal = (props) => {
 			});
 	};
 
-	// output : return data, if error : return err
 	const idCheck = async (id) => {
 		return axios
 			.post(`${process.env.NEXT_PUBLIC_URL}/user/idchk/`, { email: user.id })
 			.then((response) => {
-				console.log(response);
-				console.log(response['status']);
 				if (response['status'] === 200) {
 					setAlertMsg('사용가능한 아이디입니다.');
 					setAlertType('success');

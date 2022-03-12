@@ -135,16 +135,19 @@ const Quiz = () => {
         }
     };
 
-    const answerCheck = (value) => {
-        if (quiz[quizNum].answer === value) {
-            if (tryCount === 1) {
-                setCollectCount(collectCount + 1);
-            }
-            setAlertMsg('정답입니다 !');
-            setAlertType('success');
-            setShowNext(true);
-            setOpenAlert(true);
-        }
+	const answerCheck = (value) => {
+		if (quiz[quizNum].answer === value) {
+			if (tryCount === 1) {
+				setCollectCount(collectCount + 1);
+			}
+			setAlertMsg('정답입니다 !');
+			setAlertType('success');
+
+			setOpenAlert(true);
+
+			getNextQuiz();
+			// setShowNext(true);
+		}
 
         if (quiz[quizNum].answer !== value) {
             setTryCount(tryCount + 1);
@@ -172,68 +175,70 @@ const Quiz = () => {
         }
     };
 
-    return (
-        <>
-            <HeaderNav />
-            <br />
-            <br />
-            <Dialog open={dialog}>
-                <DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
-                    수화퀴즈 주제를 선택해주세요.
-                    <br />
-                    <Button
-                        variant="contained"
-                        style={{
-                            fontSize: '20px',
-                            width: '45%',
-                            marginRight: '10px',
-                            backgroundColor: '#C1E1FF',
-                            color: 'black',
-                        }}
-                        onClick={() => {
-                            getQuiz(1);
-                            setDialog(false);
-                        }}
-                    >
-                        신체
-                    </Button>
-                    <Button
-                        variant="contained"
-                        style={{
-                            fontSize: '20px',
-                            width: '45%',
-                            backgroundColor: '#C1E1FF',
-                            color: 'black',
-                        }}
-                        onClick={() => {
-                            getQuiz(2);
-                            setDialog(false);
-                        }}
-                    >
-                        증상
-                    </Button>
-                </DialogContent>
-            </Dialog>
-            {quizExist ? (
-                <div style={mainDiv}>
-                    <div style={quizDiv}>
-                        <p style={quizTitle}>Quiz. 영상이 설명하는 동작을 맞춰보세요.</p>
-                        <video
-                            src={`${process.env.NEXT_PUBLIC_STATIC_URL}/media/${quiz[quizNum].video}`}
-                            style={quizVideo}
-                            controls
-                        ></video>
-                        <br />
-                        <div>
-                            <label className="radioLabel">
-                                <input
-                                    type="radio"
-                                    name="quiz"
-                                    value={quiz[quizNum].choice_text[0]}
-                                />
-                                <span>{quiz[quizNum].choice_text[0]}</span>
-                            </label>
-                            <br />
+	return (
+		<>
+			<HeaderNav />
+			<br />
+			<br />
+			<Dialog open={dialog}>
+				<DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
+					수화퀴즈 주제를 선택해주세요.
+					<br />
+					<Button
+						variant="contained"
+						style={{
+							fontSize: '20px',
+							width: '45%',
+							marginRight: '10px',
+							backgroundColor: '#C1E1FF',
+							color: 'black',
+						}}
+						onClick={() => {
+							getQuiz(1);
+							setDialog(false);
+						}}
+					>
+						신체
+					</Button>
+					<Button
+						variant="contained"
+						style={{
+							fontSize: '20px',
+							width: '45%',
+							backgroundColor: '#C1E1FF',
+							color: 'black',
+						}}
+						onClick={() => {
+							getQuiz(2);
+							setDialog(false);
+						}}
+					>
+						증상
+					</Button>
+				</DialogContent>
+			</Dialog>
+			{quizExist ? (
+				<div style={mainDiv}>
+					<div style={quizDiv}>
+						<p style={quizTitle}>
+							Quiz {quizNum + 1}. 영상이 설명하는 동작을 맞춰보세요.
+						</p>
+						<video
+							src={`${process.env.NEXT_PUBLIC_STATIC_URL}/media/${quiz[quizNum].video}`}
+							style={quizVideo}
+							controls
+						></video>
+						<br />
+						<div>
+							<label className="radioLabel">
+								<input
+									type="radio"
+									name="quiz"
+									value={quiz[quizNum].choice_text[0]}
+								/>
+								<span>{quiz[quizNum].choice_text[0]}</span>
+							</label>
+							<br />
 
                             <label className="radioLabel">
                                 <input
@@ -352,6 +357,7 @@ const Quiz = () => {
                 </div>
             )}
 
+<<<<<<< HEAD
             <Snackbar
                 open={openAlert}
                 autoHideDuration={6000}
@@ -368,6 +374,24 @@ const Quiz = () => {
             </Snackbar>
         </>
     );
+=======
+			<Snackbar
+				open={openAlert}
+				autoHideDuration={2000}
+				onClose={handleCloseAlert}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+			>
+				<Alert
+					onClose={handleCloseAlert}
+					severity={alertType}
+					sx={{ width: '100%' }}
+				>
+					{alertMsg}
+				</Alert>
+			</Snackbar>
+		</>
+	);
+>>>>>>> frontend-sprint
 };
 
 export default Quiz;
@@ -382,12 +406,22 @@ const mainDiv = {
 };
 
 const quizDiv = {
+<<<<<<< HEAD
     textAlign: 'center',
     minHeight: '80vh',
     width: '40%',
     backgroundColor: '#fff',
     boxShadow: '0 5px 15px rgba(0,0,0,.1)',
     borderRadius: '20px',
+=======
+	padding: '15px',
+	textAlign: 'center',
+	minHeight: '80vh',
+	width: '40%',
+	backgroundColor: '#fff',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
+	borderRadius: '20px',
+>>>>>>> frontend-sprint
 };
 
 const quizTitle = {

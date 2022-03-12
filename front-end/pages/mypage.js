@@ -45,169 +45,182 @@ const MyPage = () => {
         gold: 0,
     });
 
-    useEffect(() => {
-        setUserName(localStorage.getItem('user'));
-        axios
-            .get(`${process.env.NEXT_PUBLIC_URL}/user/mypage/`, {
-                headers: {
-                    Authorization: `Bearer ${getCookie('access')}`,
-                },
-            })
-            .then((response) => {
-                console.log(response);
-                if (response['status'] === 200) {
-                    console.log(response['data']);
-                    console.log('medal ? ', response['data']['bronze']);
-                    setMedalCount({
-                        ...medalCount,
-                        bronze: response['data']['bronze'],
-                        silver: response['data']['silver'],
-                        gold: response['data']['gold'],
-                    });
-                    setProgress(
-                        Math.ceil((response['data']['learning_rate'] / 30) * 100),
-                    );
-                    setLearningData(response['data']['recent_learning']);
-                }
-                if (response['status'] === 204) {
-                    console.log('기록없음');
-                    setDialog(true);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+	useEffect(() => {
+		setUserName(localStorage.getItem('user'));
+		axios
+			.get(`${process.env.NEXT_PUBLIC_URL}/user/mypage/`, {
+				headers: {
+					Authorization: `Bearer ${getCookie('access')}`,
+				},
+			})
+			.then((response) => {
+				console.log(response);
+				if (response['status'] === 200) {
+					console.log(response['data']);
+					setMedalCount({
+						...medalCount,
+						bronze: response['data']['bronze'],
+						silver: response['data']['silver'],
+						gold: response['data']['gold'],
+					});
+					setProgress(
+						Math.ceil((response['data']['learning_rate'] / 30) * 100),
+					);
+					setLearningData(response['data']['recent_learning']);
+				}
+				if (response['status'] === 204) {
+					console.log('기록없음');
+					setDialog(true);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
-    return (
-        <>
-            <HeaderNav />
-            <br />
-            <br />
-            <div style={mainDiv}>
-                <div style={userInfoDiv}>
-                    <Grid container spacing={0}>
-                        <Grid item xs={3}>
-                            <div style={medalDiv}>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="3">
-                                                <Chip
-                                                    label={`${userName !== null
-                                                        ? userName.replace(/\"/gi, '')
-                                                        : ''
-                                                        }님 보유 메달`}
-                                                    style={medalTitle}
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="/images/gold-medal.png" style={medalSize} />
-                                            </td>
-                                            <td>
-                                                <img src="/images/silver-medal.png" style={medalSize} />
-                                            </td>
-                                            <td>
-                                                <img src="/images/bronze-medal.png" style={medalSize} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <Chip
-                                                    label={`${medalCount.gold}개`}
-                                                    style={medalText}
-                                                />
-                                            </td>
-                                            <td>
-                                                <Chip
-                                                    label={`${medalCount.silver}개`}
-                                                    style={medalText}
-                                                />
-                                            </td>
-                                            <td>
-                                                <Chip
-                                                    label={`${medalCount.bronze}개`}
-                                                    style={medalText}
-                                                />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <div style={progressDiv}>
-                                <Typography variant="h5" component="div" gutterBottom>
-                                    학습진행률 : {progress}%
-                                </Typography>
-                                <BorderLinearProgress variant="determinate" value={progress} />
-                            </div>
-                        </Grid>
-                    </Grid>
-                </div>
-                <br />
-                <br />
-                <div style={cardDiv}>
-                    <Typography variant="h4" component="div" gutterBottom>
-                        최근 학습한 단어
-                    </Typography>
-                    <Grid container spacing={1}>
-                        {/* {learningData[0][1]} */}
-                        {learningData.length &&
-                            learningData.map((data, index) => (
-                                <Grid item xs={2}>
-                                    <Card style={{ width: '90%', backgroundColor: '#F5EFFF' }}>
-                                        <CardMedia
-                                            component="img"
-                                            height="180"
-                                            image={`${process.env.NEXT_PUBLIC_STATIC_URL}/media/${data[2]}`}
-                                            alt=""
-                                            key={index}
-                                        />
-                                        <CardContent>
-                                            <span style={wordTitle}>{data[1]}</span>
-                                            <span style={wordDifficulty}>
-                                                점수 : {data[4]}
-                                                &nbsp; 메달 :{data[3] === 'gold' && <span>🥇</span>}
-                                                {data[3] === 'silver' && <span>🥈</span>}
-                                                {data[3] === 'bronze' && <span>🥉</span>}
-                                            </span>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))}
-                    </Grid>
-                </div>
-            </div>
+	return (
+		<>
+			<HeaderNav />
+			<br />
+			<br />
+			<div style={mainDiv}>
+				<div style={userInfoDiv}>
+					<Grid container spacing={0}>
+						<Grid item xs={3}>
+							<div style={medalDiv}>
+								<table>
+									<tbody>
+										<tr>
+											<td colspan="3">
+												<Chip
+													label={`${
+														userName !== null
+															? userName.replace(/\"/gi, '')
+															: ''
+													}님 보유 메달`}
+													style={medalTitle}
+												/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="/images/gold-medal.png" style={medalSize} />
+											</td>
+											<td>
+												<img src="/images/silver-medal.png" style={medalSize} />
+											</td>
+											<td>
+												<img src="/images/bronze-medal.png" style={medalSize} />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<Chip
+													label={`${medalCount.gold}개`}
+													style={medalText}
+												/>
+											</td>
+											<td>
+												<Chip
+													label={`${medalCount.silver}개`}
+													style={medalText}
+												/>
+											</td>
+											<td>
+												<Chip
+													label={`${medalCount.bronze}개`}
+													style={medalText}
+												/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</Grid>
+						<Grid item xs={9}>
+							<div style={progressDiv}>
+								<Typography variant="h5" component="div" gutterBottom>
+									학습진행률 : {progress}%
+								</Typography>
+								<BorderLinearProgress variant="determinate" value={progress} />
+							</div>
+						</Grid>
+					</Grid>
+				</div>
+				<br />
+				<br />
+				<div style={cardDiv}>
+					<Typography variant="h4" component="div" gutterBottom>
+						최근 학습한 단어
+					</Typography>
+					<Grid container spacing={1}>
+						{learningData.length === 0 ? (
+							<></>
+						) : (
+							learningData.map((data, index) => (
+								<Grid item xs={2}>
+									<Card style={{ width: '90%', backgroundColor: '#F5EFFF' }}>
+										<CardActionArea>
+											<CardMedia
+												component="img"
+												height="180"
+												image={`${process.env.NEXT_PUBLIC_STATIC_URL}/${data[3]}`}
+												alt={data[2]}
+												key={index}
+												onClick={() => {
+													router.push({
+														pathname: '/education_test',
+														query: {
+															video_id: data[0],
+															video_name: data[1],
+															video_kor: data[2],
+															difficulty: data[4],
+														},
+													});
+												}}
+											/>
+											<CardContent>
+												<span style={wordTitle}>{data[2]}</span>
+												<span style={wordDifficulty}>
+													점수 : {data[6]}
+													&nbsp; 메달 :{data[5] === 'gold' && <span>🥇</span>}
+													{data[5] === 'silver' && <span>🥈</span>}
+													{data[5] === 'bronze' && <span>🥉</span>}
+												</span>
+											</CardContent>
+										</CardActionArea>
+									</Card>
+								</Grid>
+							))
+						)}
+					</Grid>
+				</div>
+			</div>
 
-            <Dialog
-                open={dialog}
-                // onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                {/* <DialogTitle id="alert-dialog-title">교육 기록이 없습니다.</DialogTitle> */}
-                <DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
-                    학습기록이 없습니다. 학습을 먼저 진행해주세요.
-                    <Button
-                        variant="contained"
-                        style={{
-                            fontSize: '20px',
-                            backgroundColor: '#C1E1FF',
-                            color: 'black',
-                        }}
-                        onClick={() => {
-                            router.push('/wordlist');
-                        }}
-                    >
-                        수화 배우러가기
-                    </Button>
-                </DialogContent>
-            </Dialog>
-        </>
-    );
+			<Dialog
+				open={dialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogContent style={{ fontSize: '30px', textAlign: 'center' }}>
+					학습기록이 없습니다. 학습을 먼저 진행해주세요.
+					<Button
+						variant="contained"
+						style={{
+							fontSize: '20px',
+							backgroundColor: '#C1E1FF',
+							color: 'black',
+						}}
+						onClick={() => {
+							router.push('/wordlist');
+						}}
+					>
+						수화 배우러가기
+					</Button>
+				</DialogContent>
+			</Dialog>
+		</>
+	);
 };
 
 export default MyPage;
