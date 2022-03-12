@@ -4,11 +4,25 @@ import HeaderNav from '../components/HeaderNav';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Main = () => {
 	const router = useRouter();
-	const goMainPage = () => {
-		router.push('/main');
+	const [userName, setUserName] = useState(null);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertMsg, setAlertMsg] = useState('');
+	const [alertType, setAlertType] = useState('');
+
+	useEffect(() => {
+		setUserName(localStorage.getItem('user'));
+	}, []);
+
+	const handleCloseAlert = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenAlert(false);
 	};
 
 	return (
@@ -19,6 +33,7 @@ const Main = () => {
 					<Grid item xs={6} style={mainGrid}>
 						<span
 							style={{ fontSize: '50px', color: 'white', textAlign: 'right' }}
+							className="mainTitle"
 						>
 							<span style={{ fontSize: '60px' }}>마음의 소리</span>
 							<br />
@@ -39,7 +54,15 @@ const Main = () => {
 									boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5)',
 								}}
 								onClick={() => {
-									router.push('/wordlist');
+									if (userName !== null) {
+										router.push('/wordlist');
+									} else {
+										setAlertMsg(
+											'로그인이 필요한 서비스입니다 로그인해주세요 !',
+										);
+										setAlertType('warning');
+										setOpenAlert(true);
+									}
 								}}
 							>
 								수화 배우러가기
@@ -66,19 +89,7 @@ const Main = () => {
 				</div>
 				<div style={flowDiv}>
 					<div style={flowWrap}>
-						<div style={flowTitle1}>
-							<img
-								src="images/see.png"
-								style={{
-									width: '200px',
-									height: '200px',
-									marginBottom: '14rem',
-									position: 'absolute',
-									left: '15rem',
-								}}
-							/>
-							학습 순서
-						</div>
+						<div style={flowTitle1}>학습 순서</div>
 						<div className="container">
 							<div className="box">
 								<div className="icon">01</div>
@@ -138,19 +149,7 @@ const Main = () => {
 				</div>
 				<div style={flowDiv}>
 					<div style={flowWrap}>
-						<div style={flowTitle2}>
-							추가 서비스
-							<img
-								src="images/see2.png"
-								style={{
-									width: '200px',
-									height: '200px',
-									marginBottom: '14rem',
-									position: 'absolute',
-									right: '17rem',
-								}}
-							/>
-						</div>
+						<div style={flowTitle2}>추가 서비스</div>
 						<div className="container">
 							<div className="box2">
 								<div className="icon">01</div>
@@ -200,6 +199,21 @@ const Main = () => {
 					</div>
 				</div>
 			</div>
+
+			<Snackbar
+				open={openAlert}
+				autoHideDuration={2000}
+				onClose={handleCloseAlert}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<Alert
+					onClose={handleCloseAlert}
+					severity={alertType}
+					sx={{ width: '100%' }}
+				>
+					{alertMsg}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };
