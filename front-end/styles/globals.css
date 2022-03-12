@@ -1,12 +1,5 @@
 /* Global Font */
 @font-face {
-	font-family: 'GangwonEduHyeonokT_OTFMediumA';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduHyeonokT_OTFMediumA.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
 	font-family: 'GangwonEdu_OTFBoldA';
 	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
 		format('woff');
@@ -23,12 +16,20 @@ body,
 }
 
 body {
-	height: 100vh;
-	background-image: url('/images/bgimg.svg');
+	height: 100%;
+	/* background-image: url('/images/bgimg.svg'); */
+	background-color: #f9ecff;
 	background-repeat: no-repeat;
-	background-size: cover;
+	/* background-size: cover; */
 	-webkit-backdrop-filter: blur(30px);
 	backdrop-filter: blur(30px);
+}
+
+.mainDiv {
+	height: 100vh;
+	background-image: url('/images/main-background.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .recordStandby {
@@ -105,4 +106,208 @@ select {
 .radioLabel input[type='radio']:checked + span {
 	background-color: #113a6b;
 	color: #ffffff;
+}
+
+.mapTable th {
+	width: 15%;
+	font-size: 25px;
+	text-align: left;
+}
+.mapTable td {
+	width: 60%;
+	font-size: 20px;
+	text-align: left;
+}
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+.container .box {
+	position: relative;
+	width: 350px;
+	padding: 40px;
+	background: #fff;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	margin: 20px;
+	box-sizing: border-box;
+	overflow: hidden;
+	text-align: center;
+}
+.container .box:before {
+	content: '';
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.2);
+	z-index: 2;
+}
+
+.container .box .icon {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	color: #fff;
+	background: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	border-radius: 50%;
+	font-size: 40px;
+	font-weight: 700;
+	transition: 1s;
+}
+
+.container .box:nth-child(1) .icon {
+	box-shadow: 0 0 0 0 #e91e63;
+	background: #e91e63;
+}
+
+.container .box:nth-child(1):hover .icon {
+	box-shadow: 0 0 0 400px #e91e63;
+}
+.container .box:nth-child(2) .icon {
+	box-shadow: 0 0 0 0 #209b61;
+	background: #209b61;
+}
+
+.container .box:nth-child(2):hover .icon {
+	box-shadow: 0 0 0 400px #209b61;
+}
+.container .box:nth-child(3) .icon {
+	box-shadow: 0 0 0 0 #6e46ff;
+	background: #6e46ff;
+}
+
+.container .box:nth-child(3):hover .icon {
+	box-shadow: 0 0 0 400px #6e46ff;
+}
+
+.container .box:nth-child(4) .icon {
+	box-shadow: 0 0 0 0 #ff41d0;
+	background: #ff41d0;
+}
+
+.container .box:nth-child(4):hover .icon {
+	box-shadow: 0 0 0 400px #ff41d0;
+}
+
+.container .box .content {
+	position: relative;
+	z-index: 1;
+	transition: 0.5s;
+}
+
+.container .box:hover .content {
+	color: #fff;
+}
+
+.container .box .content h3 {
+	font-size: 20px;
+	margin: 10px 0;
+	padding: 0;
+}
+
+.container .box .content p {
+	margin: 0;
+	padding: 0;
+}
+
+/* ---------------------- */
+.container .box2 {
+	position: relative;
+	width: 350px;
+	padding: 40px;
+	background: #fff;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	margin: 20px;
+	box-sizing: border-box;
+	overflow: hidden;
+	text-align: center;
+}
+.container .box2:before {
+	content: '';
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.2);
+	z-index: 2;
+}
+
+.container .box2 .icon {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	color: #fff;
+	background: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	border-radius: 50%;
+	font-size: 40px;
+	font-weight: 700;
+	transition: 1s;
+}
+
+.container .box2:nth-child(1) .icon {
+	box-shadow: 0 0 0 0 #ffb413;
+	background: #ffb413;
+}
+
+.container .box2:nth-child(1):hover .icon {
+	box-shadow: 0 0 0 400px #ffb413;
+}
+.container .box2:nth-child(2) .icon {
+	box-shadow: 0 0 0 0 #2334ce;
+	background: #2334ce;
+}
+
+.container .box2:nth-child(2):hover .icon {
+	box-shadow: 0 0 0 400px #2334ce;
+}
+.container .box2:nth-child(3) .icon {
+	box-shadow: 0 0 0 0 #414141;
+	background: #414141;
+}
+
+.container .box2:nth-child(3):hover .icon {
+	box-shadow: 0 0 0 400px #414141;
+}
+
+.container .box2:nth-child(4) .icon {
+	box-shadow: 0 0 0 0 #ff3737;
+	background: #ff3737;
+}
+
+.container .box2:nth-child(4):hover .icon {
+	box-shadow: 0 0 0 400px #ff3737;
+}
+
+.container .box2 .content {
+	position: relative;
+	z-index: 1;
+	transition: 0.5s;
+}
+
+.container .box2:hover .content {
+	color: #fff;
+}
+
+.container .box2 .content h3 {
+	font-size: 20px;
+	margin: 10px 0;
+	padding: 0;
+}
+
+.container .box2 .content p {
+	margin: 0;
+	padding: 0;
 }
