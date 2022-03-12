@@ -9,11 +9,12 @@ poetry.lock
 *.h5
 .static_root
 poetry.lock
+docker
 
 # --------------------------------------------------
 
 # Frontend
-
+package-lock.json
 # dependencies
 node_modules/
 .pnp/

@@ -32,7 +32,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("api/signcenter/", include("apps.signcenter.urls"), name="signcenter"),
-    path("api/video/", include("apps.video.urls"), name="video"),
+    path("api/word/", include("apps.video.urls"), name="learning_word"),
     path("api/predict/", include("apps.predict.urls"), name='predict'),
     path("api/user/", include("apps.user.urls"), name='user'),
     path("api/quiz/", include("apps.quiz.urls"), name='quiz'),

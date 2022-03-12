@@ -105,7 +105,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://20.120.111.59:8000",
+    "https://20.120.111.59:8000",
     "http://localhost:3000",
+    "https://localhost:3000",
     "https://localhost:3000",
     "http://team09.eastus.cloudapp.azure.com",
     "http://team09.eastus.cloudapp.azure.com:3000",

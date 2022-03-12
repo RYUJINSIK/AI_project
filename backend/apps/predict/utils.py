@@ -23,15 +23,15 @@ def video_resolution(video_name):
         초당 프레임 : 30 frame
         확장자 : .avi
     '''
-    video_url = os.path.abspath(os.path.join("backend/media", video_name))
+    video_url = os.path.abspath(os.path.join("media", video_name))
     output_name = video_name.split('.webm')[0]
     output_url = f'{output_name}.avi'
-    convert_url = os.path.abspath(os.path.join("backend/media", output_name))
+    convert_url = os.path.abspath(os.path.join("media", output_url))
 
     # ffmpeg 명령어를 shell에서 실행한다.
     try:
         subprocess.run(
-            f'ffmpeg -i {video_url} -r 30 {convert_url}', shell=True
+            f'ffmpeg -i {video_url} -vf "scale=1280*720" -r 30 {convert_url}', shell=True
         )
     except ValueError:
         return False
@@ -130,6 +130,7 @@ def make_model():
         metrics=["categorical_accuracy"],
     )
 
+    # path = os.path.abspath(os.path.join('project-template/backend', os.environ.get("MODEL_NAME")))
     model.load_weights(os.environ.get("MODEL_NAME"))
 
     return model
@@ -141,7 +142,10 @@ def predict_check(video_url):
         추론에 필요한 길이의 영상인지를 확인하는 함수
     '''
 
-    video = "backend/media/" + video_url
+    # video = os.path.abspath(os.path.join('project-template/backend', video_url))
+    video = os.path.abspath(os.path.join('media', video_url))
+    # video = os.path.abspath(video_url)
+
     cap = cv2.VideoCapture(video)  # 프레임 추출하는 함수 호출
 
     mp_holistic = mp.solutions.holistic  # mediapipe model 선언
