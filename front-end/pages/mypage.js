@@ -35,10 +35,18 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 const MyPage = () => {
 	const router = useRouter();
-	const [progress, setProgress] = useState(10);
+	const [progress, setProgress] = useState(0);
 	const [dialog, setDialog] = useState(false);
+	const [userName, setUserName] = useState(null);
+	const [learningData, setLearningData] = useState([]);
+	const [medalCount, setMedalCount] = useState({
+		bronze: 0,
+		silver: 0,
+		gold: 0,
+	});
 
 	useEffect(() => {
+		setUserName(localStorage.getItem('user'));
 		axios
 			.get(`${process.env.NEXT_PUBLIC_URL}/user/mypage/`, {
 				headers: {
@@ -49,6 +57,17 @@ const MyPage = () => {
 				console.log(response);
 				if (response['status'] === 200) {
 					console.log(response['data']);
+					console.log('medal ? ', response['data']['bronze']);
+					setMedalCount({
+						...medalCount,
+						bronze: response['data']['bronze'],
+						silver: response['data']['silver'],
+						gold: response['data']['gold'],
+					});
+					setProgress(
+						Math.ceil((response['data']['learning_rate'] / 30) * 100),
+					);
+					setLearningData(response['data']['recent_learning']);
 				}
 				if (response['status'] === 204) {
 					console.log('기록없음');
@@ -74,7 +93,14 @@ const MyPage = () => {
 									<tbody>
 										<tr>
 											<td colspan="3">
-												<Chip label="ㅇㅇㅇ님 보유 메달" style={medalTitle} />
+												<Chip
+													label={`${
+														userName !== null
+															? userName.replace(/\"/gi, '')
+															: ''
+													}님 보유 메달`}
+													style={medalTitle}
+												/>
 											</td>
 										</tr>
 										<tr>
@@ -90,13 +116,22 @@ const MyPage = () => {
 										</tr>
 										<tr>
 											<td>
-												<Chip label="5개" style={medalText} />
+												<Chip
+													label={`${medalCount.gold}개`}
+													style={medalText}
+												/>
 											</td>
 											<td>
-												<Chip label="3개" style={medalText} />
+												<Chip
+													label={`${medalCount.silver}개`}
+													style={medalText}
+												/>
 											</td>
 											<td>
-												<Chip label="1개" style={medalText} />
+												<Chip
+													label={`${medalCount.bronze}개`}
+													style={medalText}
+												/>
 											</td>
 										</tr>
 									</tbody>
@@ -106,9 +141,9 @@ const MyPage = () => {
 						<Grid item xs={9}>
 							<div style={progressDiv}>
 								<Typography variant="h5" component="div" gutterBottom>
-									학습진행률 : 00%
+									학습진행률 : {progress}%
 								</Typography>
-								<BorderLinearProgress variant="determinate" value={80} />
+								<BorderLinearProgress variant="determinate" value={progress} />
 							</div>
 						</Grid>
 					</Grid>
@@ -117,31 +152,33 @@ const MyPage = () => {
 				<br />
 				<div style={cardDiv}>
 					<Typography variant="h4" component="div" gutterBottom>
-						최근 교육한 단어
+						최근 학습한 단어
 					</Typography>
 					<Grid container spacing={1}>
-						<Grid item xs={2}>
-							<Card style={{ width: '90%' }}>
-								<CardActionArea>
-									<CardMedia
-										component="img"
-										height="140"
-										image="/images/example.png"
-										alt=""
-									/>
-									<CardContent>
-										<Typography gutterBottom variant="h5" component="div">
-											안녕안녕
-											<br />
-											<span style={{ fontSize: '20px' }}>난이도 :</span>
-											<span style={{ fontSize: '20px', marginLeft: '10px' }}>
-												분류 :
+						{/* {learningData[0][1]} */}
+						{learningData.length &&
+							learningData.map((data, index) => (
+								<Grid item xs={2}>
+									<Card style={{ width: '90%', backgroundColor: '#F5EFFF' }}>
+										<CardMedia
+											component="img"
+											height="180"
+											image={`${process.env.NEXT_PUBLIC_URL}/${data[2]}`}
+											alt=""
+											key={index}
+										/>
+										<CardContent>
+											<span style={wordTitle}>{data[1]}</span>
+											<span style={wordDifficulty}>
+												점수 : {data[4]}
+												&nbsp; 메달 :{data[3] === 'gold' && <span>🥇</span>}
+												{data[3] === 'silver' && <span>🥈</span>}
+												{data[3] === 'bronze' && <span>🥉</span>}
 											</span>
-										</Typography>
-									</CardContent>
-								</CardActionArea>
-							</Card>
-						</Grid>
+										</CardContent>
+									</Card>
+								</Grid>
+							))}
 					</Grid>
 				</div>
 			</div>
@@ -244,17 +281,24 @@ const medalSize = {
 	width: '65px',
 	height: '65px',
 };
-
-const gradeDiv = {
-	marginLeft: '20px',
-	backgroundColor: '#DADADA',
+const wordTitle = {
+	fontSize: '20px',
+	float: 'left',
+	paddingLeft: '10px',
+	paddingRight: '10px',
+	marginBottom: '15px',
+	backgroundColor: '#B5D5FF',
 	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
-	width: '500px',
-	height: '200px',
 	borderRadius: '20px',
-	textAlign: 'center',
-	display: 'flex',
-	flexDirection: 'column',
-	justifyContent: 'center',
-	alignItems: 'center',
+};
+
+const wordDifficulty = {
+	fontSize: '20px',
+	float: 'right',
+	paddingLeft: '10px',
+	paddingRight: '10px',
+	marginBottom: '5px',
+	backgroundColor: '#fff',
+	boxShadow: '0 5px 15px rgba(0,0,0,.1)',
+	borderRadius: '20px',
 };

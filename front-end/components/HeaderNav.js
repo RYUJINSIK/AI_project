@@ -44,8 +44,8 @@ const HeaderForm = () => {
 	}, []);
 
 	const onClickLogout = () => {
-		removeCookie('access_token');
-		removeCookie('refresh_token');
+		removeCookie('access');
+		removeCookie('refresh');
 		localStorage.clear();
 		location.reload();
 	};
@@ -154,7 +154,7 @@ const HeaderForm = () => {
 								</Button>
 
 								{showSignin && (
-									<SigninModal
+									<SignInModal
 										show={showSignin}
 										open={openSignin}
 										close={closeSignin}

@@ -180,7 +180,7 @@ const mainDiv = {
 	textAlign: 'center',
 	float: 'center',
 	padding: '30px',
-	minHeight: '80vh',
+	minHeight: '75vh',
 	width: '90%',
 	display: 'flex',
 	flexDirection: 'column',
