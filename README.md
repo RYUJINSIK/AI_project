@@ -89,7 +89,7 @@
 
 - 백엔드 : Django, Python, Tensorflow
 
-- 인공지능 : Mediapipe, Pandas
+- 인공지능 : Mediapipe, Pandas, Tensorflow
 
 - 사용 기술 스택 (Next.js, Django, Python, Tensorflow, Mediapipe, Pandas, )
 
