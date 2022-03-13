@@ -21,12 +21,16 @@
 1. 이슈 등록.
     - GitLab 홈으로 이동한다.
     - Issues에서 New Issue를 클릭한다.
-    - Assignee에서 본인을 선택한다. 
     - Label에서 본인의 직군과 수행하고자 하는 일에 맞는 라벨을 선택한다.
     - IssueTemplate을 선택해서 구현하고자 하는 일을 세분화 해서 기입한다.
-        - 기능 추가의 경우 feature_request 템플릿 사용.
+        - 기능 추가의 경우 feature_request 템플릿 사용. 
+            - 기능 추가의 경우 본인이 담당자이므로 Assignee에서 본인을 선택한다. 
+            
         - 개발 이슈사항은 issue_dev_templates 템플릿 사용. 
+            - 개발 이슈 사항의 경우 코치님들에게 질문 용도 이므로 Assignee에서 직군에 맞는 코치분께 Assignee을 선택한다. ex) 인공지능 9팀 이주한 코치님.
+
         - 기획 이슈사항은 issue_plan_template 템플릿 사용.
+            - 기획 이슈 사항의 경우는 Assignee을 본인에게 걸고 Reviewer에 팀원 모두를 선택한다. 
 
     - 작업 예시
 
